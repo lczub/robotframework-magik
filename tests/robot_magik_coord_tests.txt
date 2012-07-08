@@ -1,0 +1,25 @@
+*** Settings ***
+Documentation   Test Smallworld Magik coordinates with RobotFramework
+Resource         ../resources/robot_magik_base.txt
+Suite Setup      Connect Magik Image
+Suite Teardown   Close All Connections
+
+*** Keywords ***
+Create Coordinate
+    [Documentation]   Creates a new coordinate as global variable in a magik image
+    [Arguments]       ${coord_name}   ${coord_x}   ${coord_y}
+    Define Magik Variable   ${coord_name}   coordinate.new(${coord_x}, ${coord_y})
+
+Coordinate Distance Should Be
+    [Documentation]   Calculates the distance between to coordinates 
+    ...               the coordinates are expect in two global variables inside the magik image 
+    [Arguments]       ${coord_name1}   ${coord_name2}   ${distance_exp}
+    ${distance_calc}=   Execute Magik Command   ${coord_name1}.distance_to(${coord_name2})
+    Should Be Equal as Numbers   ${distance_exp}   ${distance_calc}
+
+
+*** Test Cases ***
+Test Coordinate Distance   [Documentation]   Test calculation distance between coordinates
+    Create Coordinate   c1   2.0   4.0
+    Create Coordinate   c2   4.0   4.0
+    Coordinate Distance Should Be   c1   c2   2.0

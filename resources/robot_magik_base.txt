@@ -1,0 +1,61 @@
+*** Settings ***
+Documentation   This resource file contains basic keywords for a telnet communication
+...             to a remote_cli, running in a smallworld swaf image
+Library   Telnet   3.0
+Library   String
+
+*** Variables ***
+${CLI_HOST}=      localhost
+${CLI_PORT}=      14001
+${CLI_TIMEOUT}=   3.0
+${CLI_NEWLINE}=   \n
+
+*** Keywords ***
+
+Connect Magik Image
+    [Documentation]   telnet connection to a smallworld image, runnning a remote_cli
+    Open Connection   ${CLI_HOST}   swaf   ${CLI_PORT}   ${CLI_TIMEOUT}   ${CLI_NEWLINE}
+    ...               \\S+:\\d+:MagikSF>   True
+    ${out}=   Read until prompt
+    # LC 04.07.12: the prompt must be extended with a leading newline, otherwise tracebacks
+    # will not be read completly. Reason is, that the traceback itself includes lines with
+    # "xxx:iii:MagikSF>" strings. This would break the telnet prompt search.
+    # Without this change, the "Test Execute Magik Command" in robot_magik_base_tests fails, 
+    # cause the prio running "Test Magik Output" could not read the complete (expected) 
+    # traceback block.
+    Set Prompt   \\s${out}   True
+    [Return]   ${out}
+
+Write Magik Command
+    [Documentation]   sending a magik command to remote_cli, adds <newline>$<newline>
+    ...               did not return the output - must be read separatly
+    [Arguments]      ${magik_command}
+    Write Bare   ${magik_command}\n$\n
+
+Read Magik Output
+    [Documentation]   returns all output lines between the last command and next prompt 
+    ${out_orig}=   Read until prompt
+    Should Not Match Regexp   ${out_orig}   traceback
+    ${match}   ${out}=   Should Match Regexp   ${out_orig}   (?s)\\s(.*)\\s\\S+:\\d+:MagikSF>
+    [Return]   ${out}
+
+Execute Magik Command
+    [Documentation]   sending a magik command to remote_cli and 
+    ...               returns last line from the magik ouitput
+    [Arguments]      ${magik_command}
+    Write Magik Command   ${magik_command}
+    ${out}=         Read Magik Output
+    ${last_line}=   Get Line   ${out}   -1
+    [Return]        ${last_line}
+
+Define Magik Variable
+    [Documentation]   defines a global variable inside the magik session
+    [Arguments]      ${var_name}   ${magik_expression}
+    Write Magik Command   _global ${var_name} << ${magik_expression}
+    Read Magik Output
+    
+
+
+
+
+
