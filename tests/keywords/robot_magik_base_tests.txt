@@ -1,0 +1,67 @@
+*** Settings ***
+Documentation   Test Robot Framework high level keywords for Smallworld Magik
+...             Tests base connection to a smallworld swaf image with remote_cli via telnet
+Resource         ../../resources/robot_magik_base.txt
+Suite Teardown   Close All Connections
+Force Tags   KeywordTest
+
+*** Test Cases ***
+Test keyword 'Open Magik Connection'
+    ${out}=   Open Magik Connection
+    Should Match Regexp   ${out}   \\S+:\\d+:MagikSF>
+
+Test keyword 'Write Magik Command'
+    ${out}=   Write Magik Command   1 + 1
+    Should Be Equal   ${out}   ${none}
+    ${out}=   Read Until Prompt
+    Should Match Regexp   ${out}   \\s2 \\s\\S+:\\d+:MagikSF>
+
+Test keyword 'Read Magik Output'
+    Write Bare   write("1 ernie", %newline, "2 bert", %newline, "3 bibo")\n$\n
+    ${out}=   Read Magik Output
+    Should Match Regexp   ${out}   ^1 ernie\\s2 bert\\s3 bibo$
+    Write Bare   \n$\n
+    ${out}=   Read Magik Output
+    Write Bare   1.as_error()\n$\n
+    Run Keyword And Expect Error   *traceback*   Read Magik Output
+	
+Test keyword 'Execute Magik Command'
+    ${out}=   Execute Magik Command   write("1 erwin", %newline, "2 ulf", %newline, "3 hein")
+    Should Be Equal As Strings   ${out}   3 hein
+    ${out}=   Execute Magik Command   3 - 2
+    Should Be Equal As Integers   ${out}   1
+
+Test keyword 'Prepare Magik Image'
+    Prepare Magik Image
+	Write Magik Command   ${CLI_OBJ_HASH}
+	${out}=   Read Until Prompt
+	Should Match Regexp   ${out}   (?s)\\shash_table(\\d*).+MagikSF>
+	
+Test keyword 'Build Magik Object Expression'
+    ${obj_exp}=   Build Magik Object Expression   bibo
+	Should Be Equal As Strings  ${obj_exp}   ${CLI_OBJ_HASH}[:bibo]
+	
+Test keyword 'Store Magik Object'
+   ${obj_exp}=   Store Magik Object   ernie   2 * 11
+   Should Be Equal As Strings  ${obj_exp}   ${CLI_OBJ_HASH}[:ernie]
+   ${obj}=   Execute Magik Command   ${obj_exp}
+   Should Be Equal As Integers  ${obj}   22
+   
+Test keyword 'Get Magik Object'
+   Execute Magik Command   ${CLI_OBJ_HASH}[:monster] << :no_bird
+   ${obj}=   Get Magik Object   monster
+   Should Match Regexp  ${obj}   ^:no_bird\\s$
+   
+Test keyword 'Clean Magik Image'
+    Clean Magik Image
+	Write Magik Command   ${CLI_OBJ_HASH}
+	${out}=   Read Until Prompt
+	Should Match Regexp   ${out}   (?s) unset.+MagikSF>
+	
+Test keyword 'Close Magik Connection'
+	${out}=   Close Magik Connection
+	Should Match Regexp   ${out}   \\s
+	Run Keyword And Expect Error   EOFError: telnet connection closed   Read Magik Output
+	
+   
+

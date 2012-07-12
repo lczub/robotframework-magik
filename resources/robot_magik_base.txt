@@ -1,20 +1,71 @@
 *** Settings ***
-Documentation   This resource file contains basic keywords for a telnet communication
-...             to a remote_cli, running in a smallworld swaf image
 Library   Telnet   3.0
 Library   String
+Documentation   [http://code.google.com/p/robotframework|Robot Framework] high level keywords for testing [https://en.wikipedia.org/wiki/Magik_%28programming_language%29|Smallworld Magik] images
+...
+...   These keywords uses the [http://code.google.com/p/robotframework/wiki/TelnetLibrary|TelnetLibrary] to send commands to Magik images and read there response.
+...
+...   The Magik image must have started a remote_cli: 
+...   - remote_cli.new(_optional port auth_proc)
+...   When Robot Framework runs on the same machine as the image, the remote_cli could be started with default settings.
+...   |  remote_cli.new()
+...   |  $
+...   When Robot Framework and Magik image runs on different machines, remote_cli must be started with special port and auth proc to accept connections from other machine.
+...   | _global example_auth_proc << 
+...   | _proc (hostname, hostaddr)
+...   | \ \ \## a customised remote_cli auth_proc
+...   | \ \ \ _if hostaddr = "127.0.0.1" _orif
+...   | \ \ \ \ \ \ \ hostaddr.matches?("111.222.333.*")
+...   | \ \ \ _then
+...   | \ \ \ \ \ \ \# trust localhost or local network
+...   | \ \ \ \ \ \ _return _true
+...   | \ \ \ _else
+...   | \ \ \ \ \ \ \# trust nobody
+...   | \ \ \ \ \ \ _return _false
+...   | \ \ \ _endif
+...   | _endproc
+...   | $
+...   | remote_cli.new(14099, example_auth_proc)
+...   | $
+...             
+...   These connection parameters could be set for each test run separatly via variables (see `Open Magik Connection`).
+...
+...   Example, how to start the [../tests/examples/coordinate_tests.txt|coordinate tests] with special connection settings:
+...   | pybot --variable CLI_PORT:14099 --variable CLI_HOST:111.222.333.44 --variable CLI_TIMEOUT:15 coordinate_tests.txt
+...
+...   To minimise the number of global variables, tests should use the keywords `Store Magik Object` 
+...   and `Get Magik Object`.
+...   They store the result of a Magik expression in a hash_table and returns another Magik expression, which will return this result. So it will be easy to share Magik objects between tests and clean the image during the teardown from all created global variables. Only this hash_table must be set to _unset. 
+...
+...   The name of this global hash_table could be set for each test run separatly via variables.
+...
+...   | *Variable*      | *Default*     | *Description*                                                |
+...   | ${CLI_OBJ_HASH} | robot_objhash | global variable name inside the Magik image to store objects |
+...
+...   Definition and cleaning of this global hash_table see `Prepare Magik Image` and `Clean Magik Image`.
+...
+...   Test should use `Execute Magik Command' to send a Magik expression and read the response.
 
 *** Variables ***
 ${CLI_HOST}=      localhost
 ${CLI_PORT}=      14001
 ${CLI_TIMEOUT}=   3.0
 ${CLI_NEWLINE}=   \n
+${CLI_OBJ_HASH}=  robot_objhash
 
 *** Keywords ***
 
-Connect Magik Image
-    [Documentation]   telnet connection to a smallworld image, runnning a remote_cli
-    Open Connection   ${CLI_HOST}   swaf   ${CLI_PORT}   ${CLI_TIMEOUT}   ${CLI_NEWLINE}
+Open Magik Connection
+    [Documentation]   Opens a telnet connection to remote_cli of a Smallworld Magik image
+	...
+	...   The connection parameters could be set with following variables
+	...
+    ...   | *Variable*     | *Default* | *Description*                                                    |
+    ...   | ${CLI_HOST}    | localhost | hostname or ip of machine, where the Magik images run            |
+    ...   | ${CLI_PORT}    | 14001     | port, the Magik image remote_cli listens                         |
+    ...   | ${CLI_TIMEOUT} |  3.0      | max. secs, tests should wait for a response from the Magik image |
+	
+    Open Connection   ${CLI_HOST}   swimage   ${CLI_PORT}   ${CLI_TIMEOUT}   ${CLI_NEWLINE}
     ...               \\S+:\\d+:MagikSF>   True
     ${out}=   Read until prompt
     # LC 04.07.12: the prompt must be extended with a leading newline, otherwise tracebacks
@@ -25,36 +76,101 @@ Connect Magik Image
     # traceback block.
     Set Prompt   \\s${out}   True
     [Return]   ${out}
-
+	
 Write Magik Command
-    [Documentation]   sending a magik command to remote_cli, adds <newline>$<newline>
-    ...               did not return the output - must be read separatly
-    [Arguments]      ${magik_command}
-    Write Bare   ${magik_command}\n$\n
+    [Documentation]   Sends a Magik command, followed by <newline>$<newline>
+	... 
+    ...   Did not return the output, this must be read separatly, for example with `Read Magik Output`. 
+	...   The keyword `Execute Magik Command` combinates both keywords.
+    [Arguments]      ${magik_expression}
+    Write Bare   ${magik_expression}\n$\n
 
 Read Magik Output
-    [Documentation]   returns all output lines between the last command and next prompt 
+    [Documentation]   Returns all output lines between the last Magik command and next prompt 
+	...
+	...   Fails, if these lines include the string _traceback_.
     ${out_orig}=   Read until prompt
     Should Not Match Regexp   ${out_orig}   traceback
     ${match}   ${out}=   Should Match Regexp   ${out_orig}   (?s)\\s(.*)\\s\\S+:\\d+:MagikSF>
     [Return]   ${out}
 
+Prepare Magik Image
+	[Documentation]   	Sends some initial Magik commands to prepare the test session.
+	...
+	...   - Defines a global hash_table with name ${CLI_OBJ_HASH}, 
+	...   - this is a precondition for the keywords `Store Magik Object` and `Get Magik Object`
+	...
+    ...   Should be used in a _Test Setup_ or _Suite Setup_ setting. 
+    ...
+    ...   | *Setting*      | *Value*      | *Value*               | *Value*               |
+    ...   | xxxxx Setup    | Run Keywords | `Open Magik Connection` | `Prepare Magik Image` |
+
+    Write Magik Command   _global ${CLI_OBJ_HASH} << hash_table.new()
+    Read Magik Output
+
+Clean Magik Image
+	[Documentation]   	Sends some final Magik commands to clean the test session.
+	...
+	...   - Sets the global hash_table with name ${CLI_OBJ_HASH} to _unset.
+	...
+    ...   Should be used in a _Test Teardown_ or _Suite Teardown_ setting. 
+    ...
+    ...   | *Setting*      | *Value*      | *Value*             | *Value*                  |
+    ...   | xxxxx Teardown | Run Keywords | `Clean Magik Image` | `Close Magik Connection` |
+
+    Write Magik Command   _global ${CLI_OBJ_HASH} << _unset
+    Read Magik Output
+
+Close Magik Connection
+    [Documentation]   Closes the telnet connection to remote_cli of a Smallworld Magik image
+	...
+	...   Returns any remaining output.
+	
+    Write Bare   exit()\n
+    ${out}=    Close Connection
+    [Return]   ${out}
+	
+
 Execute Magik Command
-    [Documentation]   sending a magik command to remote_cli and 
-    ...               returns last line from the magik ouitput
+    [Documentation]   Sends a Magik command to remote_cli and returns the last line from the Magik response
+	...
+	...   Fails, if the response include the string _traceback_.
     [Arguments]      ${magik_command}
     Write Magik Command   ${magik_command}
     ${out}=         Read Magik Output
     ${last_line}=   Get Line   ${out}   -1
     [Return]        ${last_line}
 
-Define Magik Variable
-    [Documentation]   defines a global variable inside the magik session
-    [Arguments]      ${var_name}   ${magik_expression}
-    Write Magik Command   _global ${var_name} << ${magik_expression}
-    Read Magik Output
-    
+Build Magik Object Expression
+    [Documentation]   Returns a Magik expression, which will return a Magik command out of the global hash_table
+	...
+	...   This is an internal keyword, used by `Store Magik Object` and `Get Magik Object`
+    [Arguments]      ${obj_name}
+    ${obj_expression}=   Convert To String 	${CLI_OBJ_HASH}[:${obj_name}]
+	[Return]   ${obj_expression}
 
+
+Store Magik Object
+    [Documentation]   Stores the result of a Magik command in a global hash_table as an object.
+	...
+	...   Returns another Magik expression, which will return this object.
+	...   see although `Prepare Magik Image` and `Get Magik Object`
+    [Arguments]      ${obj_name}   ${magik_expression}
+	${obj_expression}=   Build Magik Object Expression   ${obj_name}
+    Execute Magik Command   ${obj_expression} << ${magik_expression}
+	[Return]   ${obj_expression}
+
+Get Magik Object
+    [Documentation]   Returns a Magik object, stored in the global hash_table.
+	...
+	...   see although `Prepare Magik Image` and `Store Magik Object`
+    [Arguments]      ${obj_name}
+	${obj_expression}=   Build Magik Object Expression   ${obj_name}
+	${out}=   Execute Magik Command   ${obj_expression}
+	[Return]   ${out}
+		
+	
+	
 
 
 

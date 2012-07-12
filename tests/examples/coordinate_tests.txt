@@ -1,0 +1,23 @@
+*** Settings ***
+Documentation   Test Smallworld Magik coordinates with RobotFramework
+Resource         ../../resources/robot_magik_base.txt
+Suite Setup      Run Keywords   Open Magik Connection   Prepare Magik Image
+Suite Teardown   Run Keywords   Clean Magik Image       Close Magik Connection
+Force Tags   ExampleTest CoordinateTest
+
+*** Keywords ***
+Coordinate Distance Should Be
+    [Documentation]   Calculates the distance between to coordinates 
+    [Arguments]       ${x1}   ${y1}   ${x2}   ${y2}   ${distance_exp}
+    ${obj_c1}=   Store Magik Object   c1   coordinate.new(${x1}, ${y1})
+    ${obj_c2}=   Store Magik Object   c2   coordinate.new(${x2}, ${y2})
+    ${distance_calc}=   Execute Magik Command   ${obj_c1}.distance_to(${obj_c2})
+    Should Be Equal as Numbers   ${distance_exp}   ${distance_calc}
+
+
+*** Test Cases ***
+Test distance calculation between two coordinates
+    [Template]   Coordinate Distance Should Be   
+	2.0   4.0   4.0   4.0   2.0    # ok
+	-2.0   4.0   4.0   4.0   6.0   # ok
+	-2.0   4.0   4.0   -4.0   6.0  # failure 6 != 10
