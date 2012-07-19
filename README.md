@@ -34,4 +34,4 @@ test/examples
 [Robot Framework]: http://code.google.com/p/robotframework
 [Smallworld Magik]: https://en.wikipedia.org/wiki/Magik_%28programming_language%29
 [TelnetLibrary]: http://code.google.com/p/robotframework/wiki/TelnetLibrary
-[Keyword Documentation]: ./doc/robot_magik_base.html
+[Keyword Documentation]: http://lczub.github.com/robotframework-magik/doc/robot_magik_base.html
