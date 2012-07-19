@@ -44,7 +44,7 @@ Documentation   [http://code.google.com/p/robotframework|Robot Framework] high l
 ...
 ...   Definition and cleaning of this global hash_table see `Prepare Magik Image` and `Clean Magik Image`.
 ...
-...   Test should use `Execute Magik Command' to send a Magik expression and read the response.
+...   Tests should use `Execute Magik Command` to send a Magik expression and read the response.
 
 *** Variables ***
 ${CLI_HOST}=      localhost
@@ -78,7 +78,7 @@ Open Magik Connection
     [Return]   ${out}
 	
 Write Magik Command
-    [Documentation]   Sends a Magik command, followed by <newline>$<newline>
+    [Documentation]   Sends a Magik expression, followed by <newline>$<newline>
 	... 
     ...   Did not return the output, this must be read separatly, for example with `Read Magik Output`. 
 	...   The keyword `Execute Magik Command` combinates both keywords.
@@ -135,14 +135,14 @@ Execute Magik Command
     [Documentation]   Sends a Magik command to remote_cli and returns the last line from the Magik response
 	...
 	...   Fails, if the response include the string _traceback_.
-    [Arguments]      ${magik_command}
-    Write Magik Command   ${magik_command}
+    [Arguments]      ${magik_expression}
+    Write Magik Command   ${magik_expression}
     ${out}=         Read Magik Output
     ${last_line}=   Get Line   ${out}   -1
     [Return]        ${last_line}
 
 Build Magik Object Expression
-    [Documentation]   Returns a Magik expression, which will return a Magik command out of the global hash_table
+    [Documentation]   Returns a Magik expression, which will return a Magik object from the global hash_table
 	...
 	...   This is an internal keyword, used by `Store Magik Object` and `Get Magik Object`
     [Arguments]      ${obj_name}
@@ -151,7 +151,7 @@ Build Magik Object Expression
 
 
 Store Magik Object
-    [Documentation]   Stores the result of a Magik command in a global hash_table as an object.
+    [Documentation]   Stores the result of a Magik expression in a global hash_table as an object.
 	...
 	...   Returns another Magik expression, which will return this object.
 	...   see although `Prepare Magik Image` and `Get Magik Object`

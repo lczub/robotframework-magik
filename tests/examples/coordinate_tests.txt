@@ -16,8 +16,14 @@ Coordinate Distance Should Be
 
 
 *** Test Cases ***
-Test distance calculation between two coordinates
+Test example - single distance calculation between two coordinates
+    Coordinate Distance Should Be   0.0   0.0   3.0   4.0   5.0
+
+Test example - data driven distance calculation between coordinates
     [Template]   Coordinate Distance Should Be   
-	2.0   4.0   4.0   4.0   2.0    # ok
-	-2.0   4.0   4.0   4.0   6.0   # ok
-	-2.0   4.0   4.0   -4.0   6.0  # failure 6 != 10
+	2.0   4.0   4.0   4.0   2.0
+	-2.0   4.0   4.0   4.0   6.0
+	-2.0   4.0   4.0   -4.0  10.0
+
+Test example - failure in expected distance calculation between coordinates
+    Run Keyword And Expect Error   6.*!= 10.*   Coordinate Distance Should Be   -2.0   4.0   4.0   -4.0   6.0
