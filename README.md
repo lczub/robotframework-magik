@@ -17,16 +17,16 @@ Directory Layout
 ----------------
 
 resources/
-    Definition of Robot Framework Magik keywords
+* Definition of Robot Framework Magik keywords
 
 doc/
-    Documentation for Robot Framework Magik keywords
+* Documentation for Robot Framework Magik keywords
 
 test/keywords
-    Testsuite for Robot Framework Magik keywords
+* Testsuite for Robot Framework Magik keywords
 
 test/examples
-    Examples, how Robot Framework Magik keywords could be used for automated testing [Smallworld Magik] images
+* Examples, how Robot Framework Magik keywords could be used for automated testing [Smallworld Magik] images
 
 
 [Smallcases GmbH]: http://www.smallcases.de
@@ -34,4 +34,4 @@ test/examples
 [Robot Framework]: http://code.google.com/p/robotframework
 [Smallworld Magik]: https://en.wikipedia.org/wiki/Magik_%28programming_language%29
 [TelnetLibrary]: http://code.google.com/p/robotframework/wiki/TelnetLibrary
-[Keyword Documentation]: doc/robot_magik_base.html
+[Keyword Documentation]: ./doc/robot_magik_base.html
