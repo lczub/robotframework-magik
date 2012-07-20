@@ -28,6 +28,11 @@ test/keywords
 test/examples
 * Examples, how Robot Framework Magik keywords could be used for automated testing [Smallworld Magik] images
 
+Download
+--------
+
+see latest [tag zip or tar ball]
+
 
 [Smallcases GmbH]: http://www.smallcases.de
 [Apache License 2.0]: http://www.apache.org/licenses/LICENSE-2.0
@@ -35,3 +40,4 @@ test/examples
 [Smallworld Magik]: https://en.wikipedia.org/wiki/Magik_%28programming_language%29
 [TelnetLibrary]: http://code.google.com/p/robotframework/wiki/TelnetLibrary
 [Keyword Documentation]: http://lczub.github.com/robotframework-magik/doc/robot_magik_base.html
+[tag zip or tar ball]: https://github.com/lczub/robotframework-magik/tags
