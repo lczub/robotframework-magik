@@ -1,0 +1,5 @@
+resources/*.txt
+doc/*.html
+tests
+README.md
+LICENSE-2.0.txt
