@@ -22,10 +22,10 @@ resources/
 doc/
 * Documentation for Robot Framework Magik keywords
 
-test/keywords
+tests/
 * Testsuite for Robot Framework Magik keywords
 
-test/examples
+examples/
 * Examples, how Robot Framework Magik keywords could be used for automated testing [Smallworld Magik] images
 
 Download

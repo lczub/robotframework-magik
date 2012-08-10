@@ -1,5 +1,6 @@
 resources/*.txt
 doc/*.html
 tests
+examples
 README.md
 LICENSE-2.0.txt
