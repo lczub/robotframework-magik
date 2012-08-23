@@ -24,6 +24,7 @@
 # python robot_start_magik_image.py e:\Smallworld\CST42\product swaf
 #
 # python robot_start_magik_image.py --aliasfile e:\test\gis_aliases 
+#                                   --piddir e:\tmp\robot\pids
 #                                   --logdir e:\tmp\robot\logs 
 #                                   --login root/  
 #                                   --cli_port 14003 
@@ -73,8 +74,10 @@ def argparser_for_start(defaultargs):
     # optional command line parameters
     a_parser.add_argument('--aliasfile', 
                           help='alias file which includes the ALIAS definition')
-    a_parser.add_argument('--cli_port', type=int, default=14001,
+    a_parser.add_argument('--cli_port', type=int, default=14001, 
                           help='port, the remote_cli listens on (default: %(default)s)')
+    a_parser.add_argument('--piddir', default=defaultargs['piddir'],
+                          help='directory for the pidfile (default: %(default)s ')
     a_parser.add_argument('--logdir', default=defaultargs['logdir'],
                           help='directory for the session logfile (default: %(default)s ')
     a_parser.add_argument('--login', 
@@ -108,6 +111,14 @@ def start_image(args):
     if aliasfile:
         command_args.extend(["-a", aliasfile])
 
+    # check if pid file directory exists
+    pid_dir = args.piddir
+    if not os.path.exists(pid_dir):
+        os.mkdir(pid_dir)
+        
+    # TODO: check if pid file already exist        
+    pid_fname  = os.path.join(pid_dir, '%i.pid' % cli_port)
+
     # check if log file directory exists
     log_dir = args.logdir
     if not os.path.exists(log_dir):
@@ -134,9 +145,13 @@ def start_image(args):
     print 'Logfile see %s' % log_fname
     
     # write pid file
-    pid_fname  = os.path.join(log_dir, '%i.pid' % cli_port)
     pid_file = open(pid_fname, 'w')
     pid_file.write('%i\n%s\n' % (process_id, log_fname))
+    pid_file.close()
+    print 'pidfile see %s' % pid_fname
+    
+    # TODO: check if remote_cli is realy running?        
+
 
 if __name__ == '__main__':
     start_defaults = defaults_for_start()
