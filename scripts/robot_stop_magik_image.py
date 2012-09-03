@@ -23,7 +23,7 @@
 #
 # python robot_stop_magik_image.py
 #
-# python robot_start_magik_image.py --piddir e:\tmp\robot\pids
+# python robot_stop_magik_image.py --piddir e:\tmp\robot\pids
 #                                   --cli_port 14003 
 # ------------------------------------------------------------------------
 
