@@ -37,6 +37,7 @@ Test robot magik keyword definitions exist in resources directory
 Test robot magik start and stop scripts exist in scripts directory
     [Template]    File Should Exist
 	${ROBOT_MAGIK_DIR}/scripts/robot_remote_cli.magik
+	${ROBOT_MAGIK_DIR}/scripts/start_robot_remote_cli.magik
 	${ROBOT_MAGIK_DIR}/scripts/start_robot_remote_cli.script
 	${ROBOT_MAGIK_DIR}/scripts/robot_start_magik_image.py
 	${ROBOT_MAGIK_DIR}/scripts/robot_stop_magik_image.py

@@ -85,3 +85,14 @@ _proc @robot_start_remote_cli()
 	
 _endproc
 $
+
+_global robot_add_startup_procedure_remote_cli <<
+_proc @robot_add_startup_procdure_remote_cli()
+	## Add procedure robot_start_remote_cli() as startup_procedure
+	## The remote_cli will be started as last startup action
+
+	smallworld_product.add_startup_procedure(robot_start_remote_cli)
+	write("Info Robot Test: startup procedure robot_start_remote_cli() added")
+	
+_endproc 
+$

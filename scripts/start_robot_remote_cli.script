@@ -17,15 +17,23 @@
 # Project : Automated testing Magik Images with Robot Framework
 #           http://github.com/lczub/robotframework-magik
 # 
-# Scope:    Script to load robot_remote_cli.magik and start 
-#           the remote_cli via the image command line option -run_script
+# Scope:    Script to load robot_remote_cli.magik and adds 
+#           robot_start_remote_cli() as startup_procedure via the 
+#           image command line option -run_script.
+#           -> The remote_cli will be started as last startup action. 
 #
-#           Example 1) start swaf image with remote cli listen to 14001
+#           Only useful for images with startup actions (open images).
+#           For other images (closed images), the remote_cli should be 
+#           started via the environment variable SW_MSF_STARTUP_MAGIK.
+#    
+#
+#           Example 1) start cambridge swaf open image with remote cli listen to 14001
 #
 #           set SMALLWORLD_GIS=....\CST420\product
+#           set CBG_ALIAS_FILE=....\gis_aliases
 #           set ROBOT_MAGIK_DIR=....\robotframework-magik
 #           set ROBOT_CLI_PORT=14001
-#           %SMALLWORLD_GIS%\bin\x86\gis.exe swaf -run_script %ROBOT_MAGIK_DIR%\scripts\start_robot_remote_cli.script
+#           %SMALLWORLD_GIS%\bin\x86\gis.exe e -a %CBG_ALIAS_FILE% cam_db_open_swaf -login root/  -run_script %ROBOT_MAGIK_DIR%\scripts\start_robot_remote_cli.script
 #
 #           Example 2) start cambridge swaf open image with remote cli
 #                      listen to 14002 and accept connections from 111.222.333.*
@@ -39,4 +47,4 @@
 #
 #----------------------------------------------------------------------
 load_file %ROBOT_MAGIK_DIR%\scripts\robot_remote_cli.magik 
-run       robot_start_remote_cli()
+run       robot_add_startup_procedure_remote_cli()

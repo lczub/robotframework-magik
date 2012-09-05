@@ -21,13 +21,13 @@
 # 
 # python robot_start_magik_image.py -h
 #
-# python robot_start_magik_image.py e:\Smallworld\CST42\product swaf
+# python robot_start_magik_image.py --msf_startup e:\Smallworld\CST42\product swaf
 #
 # python robot_start_magik_image.py --aliasfile e:\test\gis_aliases 
 #                                   --piddir e:\tmp\robot\pids
 #                                   --logdir e:\tmp\robot\logs 
 #                                   --login root/  
-#                                   --cli_port 14003 
+#                                   --cli_port 14003
 #                                   e:\Smallworld\CST42\product cam_db_open_swaf
 # ------------------------------------------------------------------------
 
@@ -54,6 +54,7 @@ def defaults_for_start():
     defaults['robmag_script_dir'] = a_dir
     defaults['robmag_dir'] = os.path.dirname(a_dir)
     defaults['script'] = os.path.join(a_dir, 'start_robot_remote_cli.script')
+    defaults['magikfile'] = os.path.join(a_dir, 'start_robot_remote_cli.magik')
     
     return defaults
     
@@ -64,6 +65,7 @@ def argparser_for_start(defaultargs):
     
     # default parameter without inspection of the command line
     a_parser.set_defaults(robmag_dir=defaultargs['robmag_dir'])
+    a_parser.set_defaults(magikfile=defaultargs['magikfile'])
     
     # required command line parameters
     a_parser.add_argument('swproduct',
@@ -82,8 +84,17 @@ def argparser_for_start(defaultargs):
                           help='directory for the session logfile (default: %(default)s ')
     a_parser.add_argument('--login', 
                           help='Username/password for login')
+    help_info = 'script to add remote_cli startup procedure via image command line argument -run_script.'
+    help_info += 'Only useful for startup image. Has no effect in closed image.'
+    help_info += 'Argument --script will not used, when --msf_startup is defined.'
+    help_info += '(default: %(default)s'
     a_parser.add_argument('--script', default=defaultargs['script'],
-                          help='script to start the image and remote_cli (default: %(default)s ')
+                          help=help_info)
+    help_info = 'If set, the  environment variable SW_MSF_STARTUP_MAGIK '
+    help_info += 'will be defined with the script %s' % defaultargs['magikfile']
+    help_info += ' to start the remote_cli. '
+    help_info += 'Useful for closed images, where startup actions not work.'
+    a_parser.add_argument('--msf_startup', action='store_true', help=help_info)
     
     return a_parser
     
@@ -130,8 +141,15 @@ def start_image(args):
     log_fname = os.path.join(log_dir, '%s-%s-%i.log' % (alias, info, cli_port))
     command_args.extend(['-l', log_fname, '-i', alias])
     
-    # start script
-    command_args.extend(['-run_script', args.script])
+    # Check, if how the remote cli should be started via Startup Magik File with
+    # environment variable SW_MSF_STARTUP_MAGIK
+    if args.msf_startup is True:
+        # remote cli will be started via Startup Magik File, defined in 
+        # environment variable SW_MSF_STARTUP_MAGIK
+        os.putenv('SW_MSF_STARTUP_MAGIK', args.magikfile)
+    else:
+        # remote cli will be started via an startup action via run_script
+        command_args.extend(['-run_script', args.script])
     
     # login 
     login = args.login
