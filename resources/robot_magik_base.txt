@@ -113,12 +113,15 @@ Prepare Magik Image
 	...
 	...   - Defines a global hash_table with name ${CLI_OBJ_HASH}, 
 	...   - this is a precondition for the keywords `Store Magik Object` and `Get Magik Object`
-	...
+	...   - Set !current_package! to _package user
+	...  
     ...   Should be used in a _Test Setup_ or _Suite Setup_ setting. 
     ...
     ...   | *Setting*      | *Value*      | *Value*               | *Value*               |
     ...   | xxxxx Setup    | Run Keywords | `Open Magik Connection` | `Prepare Magik Image` |
 
+    Write Magik Command   _package user
+    Read Magik Output
     Write Magik Command   _global ${CLI_OBJ_HASH} << hash_table.new()
     Read Magik Output
 
