@@ -43,8 +43,12 @@ def defaults_for_start():
     'default start parameters'
     defaults = {}
     
+    # temp directory for msfext files
+    tmp_dir = gettempdir()
+    defaults['msfextdir'] = tmp_dir
+    
     # log and pid directory - %TEMP%\robot_magik
-    a_dir   = os.path.join(gettempdir(), 'robot_magik')
+    a_dir   = os.path.join(tmp_dir, 'robot_magik')
     defaults['logdir'] = a_dir
     defaults['piddir'] = a_dir
 
@@ -66,6 +70,7 @@ def argparser_for_start(defaultargs):
     # default parameter without inspection of the command line
     a_parser.set_defaults(robmag_dir=defaultargs['robmag_dir'])
     a_parser.set_defaults(magikfile=defaultargs['magikfile'])
+    a_parser.set_defaults(msfextdir=defaultargs['msfextdir'])
     
     # required command line parameters
     a_parser.add_argument('swproduct',
@@ -141,12 +146,18 @@ def start_image(args):
     log_fname = os.path.join(log_dir, '%s-%s-%i.log' % (alias, info, cli_port))
     command_args.extend(['-l', log_fname, '-i', alias])
     
+    # Temp Path for msfext.xxxx file
+    # some nrm images seams to requires this parameter.
+    # for swaf and cbg images, this parameter seams to be optional
+    command_args.append(args.msfextdir)
+    
     # Check, if how the remote cli should be started via Startup Magik File with
     # environment variable SW_MSF_STARTUP_MAGIK
     if args.msf_startup is True:
         # remote cli will be started via Startup Magik File, defined in 
         # environment variable SW_MSF_STARTUP_MAGIK
         os.putenv('SW_MSF_STARTUP_MAGIK', args.magikfile)
+        print 'SW_MSF_STARTUP_MAGIK set to %s' % args.magikfile
     else:
         # remote cli will be started via an startup action via run_script
         command_args.extend(['-run_script', args.script])
@@ -157,6 +168,7 @@ def start_image(args):
         command_args.extend(["-login", login])
         
     # launch the image
+    print 'Start image with: ', ' '.join(command_args)
     a_image = Popen(command_args)
     process_id = a_image.pid
     print 'Image %s started. gis.exe has the pid %i' % (alias, process_id)
