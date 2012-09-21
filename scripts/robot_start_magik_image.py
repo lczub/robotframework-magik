@@ -28,6 +28,7 @@
 #                                   --logdir e:\tmp\robot\logs 
 #                                   --login root/  
 #                                   --cli_port 14003
+#                                   --wait 10
 #                                   e:\Smallworld\CST42\product cam_db_open_swaf
 # ------------------------------------------------------------------------
 
@@ -36,8 +37,9 @@ import os, sys
 from argparse import ArgumentParser
 from subprocess import Popen
 from tempfile import gettempdir
-from time import strftime
-
+from time import strftime, sleep
+from telnetlib import Telnet
+from symbol import try_stmt
 
 def defaults_for_start():
     'default start parameters'
@@ -84,15 +86,15 @@ def argparser_for_start(defaultargs):
     a_parser.add_argument('--cli_port', type=int, default=14001, 
                           help='port, the remote_cli listens on (default: %(default)s)')
     a_parser.add_argument('--piddir', default=defaultargs['piddir'],
-                          help='directory for the pidfile (default: %(default)s ')
+                          help='directory for the pidfile (default: %(default)s) ')
     a_parser.add_argument('--logdir', default=defaultargs['logdir'],
-                          help='directory for the session logfile (default: %(default)s ')
+                          help='directory for the session logfile (default: %(default)s) ')
     a_parser.add_argument('--login', 
                           help='Username/password for login')
-    help_info = 'script to add remote_cli startup procedure via image command line argument -run_script.'
-    help_info += 'Only useful for startup image. Has no effect in closed image.'
-    help_info += 'Argument --script will not used, when --msf_startup is defined.'
-    help_info += '(default: %(default)s'
+    help_info = 'script to add remote_cli startup procedure via image command line argument -run_script. '
+    help_info += 'Only useful for startup image. Has no effect in closed image. '
+    help_info += 'Argument --script will not used, when --msf_startup is defined. '
+    help_info += '(default: %(default)s)'
     a_parser.add_argument('--script', default=defaultargs['script'],
                           help=help_info)
     help_info = 'If set, the  environment variable SW_MSF_STARTUP_MAGIK '
@@ -100,8 +102,32 @@ def argparser_for_start(defaultargs):
     help_info += ' to start the remote_cli. '
     help_info += 'Useful for closed images, where startup actions not work.'
     a_parser.add_argument('--msf_startup', action='store_true', help=help_info)
+    help_info =  'seconds, how long the process should wait for the check, '
+    help_info += 'that the image is really reachable via telnet. '
+    help_info += '(default: %(default)s)'
+    a_parser.add_argument('--wait', type=int, default=30, help=help_info)
     
     return a_parser
+
+def check_telnet_connection(port, maxwait=30):
+    # checks, if localhost:PORT is reachable via telnet
+    # if the telnet connection is not reachable in MAXWAIT seconds, 
+    # an IOError is raised
+    
+    a_connection = Telnet()
+    duration = 0
+    connected = False
+    while (duration < maxwait) and not connected:
+        duration += 1
+        try:
+            a_connection.open('localhost', port, 10)
+            a_connection.close()
+            connected = True
+        except IOError:
+            # connection not established - we will sleep for 1 second
+            sleep(1)
+            
+    return connected
     
  
 def start_image(args):
@@ -180,7 +206,12 @@ def start_image(args):
     pid_file.close()
     print 'pidfile see %s' % pid_fname
     
-    # TODO: check if remote_cli is realy running?        
+    # check telnet connection
+    wait = args.wait
+    if check_telnet_connection(cli_port, wait):
+        print 'Image is now reachable via telnet localhost:%i' % cli_port
+    else:
+        sys.exit('Image is NOT reachable via telnet localhost:%i!' % cli_port)   
 
 
 if __name__ == '__main__':
