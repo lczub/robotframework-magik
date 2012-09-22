@@ -7,31 +7,151 @@ License [Apache License 2.0]
 Introduction
 ------------
 
-Provides [Robot Framework] high level keywords for automated testing [Smallworld Magik] images and examples.
+Provides [Robot Framework] high level keywords for automated testing 
+[Smallworld Magik] images and Python scripst to start and stop Smallworld 
+Images with a remote_cli.
 
-The keywords uses the [TelnetLibrary] to send commands to Magik images and read there response. 
-* Precondition is, that the Magik image must have started a remote_cli.
-* Details, how a remote_cli could be started and which keywords exists, can be found in the [Keyword Documentation].
+The Robot Magik keywords uses the [TelnetLibrary] to send commands to Magik 
+images and read there response. 
+*   Precondition is, that the Magik image must have started a remote_cli.
+*   Details, how a remote_cli could be started manually and which keywords 
+    exists, see [Keyword Documentation].
+*   Use the Python script *scripts/robot_start_magik_image.py* to start 
+    automatically an image with a remote_cli
+
+The Python script *robot_start_magik_image.py*
+*   starts a Smallworld Magik image via the gis.exe launcher program on Windows
+*   starts a remote_cli inside this image
+*   stores the process id in a Pid-File
+
+The Python script *robot_stop_magik_image.py*
+*   reads the Pid-File and stops the Smallworld Magik image by sending a kill 
+    signal to the process
 
 Directory Layout
 ----------------
 
 resources/
-* Definition of Robot Framework Magik keywords
+*   Definition of Robot Framework Magik keywords
+
+scripts/
+*   Python and Magik scripts to start and stop automatically an image with a 
+    remote_cli
 
 doc/
-* Documentation for Robot Framework Magik keywords
+*   Documentation for Robot Framework Magik keywords
 
 tests/
-* Testsuite for Robot Framework Magik keywords
+*   Testsuite for Robot Framework Magik keywords
 
 examples/
-* Examples, how Robot Framework Magik keywords could be used for automated testing [Smallworld Magik] images
+*   Examples, how Robot Framework Magik keywords could be used for automated 
+    testing [Smallworld Magik] images
 
 Download
 --------
 
 see latest [tag zip or tar ball]
+
+Tutorial
+--------
+
+The Python script *robot_start_magik_image.py* implements two different start
+mechanism for closed and startup images.
+*   for closed images, the environment variable *SW_MSF_STARTUP_MAGIK* is used 
+    to load the Magik script *start_robot_remote_cli.magik*, which starts 
+	remote_cli. 
+*   for startup images, the image command line option *-run_script* is used to 
+    load the script *start_robot_remote_cli.script*, which adds a 
+	startup_procedur to start the remote_cli as last startup action.
+	
+The following examples explains, how the start, test and stop of an image 
+works.
+
+### Example A - run tests in a closed image
+
+Precondition
+*   Alias *swaf* is defined in the products gis_alias file
+*   current working directory is *robotframework-magik*
+
+#### start the closed image with remote_cli
+
+```
+SET PATH=%PATH%;C:\Python-27
+python scripts\robot_start_magik_image.py --msf_startup e:\Smallworld\CST42\product swaf
+```
+
+*   The *swaf* image is running with a remote_cli, listening on port 14001.
+*   The gis buffer log-file *swaf-mmdd-hhmm-PID.log* and pid-file 
+    *14001.pid* is written to the current working directory.
+
+#### run example tests on the closed image
+
+```
+SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
+pybot examples
+```
+
+*   The [Robot Framework] test report *report.html* is written to the current 
+    working directory.
+
+#### stop the closed image
+
+```
+SET PATH=%PATH%;C:\Python-27
+python robot_stop_magik_image.py
+```
+
+*   The image is closed and the pid-file *14001.pid* is deleted.
+
+### Example B - run tests in a startup image
+
+Precondition
+*   Alias *cam_db_open_swaf* is defined in a separate gis_alias file
+*   current working directory is *robotframework-magik*
+
+#### start the startup image with remote_cli
+
+```
+SET PATH=%PATH%;C:\Python-27
+python scripts\robot_start_magik_image.py --aliasfile e:\test\gis_aliases 
+       --piddir e:\tmp\robot\pids --logdir e:\tmp\robot\logs 
+       --login root/  --cli_port 14003 --wait 10
+       e:\Smallworld\CST42\product cam_db_open_swaf
+```
+
+*   Now the cam_db_open_swaf image is running with a remote_cli, listening on 
+    port 14003 under user *root*.
+*   The gis buffer log-file *cam_db_open_swaf image-mmdd-hhmm-PID.log* is 
+    written to *e:\tmp\robot\logs *.
+*	The pid-file *14003.pid* is written to *e:\tmp\robot\pids*
+*   The start process has wait *10 seconds* for checking the telnet connection.
+
+#### run example and self tests on the swaf image
+
+```
+SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
+pybot --include Keyword* --include Example* --variable CLI_PORT:14003
+      --outputdir e:\tmp\robot\logs --xunitfile cbg_tests.xml 
+	  .\tests .\examples
+```
+
+*   The [Robot Framework] test report *report.html* is written to the 
+    *e:\tmp\robot\logs*
+*   Additionbal xml test report *cbg_tests.xml* is written
+*   Only tests with *Keyword* and *Example* tags are run.
+ 
+
+#### stop the swaf image
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+```
+SET PATH=%PATH%;C:\Python-27
+python robot_stop_magik_image.py --piddir e:\tmp\robot\pids --cli_port 14003
+```
+
+The image is closed and the pid-file *14003.pid* is deleted.
+
 
 
 [Smallcases GmbH]: http://www.smallcases.de
