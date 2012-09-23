@@ -49,7 +49,7 @@ Test keyword 'Prepare Magik Image'
     Prepare Magik Image
 	Write Magik Command   ${CLI_OBJ_HASH}
 	${out}=   Read Until Prompt
-	Should Match Regexp   ${out}   (?s)\\shash_table(\\d*).+MagikSF>
+	Should Match Regexp   ${out}   (?s)\\ssw:hash_table(\\d*).+MagikSF>
 	
 Test keyword 'Build Magik Object Expression'
     ${obj_exp}=   Build Magik Object Expression   bibo

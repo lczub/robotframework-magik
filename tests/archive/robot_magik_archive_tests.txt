@@ -1,0 +1,58 @@
+#  Copyright 2012 Luiko Czub, Smallcases GmbH
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+*** Settings ***
+Library         OperatingSystem
+Documentation   Test content of extracted archive Robot Framework Magik
+Force Tags   ArchiveTest
+
+*** Variables ***
+${ROBOT_MAGIK_DIR}=    ${CURDIR}/../..
+
+*** Test Cases ***
+Test robot magik info files exist in main directory
+    [Template]    File Should Exist
+	${ROBOT_MAGIK_DIR}/README.md
+	${ROBOT_MAGIK_DIR}/LICENSE-2.0.txt
+	
+Test robot magik documentation files exist in doc directory
+    [Template]    File Should Exist
+	${ROBOT_MAGIK_DIR}/doc/robot_magik_base.html
+	
+Test robot magik keyword definitions exist in resources directory
+    [Template]    File Should Exist
+	${ROBOT_MAGIK_DIR}/resources/robot_magik_base.txt
+	
+Test robot magik start and stop scripts exist in scripts directory
+    [Template]    File Should Exist
+	${ROBOT_MAGIK_DIR}/scripts/robot_remote_cli.magik
+	${ROBOT_MAGIK_DIR}/scripts/start_robot_remote_cli.magik
+	${ROBOT_MAGIK_DIR}/scripts/start_robot_remote_cli.script
+	${ROBOT_MAGIK_DIR}/scripts/robot_start_magik_image.py
+	${ROBOT_MAGIK_DIR}/scripts/robot_stop_magik_image.py
+	
+Test robot magik self tests exist in tests directory
+    [Template]    File Should Exist
+	${ROBOT_MAGIK_DIR}/tests/keywords/robot_magik_base_tests.txt
+	${ROBOT_MAGIK_DIR}/tests/archive/robot_magik_archive_tests.txt
+	
+Test robot magik examples exist in examples directory
+    [Template]    File Should Exist
+	${ROBOT_MAGIK_DIR}/examples/coordinate_tests.txt
+	
+Test file 'MANIFEST' not exist
+    File Should Not Exist    ${ROBOT_MAGIK_DIR}/MANIFEST
+	
+Test directory '.git' not exist
+    Directory Should Not Exist    ${ROBOT_MAGIK_DIR}/.git
