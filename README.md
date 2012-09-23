@@ -8,14 +8,14 @@ Introduction
 ------------
 
 Provides [Robot Framework] high level keywords for automated testing 
-[Smallworld Magik] images and Python scripst to start and stop Smallworld 
+[Smallworld Magik] images and Python scripts to start and stop Smallworld 
 Images with a remote_cli.
 
-The Robot Magik keywords uses the [TelnetLibrary] to send commands to Magik 
-images and read there response. 
+The Robot Magik keywords *robot_magik_base.txt* uses the [TelnetLibrary] to send
+commands to Magik images and read there response. 
 *   Precondition is, that the Magik image must have started a remote_cli.
-*   Details, how a remote_cli could be started manually and which keywords 
-    exists, see [Keyword Documentation].
+*   Details, how to start a remote_cli manually and which keywords exists, see 
+    [Keyword Documentation].
 *   Use the Python script *scripts/robot_start_magik_image.py* to start 
     automatically an image with a remote_cli
 
@@ -42,7 +42,7 @@ doc/
 *   Documentation for Robot Framework Magik keywords
 
 tests/
-*   Testsuite for Robot Framework Magik keywords
+*   Test suites for Robot Framework Magik keywords
 
 examples/
 *   Examples, how Robot Framework Magik keywords could be used for automated 
@@ -51,7 +51,7 @@ examples/
 Download
 --------
 
-see latest [tag zip or tar ball]
+see [downloads] or latest [tag zip or tar ball]
 
 Tutorial
 --------
@@ -92,8 +92,8 @@ SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
 pybot examples
 ```
 
-*   The [Robot Framework] test report *report.html* is written to the current 
-    working directory.
+*   The [Robot Framework] test reports are is written into the current working 
+    directory.
 
 #### stop the closed image
 
@@ -127,7 +127,7 @@ python scripts\robot_start_magik_image.py --aliasfile e:\test\gis_aliases
 *	The pid-file *14003.pid* is written to *e:\tmp\robot\pids*
 *   The start process has wait *10 seconds* for checking the telnet connection.
 
-#### run example and self tests on the swaf image
+#### run example and self tests on the startup image
 
 ```
 SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
@@ -136,14 +136,13 @@ pybot --include Keyword* --include Example* --variable CLI_PORT:14003
 	  .\tests .\examples
 ```
 
-*   The [Robot Framework] test report *report.html* is written to the 
-    *e:\tmp\robot\logs*
-*   Additionbal xml test report *cbg_tests.xml* is written
+*   The [Robot Framework] test reports are written into *e:\tmp\robot\logs*
+*   Additional XUnit test report *cbg_tests.xml* is written, which can be used 
+    as input for tools that process XUnit data (like CI Server Jenkins).
 *   Only tests with *Keyword* and *Example* tags are run.
  
 
-#### stop the swaf image
-12345678901234567890123456789012345678901234567890123456789012345678901234567890
+#### stop the startup image
 
 ```
 SET PATH=%PATH%;C:\Python-27
@@ -161,3 +160,4 @@ The image is closed and the pid-file *14003.pid* is deleted.
 [TelnetLibrary]: http://code.google.com/p/robotframework/wiki/TelnetLibrary
 [Keyword Documentation]: http://lczub.github.com/robotframework-magik/doc/robot_magik_base.html
 [tag zip or tar ball]: https://github.com/lczub/robotframework-magik/tags
+[downloads]: https://github.com/lczub/robotframework-magik/downloads
