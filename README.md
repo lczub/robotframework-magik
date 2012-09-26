@@ -83,7 +83,7 @@ python scripts\robot_start_magik_image.py --msf_startup e:\Smallworld\CST42\prod
 
 *   The *swaf* image is running with a remote_cli, listening on port 14001.
 *   The gis buffer log-file *swaf-mmdd-hhmm-PID.log* and pid-file 
-    *14001.pid* is written to the current working directory.
+    *14001.pid* are written to the users temp directory.
 
 #### run example tests on the closed image
 
@@ -92,7 +92,7 @@ SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
 pybot examples
 ```
 
-*   The [Robot Framework] test reports are is written into the current working 
+*   The [Robot Framework] test reports are written into the current working 
     directory.
 
 #### stop the closed image
