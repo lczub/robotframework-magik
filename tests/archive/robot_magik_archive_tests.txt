@@ -33,6 +33,7 @@ Test robot magik documentation files exist in doc directory
 Test robot magik keyword definitions exist in resources directory
     [Template]    File Should Exist
 	${ROBOT_MAGIK_DIR}/resources/robot_magik_base.txt
+	${ROBOT_MAGIK_DIR}/resources/robot_magik_dsview.txt
 	
 Test robot magik start and stop scripts exist in scripts directory
     [Template]    File Should Exist
@@ -45,11 +46,13 @@ Test robot magik start and stop scripts exist in scripts directory
 Test robot magik self tests exist in tests directory
     [Template]    File Should Exist
 	${ROBOT_MAGIK_DIR}/tests/keywords/robot_magik_base_tests.txt
+	${ROBOT_MAGIK_DIR}/tests/keywords/robot_magik_dsview_tests.txt
 	${ROBOT_MAGIK_DIR}/tests/archive/robot_magik_archive_tests.txt
 	
 Test robot magik examples exist in examples directory
     [Template]    File Should Exist
 	${ROBOT_MAGIK_DIR}/examples/coordinate_tests.txt
+	${ROBOT_MAGIK_DIR}/examples/cs_collection_tests.txt
 	
 Test file 'MANIFEST' not exist
     File Should Not Exist    ${ROBOT_MAGIK_DIR}/MANIFEST

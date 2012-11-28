@@ -153,6 +153,7 @@ Execute Magik Command
 	...
 	...   Fails, if the response include the string _traceback_.
     [Arguments]      ${magik_expression}
+    Log   ${magik_expression}
     Write Magik Command   ${magik_expression}
     ${out}=         Read Magik Output
     ${last_line}=   Get Line   ${out}   -1

@@ -17,7 +17,7 @@ Documentation   Test Robot Framework high level keywords for Smallworld Magik
 ...             Tests base connection to a smallworld swaf image with remote_cli via telnet
 Resource         ../../resources/robot_magik_base.txt
 Suite Teardown   Close All Connections
-Force Tags   KeywordTest
+Force Tags   KeywordTest   BaseTest
 
 *** Test Cases ***
 Test keyword 'Open Magik Connection'

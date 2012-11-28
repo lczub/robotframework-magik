@@ -1,0 +1,121 @@
+#  Copyright 2012 Luiko Czub, Smallcases GmbH
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+*** Settings ***
+Resource   robot_magik_base.txt
+Documentation   Robot Framework Magik keywords for testing Smallworld ds_views and ds_collections.
+...
+...   These keywords uses the [http://code.google.com/p/robotframework/wiki/TelnetLibrary|TelnetLibrary] to send commands to Magik images and read there response.
+...
+...   Details see [./robot_magik_base.html|robot_magik_base documentation]
+...             
+
+*** Variables ***
+${CLI_DSVIEW_NAME}=      gis
+
+*** Keywords ***
+
+Get DsView
+    [Documentation]   Returns expression for the ds_view DSVIEW_NAME
+	...
+	...   DSVIEW_NAME=ace|style will return the ace|style view
+	...   other DSVIEW_NAME will return the named dataset view
+	...   Default DSVIEW_NAME is ${CLI_DSVIEW_NAME}
+	...
+	...   Side effect: 
+	...   ds_view DSVIEW_NAME is stored inside the global ${CLI_OBJ_HASH} 
+	...   under the key OBJKEY. (Default = DSVIEW_NAME)
+    [Arguments]      ${dsview_name}=${CLI_DSVIEW_NAME}   ${objkey}=default
+	${objkey}   Set Variable If   '${objkey}'=='default'   ${dsview_name}   ${objkey}
+	${command}  Set Variable If   '${dsview_name}'=='ace' or '${dsview_name}'=='style'   ${dsview_name}_view   cached_dataset(:${dsview_name})
+	${dsview_expr}=   Store Magik Object   ${objkey}   gis_program_manager.${command}
+	[Return]   ${dsview_expr}
+	
+Rollback DsView
+    [Documentation]   Rollback changes on dsview DSVIEW_NAME
+    [Arguments]      ${dsview_name}=${CLI_DSVIEW_NAME}
+	${a_view}=   Get DsView   ${dsview_name}
+	Execute Magik Command   ${a_view}.rollback()
+	
+Get DsCollection
+    [Documentation]   Returns expression for the ds_collection DSCOLL_NAME
+	...
+	...   Search the collection inside the dsview DSVIEW_NAME
+	...   Default DSVIEW_NAME is ${CLI_DSVIEW_NAME}
+	...
+	...   Side effect:
+	...   ds_collection DSCOLL_NAME is stored inside the global ${CLI_OBJ_HASH} 
+	...   under the key OBJKEY. (Default = DSCOLL_NAME)
+	...
+	...   Precondition: 
+	...   'Get DsView' must be called one time before for DSVIEW_NAME, 
+	...   so that it is stored (known) inside the global ${CLI_OBJ_HASH}
+    [Arguments]      ${dscoll_name}   ${dsview_name}=${CLI_DSVIEW_NAME}   ${objkey}=default
+	${objkey}   Set Variable If   '${objkey}'=='default'   ${dscoll_name}   ${objkey}
+	${dsview_expr}=   Build Magik Object Expression   ${dsview_name}
+	${dscoll_expr}=   Store Magik Object   ${objkey}   ${dsview_expr}.collections[:${dscoll_name}]
+	[Return]   ${dscoll_expr}
+	
+Get SelectCollection
+    [Documentation]   Returns expression for selection of collection COLL_NAME with PREDICATE
+	...
+	...   Side effect:
+	...   select_collection COLL_NAME with PREDICATE is stored inside the global ${CLI_OBJ_HASH} 
+	...   under the key OBJKEY. (Default = COLL_NAME_s)
+	...
+	...   Precondtion: 
+	...   'Get DsCollection' or 'Get SelectCollection' must be called one time before for COLL_NAME, 
+	...   so that it is stored (known) inside the global ${CLI_OBJ_HASH}
+    [Arguments]      ${coll_name}   ${predicate}   ${objkey}=default
+	${objkey}   Set Variable If   '${objkey}'=='default'   ${coll_name}_s   ${objkey}
+	${coll_expr}=   Build Magik Object Expression   ${coll_name}
+	${coll_expr_s}=   Store Magik Object   ${objkey}   ${coll_expr}.select(${predicate})
+	[Return]   ${coll_expr_s}
+		
+Get Record
+	[Documentation]   Returns expression for record from collection COLL_NAME
+	...  
+	...   Selects first found record from COLL_NAME
+	...
+	...   Side effect:
+	...   the record is stored inside the global ${CLI_OBJ_HASH} 
+	...   under the key OBJKEY. (Default = a_rec)
+	...
+	...   Precondtion: 
+	...   'Get DsCollection' or 'Get SelectCollection' must be called one time before for COLL_NAME, 
+	...   so that it is stored (known) inside the global ${CLI_OBJ_HASH}
+    [Arguments]      ${coll_name}   ${objkey}=a_rec
+	${coll_expr}=   Build Magik Object Expression   ${coll_name}
+	${rec_expr}=   Store Magik Object   ${objkey}   ${coll_expr}.an_element()
+	[Return]   ${rec_expr}
+	
+Get Record With Predicate
+	[Documentation]   Returns expression for record from selection of collection COLL_NAME with PREDICATE
+	...
+	...   Side effect A:
+	...   Calls 'Get SelectCollection' to build the select_collection COLL_NAME with PREDICATE
+	...   This will stored it inside the global ${CLI_OBJ_HASH} with the default key (COLL_NAME_s)
+	...
+	...   Side effect B:
+	...   the record is stored inside the global ${CLI_OBJ_HASH} 
+	...   under the key OBJKEY. (Default = a_pred_rec)
+	...
+	...   Precondtion: 
+	...   'Get DsCollection' or 'Get SelectCollection' must be called one time before for COLL_NAME, 
+	...   so that it is stored (known) inside the global ${CLI_OBJ_HASH}
+    [Arguments]      ${coll_name}   ${predicate}   ${objkey}=a_pred_rec
+	${coll_expr}=   Get SelectCollection   ${coll_name}   ${predicate}
+	${rec_expr}=   Store Magik Object   ${objkey}   ${coll_expr}.an_element()
+	[Return]   ${rec_expr}
+

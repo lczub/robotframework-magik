@@ -17,7 +17,7 @@ Documentation   Test Smallworld Magik coordinates with RobotFramework
 Resource         ../resources/robot_magik_base.txt
 Suite Setup      Run Keywords   Open Magik Connection   Prepare Magik Image
 Suite Teardown   Run Keywords   Clean Magik Image       Close Magik Connection
-Force Tags   ExampleTest CoordinateTest
+Force Tags   ExampleTest   CoordinateTest
 
 *** Keywords ***
 Coordinate Distance Should Be
