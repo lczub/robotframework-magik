@@ -45,6 +45,16 @@ Test keyword 'Execute Magik Command'
     ${out}=   Execute Magik Command   3 - 2
     Should Be Equal As Integers   ${out}   1
 
+Test keyword 'Execute Magik Command' - should handle empty results
+	[TAGS]   NotReady
+    ${out}=   Execute Magik Command   write()
+    Should Be Equal   '${out}'   ''
+
+Test keyword 'Execute Magik Command' - should remove trailing spaces
+	[TAGS]   NotReady
+    ${out}=   Execute Magik Command   write("1 BigBird ")
+    Should Be Equal   '${out}'   '1 BigBird'
+
 Test keyword 'Prepare Magik Image'
     Prepare Magik Image
 	Write Magik Command   ${CLI_OBJ_HASH}
