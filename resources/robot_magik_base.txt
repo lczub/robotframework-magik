@@ -158,7 +158,8 @@ Execute Magik Command
     ${out}=         Read Magik Output
     ${count}=	Get Length   ${out}
     ${last_line}=   Run Keyword Unless   ${count}==0   Get Line   ${out}   -1
-    [Return]        ${last_line}
+    ${result}=   Run Keyword Unless   ${count}==0   Evaluate   '${last_line}'.rstrip()
+    [Return]        ${result}
 
 Build Magik Object Expression
     [Documentation]   Returns a Magik expression, which will return a Magik object from the global hash_table

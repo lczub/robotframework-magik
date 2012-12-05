@@ -53,7 +53,6 @@ Test keyword 'Execute Magik Command' - should handle empty results
     Should Be Equal   ${out}   ${none}
 
 Test keyword 'Execute Magik Command' - should remove trailing spaces
-	[TAGS]   NotReady
     ${out}=   Execute Magik Command   write("1 BigBird ")
     Should Contain   ${out}   1 BigBird
     Should Be Equal   '${out}'   '1 BigBird'
@@ -77,7 +76,8 @@ Test keyword 'Store Magik Object'
 Test keyword 'Get Magik Object'
    Execute Magik Command   ${CLI_OBJ_HASH}[:monster] << :no_bird
    ${obj}=   Get Magik Object   monster
-   Should Match Regexp  ${obj}   ^:no_bird\\s$
+   Should Be Equal  ${obj}   :no_bird
+   Should Match Regexp  ${obj}   ^:no_bird$
    
 Test keyword 'Clean Magik Image'
     Clean Magik Image

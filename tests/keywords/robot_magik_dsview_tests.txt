@@ -24,33 +24,33 @@ Force Tags   KeywordTest   DsViewTest
 Test keyword 'Get DsView' for ace view
     ${a_view}=   Get DsView   ace
     ${vname}=   Execute Magik Command   ${a_view}.name
-    Should Match Regexp   ${vname}   ^|ACE\\s$
+    Should Be Equal   ${vname}   :|ACE|
 
 Test keyword 'Get DsView' for style view
     ${a_view}=   Get DsView   style
     ${vname}=   Execute Magik Command   ${a_view}.name
-    Should Match Regexp   ${vname}   ^|Style|\\s$
+    Should Be Equal   ${vname}   :|Style|
 
 Test keyword 'Get DsView' for gis view
     ${a_view}=   Get DsView   gis
     ${vname}=   Execute Magik Command   ${a_view}.name
-    Should Match Regexp   ${vname}   ^:gis\\s$
+    Should Be Equal   ${vname}   :gis
 
 Test keyword 'Get DsView' for default view
     ${a_view}=   Get DsView
     ${vname}=   Execute Magik Command   ${a_view}.name
-    Should Match Regexp   ${vname}   ${CLI_DSVIEW_NAME}\\s$
+    Should Be Equal   ${vname}   :${CLI_DSVIEW_NAME}
 
 Test keyword 'Get DsView' with non default objkey
     ${objhash_expression}=   Get DsView   gis   BigBird
     Should Contain   ${objhash_expression}   BigBird
     ${vname}=   Execute Magik Command   ${objhash_expression}.name
-    Should Match Regexp   ${vname}   ^:gis\\s$
+    Should Be Equal   ${vname}   :gis
 
 Test keyword 'Get DsCollection' for sw_gis!ace collection
     ${a_coll}=   Get DsCollection   sw_gis!ace   ace
     ${cname}=   Execute Magik Command   ${a_coll}.name
-    Should Match Regexp   ${cname}   ^:sw_gis!ace\\s$
+    Should Be Equal   ${cname}   :sw_gis!ace
     ${ctype}=   Get Magik Object   sw_gis!ace
     Should Contain   ${ctype}   ds_collection
 	
@@ -58,7 +58,7 @@ Test keyword 'Get DsCollection' with non default objkey
     ${objhash_expression}=   Get DsCollection   sw_gis!ace   ace   BigBird
     Should Contain   ${objhash_expression}   BigBird
     ${cname}=   Execute Magik Command   ${objhash_expression}.name
-    Should Match Regexp   ${cname}   ^:sw_gis!ace\\s$
+    Should Be Equal   ${cname}   :sw_gis!ace
     ${ctype}=   Get Magik Object   BigBird
     Should Contain   ${ctype}   ds_collection
  
@@ -66,7 +66,7 @@ Test keyword 'Get SelectCollection' for sw_gis!ace collection
     ${objhash_expression}=   Get SelectCollection   sw_gis!ace   predicate.eq(:name, 'default')
     Should Contain   ${objhash_expression}   sw_gis!ace_s
     ${cname}=   Execute Magik Command   ${objhash_expression}.name
-    Should Match Regexp   ${cname}   ^:sw_gis!ace\\s$
+    Should Be Equal   ${cname}   :sw_gis!ace
     ${ctype}=   Get Magik Object   sw_gis!ace_s
     Should Contain   ${ctype}   select_collection
 	
@@ -74,7 +74,7 @@ Test keyword 'Get SelectCollection' with non default objkey
     ${objhash_expression}=   Get SelectCollection   sw_gis!ace   predicate.eq(:name, 'default')   BigBird
     Should Contain   ${objhash_expression}   BigBird
     ${cname}=   Execute Magik Command   ${objhash_expression}.name
-    Should Match Regexp   ${cname}   ^:sw_gis!ace\\s$
+    Should Be Equal   ${cname}   :sw_gis!ace
     ${ctype}=   Get Magik Object   BigBird
     Should Contain   ${ctype}   select_collection
  
@@ -91,8 +91,8 @@ Test keyword 'Get Record' with non default objkey
 	
 Test keyword 'Get Record With Predicate' for sw_gis!ace collection
     ${special_ace}=   Get Record With Predicate   sw_gis!ace   predicate.eq(:name, 'default')
-    ${special_ace_name}=   Execute Magik Command   ${special_ace}.name
-    Should Contain   ${special_ace_name}   Default
+    ${special_ace_name}=   Execute Magik Command   write(${special_ace}.name)
+    Should Be Equal   ${special_ace_name}   Default
     ${scoll}=   Build Magik Object Expression   sw_gis!ace_s
     ${scoll_size}=   Execute Magik Command   ${scoll}.size
     Should Be Equal as Integers   1   ${scoll_size}
@@ -101,8 +101,8 @@ Test keyword 'Get Record With Predicate' with non default objkey
     Store Magik Object   sw_gis!ace_s   _unset   
     ${objhash_expression}=   Get Record With Predicate   sw_gis!ace   predicate.eq(:name, 'Default')   BigBird
     Should Contain   ${objhash_expression}   BigBird
-    ${special_ace_name}=   Execute Magik Command   ${objhash_expression}.name
-    Should Contain   ${special_ace_name}   Default
+    ${special_ace_name}=   Execute Magik Command   write(${objhash_expression}.name)
+    Should Be Equal   ${special_ace_name}   Default
     ${scoll}=   Build Magik Object Expression   sw_gis!ace_s
     ${scoll_size}=   Execute Magik Command   ${scoll}.size
     Should Be Equal as Integers   1   ${scoll_size}
