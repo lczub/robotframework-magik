@@ -156,7 +156,8 @@ Execute Magik Command
     Log   ${magik_expression}
     Write Magik Command   ${magik_expression}
     ${out}=         Read Magik Output
-    ${last_line}=   Get Line   ${out}   -1
+    ${count}=	Get Length   ${out}
+    ${last_line}=   Run Keyword Unless   ${count}==0   Get Line   ${out}   -1
     [Return]        ${last_line}
 
 Build Magik Object Expression

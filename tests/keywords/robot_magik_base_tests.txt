@@ -46,13 +46,16 @@ Test keyword 'Execute Magik Command'
     Should Be Equal As Integers   ${out}   1
 
 Test keyword 'Execute Magik Command' - should handle empty results
-	[TAGS]   NotReady
-    ${out}=   Execute Magik Command   write()
+    Write Magik Command   write()
+    ${out}=   Read Magik Output
     Should Be Equal   '${out}'   ''
+    ${out}=   Execute Magik Command   write()
+    Should Be Equal   ${out}   ${none}
 
 Test keyword 'Execute Magik Command' - should remove trailing spaces
 	[TAGS]   NotReady
     ${out}=   Execute Magik Command   write("1 BigBird ")
+    Should Contain   ${out}   1 BigBird
     Should Be Equal   '${out}'   '1 BigBird'
 
 Test keyword 'Prepare Magik Image'
