@@ -39,6 +39,16 @@ Test keyword 'Read Magik Output'
     Write Bare   1.as_error()\n$\n
     Run Keyword And Expect Error   *traceback*   Read Magik Output
 	
+Test keyword 'Read Magik Output' - should accept method names with substring traceback
+    Write Magik Command   write("Defining method short_traceback_text() in SmallBird")
+    Read Magik Output
+
+Test keyword 'Read Magik Output' - should search parser_error
+    Write Magik Command   write("Defining method short_parser_error() in SmallBird")
+    Read Magik Output
+    Write Magik Command   :BigBird_:SmallBird
+    Run Keyword And Expect Error   *parser_error*   Read Magik Output
+
 Test keyword 'Execute Magik Command'
     ${out}=   Execute Magik Command   write("1 erwin", %newline, "2 ulf", %newline, "3 hein")
     Should Be Equal As Strings   ${out}   3 hein

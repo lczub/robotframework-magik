@@ -102,9 +102,10 @@ Write Magik Command
 Read Magik Output
     [Documentation]   Returns all output lines between the last Magik command and next prompt 
 	...
-	...   Fails, if these lines include the string _traceback_.
+	...   Fails, if these lines include the strings _traceback:_ or _(parser_error)_.
     ${out_orig}=   Read until prompt
-    Should Not Match Regexp   ${out_orig}   traceback
+    Should Not Contain   ${out_orig}   traceback:
+    Should Not Contain   ${out_orig}   (parser_error)
     ${match}   ${out}=   Should Match Regexp   ${out_orig}   (?s)\\s(.*)\\s\\S+:\\d+:MagikSF>
     [Return]   ${out}
 
@@ -151,7 +152,7 @@ Close Magik Connection
 Execute Magik Command
     [Documentation]   Sends a Magik command to remote_cli and returns the last line from the Magik response
 	...
-	...   Fails, if the response include the string _traceback_.
+	...   Fails, if the response include the strings _traceback:_ or _(parser_error)_.
     [Arguments]      ${magik_expression}
     Log   ${magik_expression}
     Write Magik Command   ${magik_expression}
