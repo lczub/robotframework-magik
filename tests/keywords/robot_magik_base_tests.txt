@@ -49,6 +49,16 @@ Test keyword 'Read Magik Output' - should search parser_error
     Write Magik Command   :BigBird_:SmallBird
     Run Keyword And Expect Error   *parser_error*   Read Magik Output
 
+Test keyword 'Read Magik Output' - should get an optinal regular expression argument error_regexp
+    Write Magik Command   write("a BigBird is not small")
+    Read Magik Output
+    Write Magik Command   write("a_BigBird is not small")
+    Run Keyword And Expect Error   *BigBird*   Read Magik Output   .*[B|b]ird
+    Write Magik Command   write("a traceback: is not small")
+    Run Keyword And Expect Error   *traceback*   Read Magik Output   .*[B|b]ird
+    Write Magik Command   write("a (parser_error) is not small")
+    Run Keyword And Expect Error   *parser_error*   Read Magik Output   .*[B|b]ird
+
 Test keyword 'Execute Magik Command'
     ${out}=   Execute Magik Command   write("1 erwin", %newline, "2 ulf", %newline, "3 hein")
     Should Be Equal As Strings   ${out}   3 hein
@@ -66,6 +76,12 @@ Test keyword 'Execute Magik Command' - should remove trailing spaces
     ${out}=   Execute Magik Command   write("1 BigBird ")
     Should Contain   ${out}   1 BigBird
     Should Be Equal   '${out}'   '1 BigBird'
+
+Test keyword 'Execute Magik Output' - should get an optinal regular expression argument error_regexp
+    Execute Magik Command   write("a BigBird is not small")
+    Execute Magik Command   write("a_BigBird is not small")
+    Run Keyword And Expect Error   *BigBird*   Execute Magik Command   write("a_BigBird is not small")   .*[B|b]ird
+
 
 Test keyword 'Prepare Magik Image'
     Prepare Magik Image

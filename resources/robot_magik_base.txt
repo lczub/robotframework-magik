@@ -102,10 +102,12 @@ Write Magik Command
 Read Magik Output
     [Documentation]   Returns all output lines between the last Magik command and next prompt 
 	...
-	...   Fails, if these lines include the strings _traceback:_ or _(parser_error)_.
+	...   Fails, if these lines include the strings *traceback:* or *(parser_error)* or
+	...   the optional regular expression *error_regexp*
+    [Arguments]      ${error_regexp}=
     ${out_orig}=   Read until prompt
-    Should Not Contain   ${out_orig}   traceback:
-    Should Not Contain   ${out_orig}   (parser_error)
+    Should Not Match Regexp   ${out_orig}   .*traceback:|.*\\(parser_error\\)
+    Run Keyword If   '${error_regexp}'!=''   Should Not Match Regexp   ${out_orig}   ${error_regexp}
     ${match}   ${out}=   Should Match Regexp   ${out_orig}   (?s)\\s(.*)\\s\\S+:\\d+:MagikSF>
     [Return]   ${out}
 
@@ -152,11 +154,12 @@ Close Magik Connection
 Execute Magik Command
     [Documentation]   Sends a Magik command to remote_cli and returns the last line from the Magik response
 	...
-	...   Fails, if the response include the strings _traceback:_ or _(parser_error)_.
-    [Arguments]      ${magik_expression}
+	...   Fails, if these lines include the strings *traceback:* or *(parser_error)* or
+	...   the optional regular expression *error_regexp*
+    [Arguments]      ${magik_expression}   ${error_regexp}=
     Log   ${magik_expression}
     Write Magik Command   ${magik_expression}
-    ${out}=         Read Magik Output
+    ${out}=         Read Magik Output   ${error_regexp}
     ${count}=	Get Length   ${out}
     ${last_line}=   Run Keyword Unless   ${count}==0   Get Line   ${out}   -1
     ${result}=   Run Keyword Unless   ${count}==0   Evaluate   '${last_line}'.rstrip()
