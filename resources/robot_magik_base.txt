@@ -59,6 +59,10 @@ Documentation   [http://code.google.com/p/robotframework|Robot Framework] high l
 ...   Definition and cleaning of this global hash_table see `Prepare Magik Image` and `Clean Magik Image`.
 ...
 ...   Tests should use `Execute Magik Command` to send a Magik expression and read the response.
+...
+...   == Additional keyword definitions ==
+...
+...   - keywords for testing Smallworld ds_views, ds_collections and rwo records see [./robot_magik_dsview.html|robot_magik_dsview]
 
 *** Variables ***
 ${CLI_HOST}=      localhost
@@ -103,7 +107,7 @@ Read Magik Output
     [Documentation]   Returns all output lines between the last Magik command and next prompt 
 	...
 	...   Fails, if these lines include the strings *traceback:* or *(parser_error)* or
-	...   the optional regular expression *error_regexp*
+	...   the optional regular expression _error_regexp_
     [Arguments]      ${error_regexp}=
     ${out_orig}=   Read until prompt
     Should Not Match Regexp   ${out_orig}   .*traceback:|.*\\(parser_error\\)
@@ -155,7 +159,7 @@ Execute Magik Command
     [Documentation]   Sends a Magik command to remote_cli and returns the last line from the Magik response
 	...
 	...   Fails, if these lines include the strings *traceback:* or *(parser_error)* or
-	...   the optional regular expression *error_regexp*
+	...   the optional regular expression _error_regexp_
     [Arguments]      ${magik_expression}   ${error_regexp}=
     Log   ${magik_expression}
     Write Magik Command   ${magik_expression}

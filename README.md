@@ -15,9 +15,12 @@ The Robot Magik keywords *robot_magik_base.txt* uses the [TelnetLibrary] to send
 commands to Magik images and read there response. 
 *   Precondition is, that the Magik image must have started a remote_cli.
 *   Details, how to start a remote_cli manually and which keywords exists, see 
-    [Keyword Documentation].
+    [Keyword Documentation robot_magik_base].
 *   Use the Python script *scripts/robot_start_magik_image.py* to start 
     automatically an image with a remote_cli
+
+The Robot Magik keywords *robot_magik_dsview.txt* defines additional keywords for testing Smallworld ds_views, ds_collections and rwo records.
+*   see [Keyword Documentation robot_magik_dsview].
 
 The Python script *robot_start_magik_image.py*
 *   starts a Smallworld Magik image via the gis.exe launcher program on Windows
@@ -89,9 +92,10 @@ python scripts\robot_start_magik_image.py --msf_startup e:\Smallworld\CST42\prod
 
 ```
 SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
-pybot examples
+pybot --exclude DsView* examples
 ```
 
+*   run all _Non DsView_ example tests - see *[TAGS]* label inside the test definition files
 *   The [Robot Framework] test reports are written into the current working 
     directory.
 
@@ -158,6 +162,7 @@ The image is closed and the pid-file *14003.pid* is deleted.
 [Robot Framework]: http://code.google.com/p/robotframework
 [Smallworld Magik]: https://en.wikipedia.org/wiki/Magik_%28programming_language%29
 [TelnetLibrary]: http://code.google.com/p/robotframework/wiki/TelnetLibrary
-[Keyword Documentation]: http://lczub.github.com/robotframework-magik/doc/robot_magik_base.html
+[Keyword Documentation robot_magik_base]: http://lczub.github.com/robotframework-magik/doc/robot_magik_base.html
+[Keyword Documentation robot_magik_dsview]: http://lczub.github.com/robotframework-magik/doc/robot_magik_dsview.html
 [tag zip or tar ball]: https://github.com/lczub/robotframework-magik/tags
 [downloads]: https://github.com/lczub/robotframework-magik/downloads
