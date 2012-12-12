@@ -54,7 +54,8 @@ examples/
 Download
 --------
 
-see [downloads] or latest [tag zip or tar ball]
+download current [master as zip] or latest [tag zip or tar ball]
+* Attention: the tags are listed in an alphabetic order and not after the date!
 
 Tutorial
 --------
@@ -165,4 +166,4 @@ The image is closed and the pid-file *14003.pid* is deleted.
 [Keyword Documentation robot_magik_base]: http://lczub.github.com/robotframework-magik/doc/robot_magik_base.html
 [Keyword Documentation robot_magik_dsview]: http://lczub.github.com/robotframework-magik/doc/robot_magik_dsview.html
 [tag zip or tar ball]: https://github.com/lczub/robotframework-magik/tags
-[downloads]: https://github.com/lczub/robotframework-magik/downloads
+[master as zip]: https://github.com/lczub/robotframework-magik/archive/master.zip
