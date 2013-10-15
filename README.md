@@ -54,7 +54,7 @@ examples/
 Download
 --------
 
-download current [master as zip] or latest [tag zip or tar ball]
+download current [master as zip] or latest [releases]
 * Attention: the tags are listed in an alphabetic order and not after the date!
 
 Tutorial
@@ -165,5 +165,5 @@ The image is closed and the pid-file *14003.pid* is deleted.
 [TelnetLibrary]: http://code.google.com/p/robotframework/wiki/TelnetLibrary
 [Keyword Documentation robot_magik_base]: http://lczub.github.com/robotframework-magik/doc/robot_magik_base.html
 [Keyword Documentation robot_magik_dsview]: http://lczub.github.com/robotframework-magik/doc/robot_magik_dsview.html
-[tag zip or tar ball]: https://github.com/lczub/robotframework-magik/tags
+[releases]: https://github.com/lczub/robotframework-magik/releases
 [master as zip]: https://github.com/lczub/robotframework-magik/archive/master.zip
