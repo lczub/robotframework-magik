@@ -110,11 +110,17 @@ Test keyword 'Clean Magik Image'
 	Write Magik Command   ${CLI_OBJ_HASH}
 	${out}=   Read Until Prompt
 	Should Match Regexp   ${out}   (?s) unset.+MagikSF>
-	
+   
+
+issue-009 Execute Magik Command - should handle strings with \n \t \f
+	[documentation]   problems with strings including '\\n', '\\t' or '\\f'
+    ${out}=   Execute Magik Command   write("12\\t23\\\\45\\n78\\f90")
+    Should Be Equal As Strings   ${out}   12\\t23\\\\45\\n78\\f90
+
+# ATTENTION : insert new test above this line
+#             after next test, the connection is lost
 Test keyword 'Close Magik Connection'
 	${out}=   Close Magik Connection
 	Should Match Regexp   ${out}   \\s
 	Run Keyword And Expect Error   EOFError: telnet connection closed   Read Magik Output
 	
-   
-

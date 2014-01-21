@@ -63,6 +63,11 @@ Documentation   [http://code.google.com/p/robotframework|Robot Framework] high l
 ...   == Additional keyword definitions ==
 ...
 ...   - keywords for testing Smallworld ds_views, ds_collections and rwo records see [./robot_magik_dsview.html|robot_magik_dsview]
+...
+...   == Requirements ==
+...   Robot Framework Version >= 2.8.2 is required, cause `Execute Magik Command` uses the String library keyword
+...   *Remove String Using Regexp* from 
+	
 
 *** Variables ***
 ${CLI_HOST}=      localhost
@@ -160,13 +165,14 @@ Execute Magik Command
 	...
 	...   Fails, if these lines include the strings *traceback:* or *(parser_error)* or
 	...   the optional regular expression _error_regexp_
+	...
     [Arguments]      ${magik_expression}   ${error_regexp}=
     Log   ${magik_expression}
     Write Magik Command   ${magik_expression}
     ${out}=         Read Magik Output   ${error_regexp}
     ${count}=	Get Length   ${out}
     ${last_line}=   Run Keyword Unless   ${count}==0   Get Line   ${out}   -1
-    ${result}=   Run Keyword Unless   ${count}==0   Evaluate   '${last_line}'.rstrip()
+    ${result}=   Run Keyword Unless   ${count}==0   Remove String Using Regexp    ${last_line}   \\s*$
     [Return]        ${result}
 
 Build Magik Object Expression
