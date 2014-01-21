@@ -202,7 +202,14 @@ Get Magik Object
 	${obj_expression}=   Build Magik Object Expression   ${obj_name}
 	${out}=   Execute Magik Command   ${obj_expression}
 	[Return]   ${out}
-		
+	
+Get Magik Environment Variable		
+    [Documentation]   Returns value of the environment variable _env_name_
+	...
+	...   It's the value, as it is known inside the Magik Image  
+    [Arguments]      ${env_name}
+	${out}=   Execute Magik Command   system.getenv("${env_name}")
+	[Return]   ${out}
 	
 	
 

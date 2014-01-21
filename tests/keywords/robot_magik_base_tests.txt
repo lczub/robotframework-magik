@@ -85,13 +85,13 @@ Test keyword 'Execute Magik Output' - should get an optinal regular expression a
 
 Test keyword 'Prepare Magik Image'
     Prepare Magik Image
-	Write Magik Command   ${CLI_OBJ_HASH}
-	${out}=   Read Until Prompt
-	Should Match Regexp   ${out}   (?s)\\ssw:hash_table(\\d*).+MagikSF>
+    Write Magik Command   ${CLI_OBJ_HASH}
+    ${out}=   Read Until Prompt
+    Should Match Regexp   ${out}   (?s)\\ssw:hash_table(\\d*).+MagikSF>
 	
 Test keyword 'Build Magik Object Expression'
     ${obj_exp}=   Build Magik Object Expression   bibo
-	Should Be Equal As Strings  ${obj_exp}   ${CLI_OBJ_HASH}[:bibo]
+    Should Be Equal As Strings  ${obj_exp}   ${CLI_OBJ_HASH}[:bibo]
 	
 Test keyword 'Store Magik Object'
    ${obj_exp}=   Store Magik Object   ernie   2 * 11
@@ -104,23 +104,40 @@ Test keyword 'Get Magik Object'
    ${obj}=   Get Magik Object   monster
    Should Be Equal  ${obj}   :no_bird
    Should Match Regexp  ${obj}   ^:no_bird$
+	
+Test keyword 'Get Magik Object'
+   Execute Magik Command   ${CLI_OBJ_HASH}[:monster] << :no_bird
+   ${obj}=   Get Magik Object   monster
+   Should Be Equal  ${obj}   :no_bird
+   Should Match Regexp  ${obj}   ^:no_bird$
    
+Test keyword 'Get Magik Environment Variable'
+   Execute Magik Command   system.putenv("ROBOT_MAGIK_KWTEST", "")
+   ${out}=   Get Magik Environment Variable   ROBOT_MAGIK_KWTEST
+   Should Be Equal As Strings   '${out}'   'unset'   Falscher Wert fuer unbestimmte Environment Variable
+   Execute Magik Command   system.putenv("ROBOT_MAGIK_KWTEST", "A Text 12")
+   ${out}=   Get Magik Environment Variable   ROBOT_MAGIK_KWTEST
+   Should Be Equal As Strings   ${out}   "A Text 12"
+   Execute Magik Command   system.putenv("ROBOT_MAGIK_KWTEST", "\\\\hostname\\file.txt")
+   ${out}=   Get Magik Environment Variable   ROBOT_MAGIK_KWTEST
+   Should Be Equal As Strings   ${out}   "\\\\hostname\\file.txt"
+
+	
+bug-009 Execute Magik Command - should handle strings with \n \t \f
+    [documentation]   problems with strings including '\\n', '\\t' or '\\f'
+    ${out}=   Execute Magik Command   write("12\\t23\\\\45\\n78\\f90")
+    Should Be Equal As Strings   ${out}   12\\t23\\\\45\\n78\\f90
+
+# ATTENTION : insert new test above this line
+#             the following tests handle the image cleanup and connection closure
 Test keyword 'Clean Magik Image'
     Clean Magik Image
 	Write Magik Command   ${CLI_OBJ_HASH}
 	${out}=   Read Until Prompt
 	Should Match Regexp   ${out}   (?s) unset.+MagikSF>
    
-
-issue-009 Execute Magik Command - should handle strings with \n \t \f
-	[documentation]   problems with strings including '\\n', '\\t' or '\\f'
-    ${out}=   Execute Magik Command   write("12\\t23\\\\45\\n78\\f90")
-    Should Be Equal As Strings   ${out}   12\\t23\\\\45\\n78\\f90
-
-# ATTENTION : insert new test above this line
-#             after next test, the connection is lost
 Test keyword 'Close Magik Connection'
 	${out}=   Close Magik Connection
 	Should Match Regexp   ${out}   \\s
-	Run Keyword And Expect Error   EOFError: telnet connection closed   Read Magik Output
+	Run Keyword And Expect Error   No connection open   Read Magik Output
 	
