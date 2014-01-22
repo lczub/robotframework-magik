@@ -1,4 +1,4 @@
-#  Copyright 2012 Luiko Czub, Smallcases GmbH
+#  Copyright 2012-2014 Luiko Czub, Smallcases GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ Test robot magik info files exist in main directory
     [Template]    File Should Exist
 	${ROBOT_MAGIK_DIR}/README.md
 	${ROBOT_MAGIK_DIR}/LICENSE-2.0.txt
+	${ROBOT_MAGIK_DIR}/CHANGES.rst
 	
 Test robot magik documentation files exist in doc directory
     [Template]    File Should Exist
@@ -59,3 +60,7 @@ Test file 'MANIFEST' not exist
 	
 Test directory '.git' not exist
     Directory Should Not Exist    ${ROBOT_MAGIK_DIR}/.git
+	
+Test file 'VERSION.bat' not exist
+    File Should Not Exist    ${ROBOT_MAGIK_DIR}/VERSION.bat
+	

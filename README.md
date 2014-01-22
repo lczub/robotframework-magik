@@ -1,7 +1,7 @@
 Robot Framework Magik
 =====================
 
-Copyright 2012 Luiko Czub, [Smallcases GmbH]
+Copyright 2012-2014 Luiko Czub, [Smallcases GmbH]
 License [Apache License 2.0]
 
 Introduction
