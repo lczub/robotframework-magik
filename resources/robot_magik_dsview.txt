@@ -1,4 +1,4 @@
-#  Copyright 2012-2014 Luiko Czub, Smallcases GmbH
+#  Copyright 2012-2015 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 Resource   robot_magik_base.txt
 Documentation   Robot Framework Magik keywords for testing Smallworld ds_views, ds_collections and rwo records.
 ...
-...   These keywords uses the [http://code.google.com/p/robotframework/wiki/TelnetLibrary|TelnetLibrary] to send commands to Magik images and read there response.
+...   These keywords uses the [http://robotframework.org/robotframework/latest/libraries/Telnet.html|TelnetLibrary] to send commands to Magik images and read there response.
 ...
 ...   Details see [./robot_magik_base.html|robot_magik_base] documentation
 ...             

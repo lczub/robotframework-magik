@@ -1,7 +1,7 @@
 Robot Framework Magik
 =====================
 
-Copyright 2012-2014 Luiko Czub, [Smallcases GmbH]
+Copyright 2012-2015 Luiko Czub, [Smallcases Software GmbH]
 License [Apache License 2.0]
 
 Introduction
@@ -158,11 +158,11 @@ The image is closed and the pid-file *14003.pid* is deleted.
 
 
 
-[Smallcases GmbH]: http://www.smallcases.de
+[Smallcases Software GmbH]: http://www.smallcases.de
 [Apache License 2.0]: http://www.apache.org/licenses/LICENSE-2.0
-[Robot Framework]: http://code.google.com/p/robotframework
+[Robot Framework]: http://robotframework.org
 [Smallworld Magik]: https://en.wikipedia.org/wiki/Magik_%28programming_language%29
-[TelnetLibrary]: http://code.google.com/p/robotframework/wiki/TelnetLibrary
+[TelnetLibrary]: http://robotframework.org/robotframework/latest/libraries/Telnet.html
 [Keyword Documentation robot_magik_base]: http://lczub.github.com/robotframework-magik/doc/robot_magik_base.html
 [Keyword Documentation robot_magik_dsview]: http://lczub.github.com/robotframework-magik/doc/robot_magik_dsview.html
 [releases]: https://github.com/lczub/robotframework-magik/releases
