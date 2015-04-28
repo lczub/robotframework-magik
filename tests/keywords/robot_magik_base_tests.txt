@@ -123,12 +123,22 @@ Test keyword 'Get Magik Environment Variable'
     Should Be Equal As Strings    ${out}    "\\\\hostname\\file.txt"
 
 bug-009 Execute Magik Command - should handle strings with \n \t \f
-    [Documentation]    problems with strings including '\
-    ...    ', '\\t' or '\\f'
+    [Documentation]    problems with strings including '\ ', '\\t' or '\\f'
     ${out}=    Execute Magik Command    write("12\\t23\\\\45\\n78\\f90")
     Should Be Equal As Strings    ${out}    12\\t23\\\\45\\n78\\f90
     # ATTENTION : insert new test above this line
     #    the following tests handle the image cleanup and connection closure
+
+Test special characters
+    [Documentation]    This Test requires an image with :de_de as first entry in !current_languages!
+    ...
+    ...    For non german images exclude this test with pybot arg '--exclude LanguageDE'
+    [Tags]    LanguageDE
+    ${special}=    Set Variable    äöüßÄÖÜ
+    ${out}=    Execute Magik Command    write("${special}")
+    Should Be Equal As Strings    ${out}    ${special}
+    ${out}=    Execute Magik Command    message_handler(:gis_program_manager).text_for_message(:save_environment)
+    Should Contain    ${out}    Änderung
 
 Test keyword 'Clean Magik Image'
     Clean Magik Image

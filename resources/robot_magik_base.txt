@@ -74,6 +74,7 @@ ${CLI_PORT}       14001
 ${CLI_TIMEOUT}    3.0
 ${CLI_NEWLINE}    \n
 ${CLI_OBJ_HASH}    robot_objhash
+${CLI_ENCODING}    ISO-8859-1
 
 *** Keywords ***
 Open Magik Connection
@@ -85,8 +86,9 @@ Open Magik Connection
     ...    | ${CLI_HOST} | localhost | hostname or ip of machine, where the Magik images run |
     ...    | ${CLI_PORT} | 14001 | port, the Magik image remote_cli listens |
     ...    | ${CLI_TIMEOUT} | 3.0 | max. secs, tests should wait for a response from the Magik image |
-    Open Connection    ${CLI_HOST}    swimage    ${CLI_PORT}    ${CLI_TIMEOUT}    ${CLI_NEWLINE}    \\S+:\\d+:MagikSF>
-    ...    True
+    ...    | ${CLI_ENCODING} | ISO-8859-1 | used text encoding for communication with remote_cli |
+    Open Connection    ${CLI_HOST}    alias=swimage    port=${CLI_PORT}    timeout=${CLI_TIMEOUT}    newline=${CLI_NEWLINE}    prompt=\\S+:\\d+:MagikSF>
+    ...    prompt_is_regexp=True    encoding=${CLI_ENCODING}
     ${out}=    Read until prompt
     # LC 04.07.12: the prompt must be extended with a leading newline, otherwise tracebacks
     # will not be read completly. Reason is, that the traceback itself includes lines with
