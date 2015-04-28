@@ -13,54 +13,89 @@
 #  limitations under the License.
 
 *** Settings ***
-Library         OperatingSystem
-Documentation   Test content of extracted archive Robot Framework Magik
-Force Tags   ArchiveTest
+Documentation     Test content of extracted Robot Framework Magik archive
+Force Tags        ArchiveTest
+Library           OperatingSystem
+Library           String
 
 *** Variables ***
-${ROBOT_MAGIK_DIR}=    ${CURDIR}/../..
+${ROBOT_MAGIK_DIR}    ${CURDIR}/../..
+${ROBOT_MAGIK_COPYRIGHT}    Copyright*2015*Luiko Czub*Smallcases Software GmbH
+${ROBOT_MAGIK_LICENSE}    Apache License*2.0
 
 *** Test Cases ***
 Test robot magik info files exist in main directory
     [Template]    File Should Exist
-	${ROBOT_MAGIK_DIR}/README.md
-	${ROBOT_MAGIK_DIR}/LICENSE-2.0.txt
-	${ROBOT_MAGIK_DIR}/CHANGES.rst
-	
+    ${ROBOT_MAGIK_DIR}/README.md
+    ${ROBOT_MAGIK_DIR}/LICENSE-2.0.txt
+    ${ROBOT_MAGIK_DIR}/CHANGES.rst
+
 Test robot magik documentation files exist in doc directory
     [Template]    File Should Exist
-	${ROBOT_MAGIK_DIR}/doc/robot_magik_base.html
-	
+    ${ROBOT_MAGIK_DIR}/doc/robot_magik_base.html
+
 Test robot magik keyword definitions exist in resources directory
     [Template]    File Should Exist
-	${ROBOT_MAGIK_DIR}/resources/robot_magik_base.txt
-	${ROBOT_MAGIK_DIR}/resources/robot_magik_dsview.txt
-	
+    ${ROBOT_MAGIK_DIR}/resources/robot_magik_base.txt
+    ${ROBOT_MAGIK_DIR}/resources/robot_magik_dsview.txt
+
 Test robot magik start and stop scripts exist in scripts directory
     [Template]    File Should Exist
-	${ROBOT_MAGIK_DIR}/scripts/robot_remote_cli.magik
-	${ROBOT_MAGIK_DIR}/scripts/start_robot_remote_cli.magik
-	${ROBOT_MAGIK_DIR}/scripts/start_robot_remote_cli.script
-	${ROBOT_MAGIK_DIR}/scripts/robot_start_magik_image.py
-	${ROBOT_MAGIK_DIR}/scripts/robot_stop_magik_image.py
-	
+    ${ROBOT_MAGIK_DIR}/scripts/robot_remote_cli.magik
+    ${ROBOT_MAGIK_DIR}/scripts/start_robot_remote_cli.magik
+    ${ROBOT_MAGIK_DIR}/scripts/start_robot_remote_cli.script
+    ${ROBOT_MAGIK_DIR}/scripts/robot_start_magik_image.py
+    ${ROBOT_MAGIK_DIR}/scripts/robot_stop_magik_image.py
+
 Test robot magik self tests exist in tests directory
     [Template]    File Should Exist
-	${ROBOT_MAGIK_DIR}/tests/keywords/robot_magik_base_tests.txt
-	${ROBOT_MAGIK_DIR}/tests/keywords/robot_magik_dsview_tests.txt
-	${ROBOT_MAGIK_DIR}/tests/archive/robot_magik_archive_tests.txt
-	
+    ${ROBOT_MAGIK_DIR}/tests/keywords/robot_magik_base_tests.txt
+    ${ROBOT_MAGIK_DIR}/tests/keywords/robot_magik_dsview_tests.txt
+    ${ROBOT_MAGIK_DIR}/tests/archive/robot_magik_archive_tests.txt
+
 Test robot magik examples exist in examples directory
     [Template]    File Should Exist
-	${ROBOT_MAGIK_DIR}/examples/coordinate_tests.txt
-	${ROBOT_MAGIK_DIR}/examples/cs_collection_tests.txt
-	
+    ${ROBOT_MAGIK_DIR}/examples/coordinate_tests.txt
+    ${ROBOT_MAGIK_DIR}/examples/cs_collection_tests.txt
+
 Test file 'MANIFEST' not exist
     File Should Not Exist    ${ROBOT_MAGIK_DIR}/MANIFEST
-	
+
 Test directory '.git' not exist
     Directory Should Not Exist    ${ROBOT_MAGIK_DIR}/.git
-	
+
 Test file 'VERSION.bat' not exist
     File Should Not Exist    ${ROBOT_MAGIK_DIR}/VERSION.bat
-	
+
+Test robot magik resources includes copyright info
+    [Template]    Check Header Info for directory
+    ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_COPYRIGHT}
+    ${ROBOT_MAGIK_DIR}/tests/keywords    ${ROBOT_MAGIK_COPYRIGHT}
+    ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_COPYRIGHT}    \    2
+    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_COPYRIGHT}
+    ${ROBOT_MAGIK_DIR}    ${ROBOT_MAGIK_COPYRIGHT}    README.md
+    ${ROBOT_MAGIK_DIR}/scripts    ${ROBOT_MAGIK_COPYRIGHT}
+
+Test robot magik resources includes license info
+    [Template]    Check Header Info for directory
+    ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_LICENSE}
+    ${ROBOT_MAGIK_DIR}/tests/keywords    ${ROBOT_MAGIK_LICENSE}
+    ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_LICENSE}    \    2
+    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_LICENSE}
+    ${ROBOT_MAGIK_DIR}    ${ROBOT_MAGIK_LICENSE}    README.md    2
+    ${ROBOT_MAGIK_DIR}/scripts    ${ROBOT_MAGIK_LICENSE}
+
+*** Keywords ***
+Check Header Info for file
+    [Arguments]    ${file_path}    ${header_info}    ${expected_count}=1
+    Log    Suche '${header_info}'
+    ${info_lines}=    Grep File    ${file_path}    ${header_info}
+    Should Not Be Empty    ${info_lines}    Wrong or missing header info in ${file_path}
+    ${info_counts}=    Get Line Count    ${info_lines}
+    Should Be Equal As Integers    ${expected_count}    ${info_counts}    Unexpected number of header infos in ${file_path}
+
+Check Header Info for directory
+    [Arguments]    ${directory}    ${header_info}    ${file_pattern}=${None}    ${expected_count_per_file}=1
+    @{filenames}=    List Files In Directory    ${directory}    ${file_pattern}    True
+    :FOR    ${fname}    in    @{filenames}
+    \    Check Header Info for file    ${fname}    ${header_info}    ${expected_count_per_file}

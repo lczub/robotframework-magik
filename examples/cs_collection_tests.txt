@@ -13,24 +13,21 @@
 #  limitations under the License.
 
 *** Settings ***
-Documentation   Test Smallworld coordinate system collection with RobotFramework
-...   Uses dataset, defined in ${CLI_DSVIEW_NAME}
-Resource         ../resources/robot_magik_dsview.txt
-Suite Setup      Run Keywords   Open Magik Connection   Prepare Magik Image   Get DsView
-Suite Teardown   Run Keywords   Rollback DsView   Clean Magik Image   Close Magik Connection
-Force Tags   ExampleTest   CoordinateTest   DsViewTest 
+Documentation     Example - Test Smallworld coordinate system collection with RobotFramework
+...
+...               Uses dataset, defined in ${CLI_DSVIEW_NAME}
+Suite Setup       Run Keywords    Open Magik Connection    Prepare Magik Image    Get DsView
+Suite Teardown    Run Keywords    Rollback DsView    Clean Magik Image    Close Magik Connection
+Force Tags        ExampleTest    CoordinateTest    DsViewTest
+Resource          ../resources/robot_magik_dsview.txt
 
 *** Test Cases ***
 Test example - Get coordinate_system collection
-    ${coll_cs}=   Get DsCollection   sw_gis!coordinate_system
-	
+    ${coll_cs}=    Get DsCollection    sw_gis!coordinate_system
+
 Test example - Get coordinate_system record wgs84
-    ${a_cs_rec}=   Get Record With Predicate   sw_gis!coordinate_system   predicate.wild(:name, "*longlat_wgs84*")
-    ${cs_name}=   Execute Magik Command   ${a_cs_rec}.name
-    Should Contain   ${cs_name}   world_longlat_wgs84_degree
-    ${cs_id}=   Execute Magik Command   ${a_cs_rec}.abbrev
-    Should Contain   ${cs_id}   EPSG:4326
-	
-	
-
-
+    ${a_cs_rec}=    Get Record With Predicate    sw_gis!coordinate_system    predicate.wild(:name, "*longlat_wgs84*")
+    ${cs_name}=    Execute Magik Command    ${a_cs_rec}.name
+    Should Contain    ${cs_name}    world_longlat_wgs84_degree
+    ${cs_id}=    Execute Magik Command    ${a_cs_rec}.abbrev
+    Should Contain    ${cs_id}    EPSG:4326

@@ -13,131 +13,130 @@
 #  limitations under the License.
 
 *** Settings ***
-Documentation   Test Robot Framework high level keywords for Smallworld Magik
-...             Tests base connection to a smallworld swaf image with remote_cli via telnet
-Resource         ../../resources/robot_magik_base.txt
-Suite Teardown   Close All Connections
-Force Tags   KeywordTest   BaseTest
+Documentation     Test Robot Framework high level keywords for Smallworld Magik
+...
+...               Tests base connection to a smallworld swaf image with remote_cli via telnet
+Suite Teardown    Close All Connections
+Force Tags        KeywordTest    BaseTest
+Resource          ../../resources/robot_magik_base.txt
 
 *** Test Cases ***
 Test keyword 'Open Magik Connection'
-    ${out}=   Open Magik Connection
-    Should Match Regexp   ${out}   \\S+:\\d+:MagikSF>
+    ${out}=    Open Magik Connection
+    Should Match Regexp    ${out}    \\S+:\\d+:MagikSF>
 
 Test keyword 'Write Magik Command'
-    ${out}=   Write Magik Command   1 + 1
-    Should Be Equal   ${out}   ${none}
-    ${out}=   Read Until Prompt
-    Should Match Regexp   ${out}   \\s2 \\s\\S+:\\d+:MagikSF>
+    ${out}=    Write Magik Command    1 + 1
+    Should Be Equal    ${out}    ${none}
+    ${out}=    Read Until Prompt
+    Should Match Regexp    ${out}    \\s2 \\s\\S+:\\d+:MagikSF>
 
 Test keyword 'Read Magik Output'
-    Write Bare   write("1 ernie", %newline, "2 bert", %newline, "3 bibo")\n$\n
-    ${out}=   Read Magik Output
-    Should Match Regexp   ${out}   ^1 ernie\\s2 bert\\s3 bibo$
-    Write Bare   \n$\n
-    ${out}=   Read Magik Output
-    Write Bare   1.as_error()\n$\n
-    Run Keyword And Expect Error   *traceback*   Read Magik Output
-	
+    Write Bare    write("1 ernie", %newline, "2 bert", %newline, "3 bibo")\n$\n
+    ${out}=    Read Magik Output
+    Should Match Regexp    ${out}    ^1 ernie\\s2 bert\\s3 bibo$
+    Write Bare    \n$\n
+    ${out}=    Read Magik Output
+    Write Bare    1.as_error()\n$\n
+    Run Keyword And Expect Error    *traceback*    Read Magik Output
+
 Test keyword 'Read Magik Output' - should accept method names with substring traceback
-    Write Magik Command   write("Defining method short_traceback_text() in SmallBird")
+    Write Magik Command    write("Defining method short_traceback_text() in SmallBird")
     Read Magik Output
 
 Test keyword 'Read Magik Output' - should search parser_error
-    Write Magik Command   write("Defining method short_parser_error() in SmallBird")
+    Write Magik Command    write("Defining method short_parser_error() in SmallBird")
     Read Magik Output
-    Write Magik Command   :BigBird_:SmallBird
-    Run Keyword And Expect Error   *parser_error*   Read Magik Output
+    Write Magik Command    :BigBird_:SmallBird
+    Run Keyword And Expect Error    *parser_error*    Read Magik Output
 
 Test keyword 'Read Magik Output' - should get an optinal regular expression argument error_regexp
-    Write Magik Command   write("a BigBird is not small")
+    Write Magik Command    write("a BigBird is not small")
     Read Magik Output
-    Write Magik Command   write("a_BigBird is not small")
-    Run Keyword And Expect Error   *BigBird*   Read Magik Output   .*[B|b]ird
-    Write Magik Command   write("a traceback: is not small")
-    Run Keyword And Expect Error   *traceback*   Read Magik Output   .*[B|b]ird
-    Write Magik Command   write("a (parser_error) is not small")
-    Run Keyword And Expect Error   *parser_error*   Read Magik Output   .*[B|b]ird
+    Write Magik Command    write("a_BigBird is not small")
+    Run Keyword And Expect Error    *BigBird*    Read Magik Output    .*[B|b]ird
+    Write Magik Command    write("a traceback: is not small")
+    Run Keyword And Expect Error    *traceback*    Read Magik Output    .*[B|b]ird
+    Write Magik Command    write("a (parser_error) is not small")
+    Run Keyword And Expect Error    *parser_error*    Read Magik Output    .*[B|b]ird
 
 Test keyword 'Execute Magik Command'
-    ${out}=   Execute Magik Command   write("1 erwin", %newline, "2 ulf", %newline, "3 hein")
-    Should Be Equal As Strings   ${out}   3 hein
-    ${out}=   Execute Magik Command   3 - 2
-    Should Be Equal As Integers   ${out}   1
+    ${out}=    Execute Magik Command    write("1 erwin", %newline, "2 ulf", %newline, "3 hein")
+    Should Be Equal As Strings    ${out}    3 hein
+    ${out}=    Execute Magik Command    3 - 2
+    Should Be Equal As Integers    ${out}    1
 
 Test keyword 'Execute Magik Command' - should handle empty results
-    Write Magik Command   write()
-    ${out}=   Read Magik Output
-    Should Be Equal   '${out}'   ''
-    ${out}=   Execute Magik Command   write()
-    Should Be Equal   ${out}   ${none}
+    Write Magik Command    write()
+    ${out}=    Read Magik Output
+    Should Be Equal    '${out}'    ''
+    ${out}=    Execute Magik Command    write()
+    Should Be Equal    ${out}    ${none}
 
 Test keyword 'Execute Magik Command' - should remove trailing spaces
-    ${out}=   Execute Magik Command   write("1 BigBird ")
-    Should Contain   ${out}   1 BigBird
-    Should Be Equal   '${out}'   '1 BigBird'
+    ${out}=    Execute Magik Command    write("1 BigBird ")
+    Should Contain    ${out}    1 BigBird
+    Should Be Equal    '${out}'    '1 BigBird'
 
 Test keyword 'Execute Magik Output' - should get an optinal regular expression argument error_regexp
-    Execute Magik Command   write("a BigBird is not small")
-    Execute Magik Command   write("a_BigBird is not small")
-    Run Keyword And Expect Error   *BigBird*   Execute Magik Command   write("a_BigBird is not small")   .*[B|b]ird
-
+    Execute Magik Command    write("a BigBird is not small")
+    Execute Magik Command    write("a_BigBird is not small")
+    Run Keyword And Expect Error    *BigBird*    Execute Magik Command    write("a_BigBird is not small")    .*[B|b]ird
 
 Test keyword 'Prepare Magik Image'
     Prepare Magik Image
-    Write Magik Command   ${CLI_OBJ_HASH}
-    ${out}=   Read Until Prompt
-    Should Match Regexp   ${out}   (?s)\\ssw:hash_table(\\d*).+MagikSF>
-	
+    Write Magik Command    ${CLI_OBJ_HASH}
+    ${out}=    Read Until Prompt
+    Should Match Regexp    ${out}    (?s)\\ssw:hash_table(\\d*).+MagikSF>
+
 Test keyword 'Build Magik Object Expression'
-    ${obj_exp}=   Build Magik Object Expression   bibo
-    Should Be Equal As Strings  ${obj_exp}   ${CLI_OBJ_HASH}[:bibo]
-	
+    ${obj_exp}=    Build Magik Object Expression    bibo
+    Should Be Equal As Strings    ${obj_exp}    ${CLI_OBJ_HASH}[:bibo]
+
 Test keyword 'Store Magik Object'
-   ${obj_exp}=   Store Magik Object   ernie   2 * 11
-   Should Be Equal As Strings  ${obj_exp}   ${CLI_OBJ_HASH}[:ernie]
-   ${obj}=   Execute Magik Command   ${obj_exp}
-   Should Be Equal As Integers  ${obj}   22
-   
+    ${obj_exp}=    Store Magik Object    ernie    2 * 11
+    Should Be Equal As Strings    ${obj_exp}    ${CLI_OBJ_HASH}[:ernie]
+    ${obj}=    Execute Magik Command    ${obj_exp}
+    Should Be Equal As Integers    ${obj}    22
+
 Test keyword 'Get Magik Object'
-   Execute Magik Command   ${CLI_OBJ_HASH}[:monster] << :no_bird
-   ${obj}=   Get Magik Object   monster
-   Should Be Equal  ${obj}   :no_bird
-   Should Match Regexp  ${obj}   ^:no_bird$
-	
+    Execute Magik Command    ${CLI_OBJ_HASH}[:monster] << :no_bird
+    ${obj}=    Get Magik Object    monster
+    Should Be Equal    ${obj}    :no_bird
+    Should Match Regexp    ${obj}    ^:no_bird$
+
 Test keyword 'Get Magik Object'
-   Execute Magik Command   ${CLI_OBJ_HASH}[:monster] << :no_bird
-   ${obj}=   Get Magik Object   monster
-   Should Be Equal  ${obj}   :no_bird
-   Should Match Regexp  ${obj}   ^:no_bird$
-   
+    Execute Magik Command    ${CLI_OBJ_HASH}[:monster] << :no_bird
+    ${obj}=    Get Magik Object    monster
+    Should Be Equal    ${obj}    :no_bird
+    Should Match Regexp    ${obj}    ^:no_bird$
+
 Test keyword 'Get Magik Environment Variable'
-   Execute Magik Command   system.putenv("ROBOT_MAGIK_KWTEST", "")
-   ${out}=   Get Magik Environment Variable   ROBOT_MAGIK_KWTEST
-   Should Be Equal As Strings   '${out}'   'unset'   Falscher Wert fuer unbestimmte Environment Variable
-   Execute Magik Command   system.putenv("ROBOT_MAGIK_KWTEST", "A Text 12")
-   ${out}=   Get Magik Environment Variable   ROBOT_MAGIK_KWTEST
-   Should Be Equal As Strings   ${out}   "A Text 12"
-   Execute Magik Command   system.putenv("ROBOT_MAGIK_KWTEST", "\\\\hostname\\file.txt")
-   ${out}=   Get Magik Environment Variable   ROBOT_MAGIK_KWTEST
-   Should Be Equal As Strings   ${out}   "\\\\hostname\\file.txt"
+    Execute Magik Command    system.putenv("ROBOT_MAGIK_KWTEST", "")
+    ${out}=    Get Magik Environment Variable    ROBOT_MAGIK_KWTEST
+    Should Be Equal As Strings    '${out}'    'unset'    Falscher Wert fuer unbestimmte Environment Variable
+    Execute Magik Command    system.putenv("ROBOT_MAGIK_KWTEST", "A Text 12")
+    ${out}=    Get Magik Environment Variable    ROBOT_MAGIK_KWTEST
+    Should Be Equal As Strings    ${out}    "A Text 12"
+    Execute Magik Command    system.putenv("ROBOT_MAGIK_KWTEST", "\\\\hostname\\file.txt")
+    ${out}=    Get Magik Environment Variable    ROBOT_MAGIK_KWTEST
+    Should Be Equal As Strings    ${out}    "\\\\hostname\\file.txt"
 
-	
 bug-009 Execute Magik Command - should handle strings with \n \t \f
-    [documentation]   problems with strings including '\\n', '\\t' or '\\f'
-    ${out}=   Execute Magik Command   write("12\\t23\\\\45\\n78\\f90")
-    Should Be Equal As Strings   ${out}   12\\t23\\\\45\\n78\\f90
+    [Documentation]    problems with strings including '\
+    ...    ', '\\t' or '\\f'
+    ${out}=    Execute Magik Command    write("12\\t23\\\\45\\n78\\f90")
+    Should Be Equal As Strings    ${out}    12\\t23\\\\45\\n78\\f90
+    # ATTENTION : insert new test above this line
+    #    the following tests handle the image cleanup and connection closure
 
-# ATTENTION : insert new test above this line
-#             the following tests handle the image cleanup and connection closure
 Test keyword 'Clean Magik Image'
     Clean Magik Image
-	Write Magik Command   ${CLI_OBJ_HASH}
-	${out}=   Read Until Prompt
-	Should Match Regexp   ${out}   (?s) unset.+MagikSF>
-   
+    Write Magik Command    ${CLI_OBJ_HASH}
+    ${out}=    Read Until Prompt
+    Should Match Regexp    ${out}    (?s) unset.+MagikSF>
+
 Test keyword 'Close Magik Connection'
-	${out}=   Close Magik Connection
-	Should Match Regexp   ${out}   \\s
-	Run Keyword And Expect Error   No connection open   Read Magik Output
-	
+    ${out}=    Close Magik Connection
+    Should Match Regexp    ${out}    \\s
+    Run Keyword And Expect Error    No connection open    Read Magik Output
