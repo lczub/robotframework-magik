@@ -23,17 +23,17 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...               | remote_cli.new()
 ...               | $
 ...               When Robot Framework and Magik image runs on different machines, remote_cli must be started with special port and auth proc to accept connections from other machine.
-...               | _global example_auth_proc <<
-...               | _proc (hostname, hostaddr)
+...               | _global example_auth_proc << _proc (hostname, hostaddr)
 ...               | \ \ \## a customised remote_cli auth_proc
-...               | \ \ \ _if hostaddr = "127.0.0.1" _orif
-...               | \ \ \ \ \ \ \ hostaddr.matches?("111.222.333.*")
+...               | \ \ \ _if hostaddr = "127.0.0.1" _orif \ \ \ \ \ \ \ \ \ \ \ \ # default local host ip
+...               | \ \ \ \ \ \ \ hostaddr.matches?("*.0.0.0.0.0.1") _orif # unconventional local ip under sw5
+...               | \ \ \ \ \ \ \ hostaddr.matches?("111.222.333.*") \ \ \ \ \ \ # special authorised none local ip
 ...               | \ \ \ _then
-...               | \ \ \ \ \ \ \# trust localhost or local network
-...               | \ \ \ \ \ \ _return _true
+...               | \ \ \ \ \ \ \ # trust localhost or local network
+...               | \ \ \ \ \ \ \ _return _true
 ...               | \ \ \ _else
-...               | \ \ \ \ \ \ \# trust nobody
-...               | \ \ \ \ \ \ _return _false
+...               | \ \ \ \ \ \ \ # trust nobody
+...               | \ \ \ \ \ \ \ _return _false
 ...               | \ \ \ _endif
 ...               | _endproc
 ...               | $

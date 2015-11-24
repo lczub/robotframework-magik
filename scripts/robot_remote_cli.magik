@@ -56,19 +56,23 @@ _proc @robot_start_remote_cli()
 		write("Info Robot Test: No remote_cli port defined - remote_cli is deactivated!")
 	_else
 		write("Info Robot Test: Activating remote_cli on port ", robot_port)
-		_local robot_auth_proc << _unset 
 		_local robot_hostaddr << system.getenv("ROBOT_HOSTADDR")
-		_if robot_hostaddr _isnt _unset _andif robot_port ~= ""
+		_if robot_hostaddr _isnt _unset
 		_then
 			write("Info Robot Test: Connections are allowed from LOCALHOST and ",
 			      robot_hostaddr)
-			robot_auth_proc <<
+		_else
+			write("Info Robot Test: Connections are only allowed from LOCALHOST")
+			robot_hostaddr << "LOCALHOST"
+		_endif 
+		_local robot_auth_proc <<
 				_proc (hostname, hostaddr)
 					## a customised remote_cli auth_proc
 					_import robot_hostaddr
 					
-					_if hostaddr = "127.0.0.1" _orif
-					    hostaddr.matches?(robot_hostaddr)
+					_if hostaddr = "127.0.0.1" _orif                 # default local host ip
+					    hostaddr.matches?("*.0.0.0.0.0.0.0.1") _orif # unconventional local ip under sw5
+					    hostaddr.matches?(robot_hostaddr)            # special authorised none local ip
 					_then
 						# trust localhost or local network
 						_return _true
@@ -77,9 +81,7 @@ _proc @robot_start_remote_cli()
 						_return _false
 					_endif
 				_endproc
-		_else
-			write("Info Robot Test: Connections are only allowed from LOCALHOST")
-		_endif 
+
 		remote_cli.new(robot_port, robot_auth_proc)
 	_endif 
 	
