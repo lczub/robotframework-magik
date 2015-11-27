@@ -18,78 +18,84 @@
 # ------------------------------------------------------------------------
 #
 # Examples:
-# 
+#
 # python robot_start_magik_image.py -h
 #
 # python robot_start_magik_image.py --msf_startup e:\Smallworld\CST42\product swaf
 #
-# python robot_start_magik_image.py --aliasfile e:\test\gis_aliases 
+# python robot_start_magik_image.py --aliasfile e:\test\gis_aliases
 #                                   --piddir e:\tmp\robot\pids
-#                                   --logdir e:\tmp\robot\logs 
-#                                   --login root/  
+#                                   --logdir e:\tmp\robot\logs
+#                                   --login root/
 #                                   --cli_port 14003
 #                                   --wait 10
 #                                   e:\Smallworld\CST42\product cam_db_open_swaf
 # ------------------------------------------------------------------------
 
 
-import os, sys
+import os, sys, logging
 from argparse import ArgumentParser
-from subprocess import Popen
+from subprocess import Popen, STDOUT, CREATE_NEW_CONSOLE
 from tempfile import gettempdir
 from time import strftime, sleep
 from telnetlib import Telnet
 from symbol import try_stmt
 
+logging.basicConfig(level=logging.INFO,
+                    format='%(name)-10s: %(message)s',
+                    datefmt='%m-%d %H:%M',
+                    stream=sys.stdout)
+
+
 def defaults_for_start():
     'default start parameters'
     defaults = {}
-    
+
     # temp directory for msfext files
     tmp_dir = gettempdir()
     defaults['msfextdir'] = tmp_dir
-    
+
     # log and pid directory - %TEMP%\robot_magik
     a_dir   = os.path.join(tmp_dir, 'robot_magik')
     defaults['logdir'] = a_dir
     defaults['piddir'] = a_dir
 
     # start script - .\start_robot_remote_cli.script
-    # -> loads .\robot_remote_cli.magik and starts the remote_cli 
+    # -> loads .\robot_remote_cli.magik and starts the remote_cli
     a_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     defaults['robmag_script_dir'] = a_dir
     defaults['robmag_dir'] = os.path.dirname(a_dir)
     defaults['script'] = os.path.join(a_dir, 'start_robot_remote_cli.script')
     defaults['magikfile'] = os.path.join(a_dir, 'start_robot_remote_cli.magik')
-    
+
     return defaults
-    
+
 def argparser_for_start(defaultargs):
     'parser for start command line arguments'
     a_parser = ArgumentParser(
                 description='starts a Magik image and activates the remote cli.')
-    
+
     # default parameter without inspection of the command line
     a_parser.set_defaults(robmag_dir=defaultargs['robmag_dir'])
     a_parser.set_defaults(magikfile=defaultargs['magikfile'])
     a_parser.set_defaults(msfextdir=defaultargs['msfextdir'])
-    
+
     # required command line parameters
     a_parser.add_argument('swproduct',
                           help='Smallworld Core product path')
     a_parser.add_argument('alias',
                           help='Magik image alias')
-    
+
     # optional command line parameters
-    a_parser.add_argument('--aliasfile', 
+    a_parser.add_argument('--aliasfile',
                           help='alias file which includes the ALIAS definition')
-    a_parser.add_argument('--cli_port', type=int, default=14001, 
+    a_parser.add_argument('--cli_port', type=int, default=14001,
                           help='port, the remote_cli listens on (default: %(default)s)')
     a_parser.add_argument('--piddir', default=defaultargs['piddir'],
                           help='directory for the pidfile (default: %(default)s) ')
     a_parser.add_argument('--logdir', default=defaultargs['logdir'],
                           help='directory for the session logfile (default: %(default)s) ')
-    a_parser.add_argument('--login', 
+    a_parser.add_argument('--login',
                           help='Username/password for login')
     help_info = 'script to add remote_cli startup procedure via image command line argument -run_script. '
     help_info += 'Only useful for startup image. Has no effect in closed image. '
@@ -105,15 +111,18 @@ def argparser_for_start(defaultargs):
     help_info =  'seconds, how long the process should wait for the check, '
     help_info += 'that the image is really reachable via telnet. '
     help_info += '(default: %(default)s)'
-    a_parser.add_argument('--wait', type=int, default=30, help=help_info)
-    
+    a_parser.add_argument('--wait', type=float, default=30, help=help_info)
+
+    help_info = 'Hook to start a test script instead the gis launcher.'
+    a_parser.add_argument('--test_launch', help=help_info)
+
     return a_parser
 
 def check_telnet_connection(port, maxwait=30):
     # checks, if localhost:PORT is reachable via telnet
-    # if the telnet connection is not reachable in MAXWAIT seconds, 
+    # if the telnet connection is not reachable in MAXWAIT seconds,
     # an IOError is raised
-    
+
     a_connection = Telnet()
     duration = 0
     connected = False
@@ -126,28 +135,29 @@ def check_telnet_connection(port, maxwait=30):
         except IOError:
             # connection not established - we will sleep for 1 second
             sleep(1)
-            
+
     return connected
-    
- 
+
+
 def start_image(args):
     'Starts a Magik image via windows launcher gis.exe'
-    
+
     command_args = []
-        
+    logger = logging.getLogger('start_gis')
+
     # robot framework magik directory
     # - evaluated in .\start_robot_remote_cli.script
     os.putenv('ROBOT_MAGIK_DIR', args.robmag_dir)
-    
+
     # port the remote_cli should listen
     # - evaluated in .\robot_remote_cli.magik
     cli_port = args.cli_port
     os.putenv('ROBOT_CLI_PORT', '%i' % cli_port)
-    
+
     # gis launcher program
     gis_exe = os.path.join(args.swproduct, 'bin', 'x86', 'gis.exe')
     command_args.append(gis_exe)
-    
+
     # check, if special alias file required
     aliasfile = args.aliasfile
     if aliasfile:
@@ -157,8 +167,8 @@ def start_image(args):
     pid_dir = args.piddir
     if not os.path.exists(pid_dir):
         os.mkdir(pid_dir)
-        
-    # TODO: check if pid file already exist        
+
+    # TODO: check if pid file already exist
     pid_fname  = os.path.join(pid_dir, '%i.pid' % cli_port)
 
     # check if log file directory exists
@@ -166,52 +176,62 @@ def start_image(args):
     if not os.path.exists(log_dir):
         os.mkdir(log_dir)
 
-    # log file        
+    # log file
     alias = args.alias
     info = strftime("%m%d_%H%M")
     log_fname = os.path.join(log_dir, '%s-%s-%i.log' % (alias, info, cli_port))
     command_args.extend(['-l', log_fname, '-i', alias])
-    
+
     # Temp Path for msfext.xxxx file
     # some nrm images seams to requires this parameter.
     # for swaf and cbg images, this parameter seams to be optional
     command_args.append(args.msfextdir)
-    
+
     # Check, if how the remote cli should be started via Startup Magik File with
     # environment variable SW_MSF_STARTUP_MAGIK
     if args.msf_startup is True:
-        # remote cli will be started via Startup Magik File, defined in 
+        # remote cli will be started via Startup Magik File, defined in
         # environment variable SW_MSF_STARTUP_MAGIK
         os.putenv('SW_MSF_STARTUP_MAGIK', args.magikfile)
-        print 'SW_MSF_STARTUP_MAGIK set to %s' % args.magikfile
+        logger.info('SW_MSF_STARTUP_MAGIK set to {}'.format(args.magikfile))
     else:
         # remote cli will be started via an startup action via run_script
         command_args.extend(['-run_script', args.script])
-    
-    # login 
+
+    # login
     login = args.login
     if login:
         command_args.extend(["-login", login])
-        
-    # launch the image
-    print 'Start image with: ', ' '.join(command_args)
+
+    # start the gis (or test) launcher
+    test_launch = args.test_launch
+    if test_launch:
+        # call a python test script instead default gis launcher
+        command_args[0] = test_launch
+        command_args[:0] = ['python']
+        logger.info('Start test session with: {}'.format(' '.join(command_args)))
+    else:
+        logger.info('Start gis session with: {}'.format(' '.join(command_args)))
+#    a_image = Popen(command_args, stderr=STDOUT, creationsflag=CREATE_NEW_CONSOLE)
+#    a_image = Popen(command_args, creationsflag=CREATE_NEW_CONSOLE)
     a_image = Popen(command_args)
     process_id = a_image.pid
-    print 'Image %s started. gis.exe has the pid %i' % (alias, process_id)
-    print 'Logfile see %s' % log_fname
-    
+    logger.info('Logfile see {}'.format(log_fname))
+
     # write pid file
     pid_file = open(pid_fname, 'w')
     pid_file.write('%i\n%s\n' % (process_id, log_fname))
     pid_file.close()
-    print 'pidfile see %s' % pid_fname
-    
+    logger.info('pidfile see {}'.format(pid_fname))
+
     # check telnet connection
     wait = args.wait
     if check_telnet_connection(cli_port, wait):
-        print 'Image is now reachable via telnet localhost:%i' % cli_port
+        logger.info('Image is now reachable via telnet localhost:{}'.format(cli_port))
     else:
-        sys.exit('Image is NOT reachable via telnet localhost:%i!' % cli_port)   
+        msg = 'Image is NOT reachable via telnet localhost:{}'.format(cli_port)
+        logger.error(msg)
+        sys.exit(msg)
 
 
 if __name__ == '__main__':
