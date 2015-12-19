@@ -8,6 +8,8 @@ Library           String
 ${START_IMAGE_SCRIPT}    ${CURDIR}${/}..${/}..${/}scripts${/}robot_start_magik_image.py    # script under test for starting magik images
 ${STOP_IMAGE_SCRIPT}    ${CURDIR}${/}..${/}..${/}scripts${/}robot_stop_magik_image.py    # script under test for starting magik images
 ${DUMMY_LAUNCHER}    ${CURDIR}${/}dummy_gis_launcher.py
+${RF_LOG_STDOUT}    ${CURDIR}${/}rf_stdout.log
+${RF_LOG_STDERR}    ${CURDIR}${/}rf_stderr.log
 
 *** Test Cases ***
 Start Image Script without args
@@ -47,7 +49,7 @@ Start Image Script - not reachable via telnet
     ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    0.5    --test_launch
     ...    ${CURDIR}${/}dummy_gis_launcher.py    A_SWPRODUCT    A_ALIAS
     Log    ${result.stdout}
-    Should Contain    ${result.stderr}    Image is NOT reachable via telnet localhost:14001!
+    Should Contain    ${result.stderr}    Image is NOT reachable via telnet localhost:14001
     Should Be Equal As Integers    ${result.rc}    1
 
 Start Image Script with default settings
@@ -94,16 +96,26 @@ Start Image Script with -msf_startup
     Should Contain    ${result.stdout}    PID=${pid}
 
 Start Dummy Gis Launcher
-    [Tags]    dummyLaunch
+    [Tags]    dummyLaunch    blocker
     ${result_start}=    Start Dummy Gis Launcher    alias=ALIAS_start_telnet    cli_port=14002
     Should Be Equal As Integers    ${result_start.rc}    0
 
+stop with default settings
+    [Tags]    dummyLaunch    withTelnet    blocker
+    ${alias}=    Set Variable    ALIAS_start_telnet
+    ${cli_port}=    Set Variable    14002
+    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
+    Log    ${result_stop.stdout}
+    Run Keyword If    ${result_stop.rc}!=0    Log    ${result_stop.stderr}
+    Should Be Equal As Integers    ${result_stop.rc}    0
+
 Start and stop with default settings
-    [Tags]    dummyLaunch    withTelnet
+    [Tags]    dummyLaunch    withTelnet    blocker
     ${alias}=    Set Variable    ALIAS_start_telnet
     ${cli_port}=    Set Variable    14002
     ${handle_start}=    Process.Start Process    python    ${START_IMAGE_SCRIPT}    --wait    0.1    --cli_port
-    ...    ${cli_port}    --test_launch    ${CURDIR}${/}dummy_gis_launcher.py    A_SWPRODUCT    ${alias}
+    ...    ${cli_port}    --test_launch    ${CURDIR}${/}dummy_gis_launcher.py    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}
+    ...    stderr=${RF_LOG_STDERR
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log    ${result_stop.stdout}
     Run Keyword If    ${result_stop.rc}!=0    Log    ${result_stop.stderr}
@@ -119,11 +131,10 @@ Start Dummy Gis Launcher
     ${wait_process}=    Convert To Number    ${wait_telnet}
     ${wait_process}=    Set Variable    ${wait_process + 1.0}
     ${handle_start}=    Process.Start Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait_telnet}    --cli_port
-    ...    ${cli_port}    --test_launch    ${CURDIR}${/}dummy_gis_launcher.py    A_SWPRODUCT    ${alias}    stdout=E:${/}Test-Tools${/}dummy_out.log
-    ...    shell=true
+    ...    ${cli_port}    --test_launch    ${CURDIR}${/}dummy_gis_launcher.py    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}
+    ...    stderr=${RF_LOG_STDERR}
     Log    Process started    console=True
-    #    ${result_start}=    Wait For Process    handle=${handle_start}    timeout=${wait_process}    on_timeout=terminate
-    ${result_start}=    Wait For Process    timeout=1s    on_timeout=kill
+    ${result_start}=    Wait For Process    handle=${handle_start}    timeout=${wait_process}    on_timeout=terminate
     Log    ${result_start.stdout}
     Run Keyword If    ${result_start.rc}!=0    Log    ${result_start.stderr}
     [Return]    ${result_start}
