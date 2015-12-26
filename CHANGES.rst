@@ -1,6 +1,18 @@
 Changes in Robot Framework Magik
 ================================
 
+Robot Framework Magik release notes v0.4.4 - under develop
+----------------------------------------------------------
+
+- Enh #15: internal tests for start stop scripts 
+
+  - new robot suite tests/scripts/robot_magik_script_tests.txt
+  - new python helper scripts _dummy_gis_launcher.py_ and _dummy_remote_cli.py_ 
+
+- Enh #14: robot_start_remote_cli except know unconventional localhost IP addresses
+  matching _*.0.0.0.0.0.0.1_
+
+
 Robot Framework Magik release notes v0.3.2 (Apr. 2015)
 -------------------------------------------------------
 

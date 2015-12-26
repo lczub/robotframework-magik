@@ -35,7 +35,7 @@
 
 import os, sys, logging
 from argparse import ArgumentParser
-from subprocess import Popen, STDOUT, CREATE_NEW_CONSOLE
+from subprocess import Popen, PIPE
 from tempfile import gettempdir
 from time import strftime, sleep
 from telnetlib import Telnet
@@ -122,21 +122,24 @@ def check_telnet_connection(port, maxwait=30):
     # checks, if localhost:PORT is reachable via telnet
     # if the telnet connection is not reachable in MAXWAIT seconds,
     # an IOError is raised
+    # returns the cli prompt
 
     a_connection = Telnet()
     duration = 0
+    prompt = 'unknown'
     connected = False
     while (duration < maxwait) and not connected:
         duration += 1
         try:
             a_connection.open('localhost', port, 10)
+            prompt = a_connection.read_until( '>' )
             a_connection.close()
             connected = True
         except IOError:
             # connection not established - we will sleep for 1 second
             sleep(1)
 
-    return connected
+    return prompt
 
 
 def start_image(args):
@@ -212,8 +215,7 @@ def start_image(args):
         logger.info('Start test session with: {}'.format(' '.join(command_args)))
     else:
         logger.info('Start gis session with: {}'.format(' '.join(command_args)))
-#    a_image = Popen(command_args, stderr=STDOUT, creationsflag=CREATE_NEW_CONSOLE)
-#    a_image = Popen(command_args, creationsflag=CREATE_NEW_CONSOLE)
+#    a_image = Popen(command_args, stdout=PIPE, stderr=PIPE)
     a_image = Popen(command_args)
     process_id = a_image.pid
     logger.info('Logfile see {}'.format(log_fname))
@@ -226,8 +228,9 @@ def start_image(args):
 
     # check telnet connection
     wait = args.wait
-    if check_telnet_connection(cli_port, wait):
-        logger.info('Image is now reachable via telnet localhost:{}'.format(cli_port))
+    prompt = check_telnet_connection(cli_port, wait)
+    if prompt <> 'unknown':
+        logger.info('Image is now reachable via telnet localhost:{} with prompt {}'.format(cli_port, prompt))
     else:
         msg = 'Image is NOT reachable via telnet localhost:{}'.format(cli_port)
         logger.error(msg)

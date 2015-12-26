@@ -27,10 +27,14 @@
 #                                   --cli_port 14003 
 # ------------------------------------------------------------------------
 
-import os
+import os, sys, logging
 from argparse import ArgumentParser
 from tempfile import gettempdir
 
+logging.basicConfig(level=logging.INFO,
+                    format='%(name)-10s: %(message)s',
+                    datefmt='%m-%d %H:%M',
+                    stream=sys.stdout)
 
 def defaults_for_stop():
     'default stop parameters'
@@ -59,9 +63,16 @@ def argparser_for_stop(defaultargs):
 def stop_image(args):
     'stops a Magik image via windows launcher gis.exe'
     
+    logger = logging.getLogger('stop_gis')
+    
     # pid file name
     pid_dir = args.piddir
     pid_fname  = os.path.join(pid_dir, '%i.pid' % args.cli_port)
+    
+    if not os.path.exists(pid_fname):
+        msg = 'required PID file does not exist: {}'.format(pid_fname)
+        logger.error(msg)
+        sys.exit(msg)
 
     # open pid file and read pid and log file name
     # TODO: check if pid file still exists
@@ -75,13 +86,16 @@ def stop_image(args):
     
     # the hard way: kill process
     # TODO: try exception block 
-    os.kill(process_id, 2)
-    print 'Image process %i is killed.' % process_id 
+    try:
+        os.kill(process_id, 2)
+        logger.info( 'Image process {} is killed.'.format(process_id) )
+    except WindowsError as msg:
+        logger.info( 'Process {} doesn\'t run anymore, kill response an error: {}'.format(process_id, msg) )
     
     # delete the pid file
     os.remove(pid_fname)
-    print 'pidfile %s is removed.' % pid_fname
-    print 'Logfile see %s' % log_fname
+    logger.info( 'pidfile {} is removed.'.format( pid_fname ) )
+    logger.info( 'Logfile see {}'.format( log_fname) )
     
     
         

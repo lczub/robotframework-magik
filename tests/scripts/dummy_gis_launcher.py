@@ -18,8 +18,8 @@
 # ------------------------------------------------------------------------
 
 import os, sys
-import socket
 import logging
+from dummy_remote_cli import dummy_remote_cli
 
 class dummy_gis_launcher(object):
     def __init__(self, args):
@@ -28,7 +28,7 @@ class dummy_gis_launcher(object):
         self.config_logger(log_fname)
         self.logger = logging.getLogger('dummy_gis')
         self.alias = self.get_arg('-i').lower()
-        self.port = int(os.getenv('ROBOT_CLI_PORT', '14001'))
+        self.port = int(os.getenv('ROBOT_CLI_PORT', '14011'))
         self.max_connections = self.get_max_connections()
 
 
@@ -37,7 +37,12 @@ class dummy_gis_launcher(object):
         return self.args[index+1]
 
     def get_max_connections(self):
-        return self.port - 14000
+        ''' Used port define the maximum number of connections. 
+        Rule is: PORT modulo
+        Examples: 
+        - port 14004: max connections => 2
+        - port 14011: max connections => 1'''
+        return self.port % 10
 
     def run_dummy_gis(self):
         self.logger.info('Hello GIS World!')
@@ -55,7 +60,8 @@ class dummy_gis_launcher(object):
 
 
     def config_logger(self, fname, level=logging.INFO):
-        # set up logging INFO messages or higher to the sys.stdout
+        ''' set up logging INFO messages or higher to the sys.stdout and into 
+            file FNAME '''
         logging.basicConfig(level=logging.INFO,
                     format='%(name)-10s: %(message)s',
                     datefmt='%m-%d %H:%M',
@@ -70,59 +76,6 @@ class dummy_gis_launcher(object):
         hfile.setFormatter(formatter)
         # add the handler to the root logger
         logging.getLogger('').addHandler(hfile)
-
-class dummy_remote_cli(object):
-    # Echo server program
-
-    def __init__(self, port, max_count=1):
-        self.port = port        # Arbitrary non-privileged port
-        self.host = ''          # Symbolic name meaning all available interfaces
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.bind((self.host, self.port))
-        self.connection = None
-        self.max_connect_count = max_count
-        self.connect_count = 0
-        self.socket.listen(1)
-        self.logger = logging.getLogger('dummy_cli')
-
-
-    def listen_socket(self):
-        quit = False
-        self.logger.info( 'dummy remote_cli listen on port %i' % self.port)
-        while (not quit) and (self.connect_count < self.max_connect_count):
-            self.connect_count += 1
-            quit = self.listen_connection()
-        if quit:
-            self.logger.info( 'dummy remote_cli exit - quit is requested' )
-        else:
-            self.logger.info( 'dummy remote_cli exit - number of connections %i' % self.connect_count)
-
-        self.socket.close()
-
-    def listen_connection(self):
-        self.connection, addr = self.socket.accept()
-        self.logger.info( 'dummy remote_cli accpets connection to {}'.format(addr))
-        while 1:
-            data = self.connection.recv(1024)
-            self.logger.info( "{} wrote:".format(addr) )
-            self.logger.info( data )
-
-            if self.check_close_connection(data) is True: break
-            response = self.calc_response(data)
-            self.connection.sendall(response)
-        self.connection.close()
-        self.logger.info( 'dummy remote_cli closes connection' )
-        return self.check_close_socket(data)
-
-    def calc_response(self, data):
-        return data.upper()
-
-    def check_close_socket(self, data):
-        return data == 'Exit()'
-
-    def check_close_connection(self, data):
-        return (not data) or (self.check_close_socket(data) )
-
 
 
 def main():
