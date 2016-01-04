@@ -108,7 +108,7 @@ Start Image Script with -msf_startup
     Should Be Equal As Integers    ${result.rc}    0
 
 Start Dummy Gis Launcher
-    [Tags]    dummyLaunch    blocker
+    [Tags]    dummyLaunch    withTelnet
     ${cli_port}=    Set Variable    ${DUMMY_CLI_PORT+1}
     ${result_start}=    Start Dummy Gis Launcher    alias=ALIAS_start_telnet    cli_port=${cli_port}
     Should Be Equal As Integers    ${result_start.rc}    0
@@ -118,7 +118,7 @@ Start Dummy Gis Launcher
     ${pid}=    Check PID File    ${robot_temp_dir}${/}${cli_port}.pid
 
 stop with default settings
-    [Tags]    dummyLaunch    withTelnet    blocker
+    [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
     ${cli_port}=    Set Variable    ${DUMMY_CLI_PORT+1}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
@@ -126,7 +126,7 @@ stop with default settings
     Should Be Equal As Integers    ${result_stop.rc}    0
 
 Start and stop with default settings
-    [Tags]    dummyLaunch    withTelnet    blocker
+    [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
     ${cli_port}=    Set Variable    ${DUMMY_CLI_PORT+1}
     ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    0.1    --cli_port

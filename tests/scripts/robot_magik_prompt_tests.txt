@@ -1,0 +1,49 @@
+*** Settings ***
+Documentation     Test Parsing different Magik Prompt Variations.
+...
+...               - SW GIS 4.x and corresponding remote_cli uses as prompt *MagikSF>*
+...               - SW GIS 5.0 uses as prompt *Magik>*, corresponding remote_cli still uses as prompt *MagikSF>*
+...               - future SW GIS 5.x should use as prompt *Magik>* also for the corresponding remote_cli
+...
+...               This test suite uses the script _dummy_remte_cli.py_ to simulate a remote_cli with different prompt variations and prepared return values.
+Library           Process
+Resource          ../../resources/robot_magik_base.txt
+
+*** Variables ***
+${DUMMY_CLI_PORT}    14011
+${DUMMY_CLI_SCRIPT}    ${CURDIR}${/}dummy_remote_cli.py
+${CLI_PORT}       ${DUMMY_CLI_PORT}
+
+*** Test Cases ***
+Test keyword 'Open Magik Connection' - MagikSF
+    ${prompt}=    Set Variable    MagikSF
+    Start Dummy Remote Cli    prompt=${prompt}
+    ${out}=    Open Magik Connection
+    Should Match Regexp    ${out}    \\S+:\\d+:${prompt}>
+    [Teardown]    Stop Dummy Remote Cli
+
+Test keyword 'Open Magik Connection' - Magik
+    ${prompt}=    Set Variable    Magik
+    Start Dummy Remote Cli    prompt=${prompt}
+    ${out}=    Open Magik Connection
+    Should Match Regexp    ${out}    \\S+:\\d+:${prompt}>
+    [Teardown]    Stop Dummy Remote Cli
+
+*** Keywords ***
+Start Dummy Remote Cli
+    [Arguments]    ${prompt}=MagikSF    ${cli_port}=${DUMMY_CLI_PORT}    ${max_connections}=1
+    [Documentation]    Starts a telnet server process, simulating a SW GIS remote_cli with a special prompt.
+    ...
+    ...    Telnet server process will be started using process libary keyword _Start Process_ , running in the background.
+    ${handle_cli}=    Process.Start Process    python    ${DUMMY_CLI_SCRIPT}    ${cli_port}    ${max_connections}    ${prompt}
+    ...    alias=dummy_cli
+    [Return]    ${handle_cli}
+
+Stop Dummy Remote Cli
+    [Arguments]    ${prompt}=MagikSF
+    [Documentation]    Stops the running telnet server process, which simulating a SW GIS remote_cli with a special prompt.
+    Close Connection
+    ${result_cli}=    Wait For Process    handle=dummy_cli    timeout=1 s    on_timeout=terminate
+    Log    ${result_cli.stdout}
+    Log    ${result_cli.stderr}
+    Should Be Equal As Integers    ${result_cli.rc}    0
