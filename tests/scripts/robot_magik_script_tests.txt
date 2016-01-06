@@ -1,3 +1,17 @@
+#  Copyright 2012-2016 Luiko Czub, Smallcases Software GmbH
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 *** Settings ***
 Documentation     Test Python Scripts for starting and stopping Smallworld Magik images, delivered with robotframework magik
 ...
@@ -8,13 +22,14 @@ Documentation     Test Python Scripts for starting and stopping Smallworld Magik
 Library           OperatingSystem
 Library           Process
 Library           String
+Force Tags        ScriptTest
 
 *** Variables ***
 ${START_IMAGE_SCRIPT}    ${CURDIR}${/}..${/}..${/}scripts${/}robot_start_magik_image.py    # script under test for starting magik images
 ${STOP_IMAGE_SCRIPT}    ${CURDIR}${/}..${/}..${/}scripts${/}robot_stop_magik_image.py    # script under test for starting magik images
 ${DUMMY_LAUNCHER}    ${CURDIR}${/}dummy_gis_launcher.py
-${RF_LOG_STDOUT}    ${CURDIR}${/}rf_stdout.log
-${RF_LOG_STDERR}    ${CURDIR}${/}rf_stderr.log
+${RF_LOG_STDOUT}    ${TEMPDIR}${/}rf_stdout.log
+${RF_LOG_STDERR}    ${TEMPDIR}${/}rf_stderr.log
 ${DUMMY_CLI_PORT}    ${14011}    # default port for communication with dummy_remote_cli
 ${DEFAULT_CLI_PORT}    ${14001}    # default port defined in start script
 
