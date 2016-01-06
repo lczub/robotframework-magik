@@ -15,18 +15,38 @@ ${DUMMY_CLI_SCRIPT}    ${CURDIR}${/}dummy_remote_cli.py
 ${CLI_PORT}       ${DUMMY_CLI_PORT}
 
 *** Test Cases ***
-Test keyword 'Open Magik Connection' - MagikSF
+Test Open Magik Connection - MagikSF>
     ${prompt}=    Set Variable    MagikSF
-    Start Dummy Remote Cli    prompt=${prompt}
-    ${out}=    Open Magik Connection
+    ${out}=    Open Magik Connection with special prompt    ${prompt}
     Should Match Regexp    ${out}    \\S+:\\d+:${prompt}>
     [Teardown]    Stop Dummy Remote Cli
 
-Test keyword 'Open Magik Connection' - Magik
+Test Open Magik Connection - Magik>
     ${prompt}=    Set Variable    Magik
-    Start Dummy Remote Cli    prompt=${prompt}
-    ${out}=    Open Magik Connection
+    ${out}=    Open Magik Connection with special prompt    ${prompt}
     Should Match Regexp    ${out}    \\S+:\\d+:${prompt}>
+    [Teardown]    Stop Dummy Remote Cli
+
+Test Read Magik Output - MagikSF>
+    Open Magik Connection with special prompt    MagikSF
+    Write Bare    write("1 ernie", %newline, "2 bert", %newline, "3 bibo")\n$\n
+    ${out}=    Read Magik Output
+    Should Match Regexp    ${out}    ^1 ernie\\s2 bert\\s3 bibo$
+    Write Bare    \n$\n
+    ${out}=    Read Magik Output
+    Write Bare    1.as_error()\n$\n
+    Run Keyword And Expect Error    *traceback*    Read Magik Output
+    [Teardown]    Stop Dummy Remote Cli
+
+Test Read Magik Output - Magik>
+    Open Magik Connection with special prompt    Magik
+    Write Bare    write("1 ernie", %newline, "2 bert", %newline, "3 bibo")\n$\n
+    ${out}=    Read Magik Output
+    Should Match Regexp    ${out}    ^1 ernie\\s2 bert\\s3 bibo$
+    Write Bare    \n$\n
+    ${out}=    Read Magik Output
+    Write Bare    1.as_error()\n$\n
+    Run Keyword And Expect Error    *traceback*    Read Magik Output
     [Teardown]    Stop Dummy Remote Cli
 
 *** Keywords ***
@@ -47,3 +67,9 @@ Stop Dummy Remote Cli
     Log    ${result_cli.stdout}
     Log    ${result_cli.stderr}
     Should Be Equal As Integers    ${result_cli.rc}    0
+
+Open Magik Connection with special prompt
+    [Arguments]    ${prompt}    ${port}=${DUMMY_CLI_PORT}    ${host}=localhost
+    Start Dummy Remote Cli    prompt=${prompt}
+    ${out}=    Open Magik Connection    host=${host}    port=${port}
+    [Return]    ${out}

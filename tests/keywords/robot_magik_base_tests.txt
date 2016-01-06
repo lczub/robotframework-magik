@@ -9,13 +9,13 @@ Resource          ../../resources/robot_magik_base.txt
 *** Test Cases ***
 Test keyword 'Open Magik Connection'
     ${out}=    Open Magik Connection
-    Should Match Regexp    ${out}    \\S+:\\d+:MagikSF>
+    Should Match Regexp    ${out}    \\S+:\\d+:(MagikSF|Magik)>
 
 Test keyword 'Write Magik Command'
     ${out}=    Write Magik Command    1 + 1
     Should Be Equal    ${out}    ${none}
     ${out}=    Read Until Prompt
-    Should Match Regexp    ${out}    \\s2 \\s\\S+:\\d+:MagikSF>
+    Should Match Regexp    ${out}    \\s2 \\s\\S+:\\d+:(MagikSF|Magik)>
 
 Test keyword 'Read Magik Output'
     Write Bare    write("1 ernie", %newline, "2 bert", %newline, "3 bibo")\n$\n
@@ -72,7 +72,7 @@ Test keyword 'Prepare Magik Image'
     Prepare Magik Image
     Write Magik Command    ${CLI_OBJ_HASH}
     ${out}=    Read Until Prompt
-    Should Match Regexp    ${out}    (?s)\\ssw:hash_table(\\d*).+MagikSF>
+    Should Match Regexp    ${out}    (?s)\\ssw:hash_table(\\d*).+(MagikSF|Magik)>
 
 Test keyword 'Build Magik Object Expression'
     ${obj_exp}=    Build Magik Object Expression    bibo
@@ -123,7 +123,7 @@ Test keyword 'Clean Magik Image'
     Clean Magik Image
     Write Magik Command    ${CLI_OBJ_HASH}
     ${out}=    Read Until Prompt
-    Should Match Regexp    ${out}    (?s) unset.+MagikSF>
+    Should Match Regexp    ${out}    (?s) unset.+(MagikSF|Magik)>
 
 Test keyword 'Close Magik Connection'
     ${out}=    Close Magik Connection

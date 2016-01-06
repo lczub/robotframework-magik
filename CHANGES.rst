@@ -4,6 +4,10 @@ Changes in Robot Framework Magik
 Robot Framework Magik release notes v0.4.4 - under develop
 ----------------------------------------------------------
 
+- Enh #13: prompt search works now with _MagikSF>_ and _Magik>_ 
+
+  - future SW GIS 5.x releases maybe uses a _Magik>_ instead _MagikSF>_ prompt 
+
 - Enh #15: internal tests for start stop scripts 
 
   - new robot suite tests/scripts/robot_magik_script_tests.txt
