@@ -4,6 +4,12 @@ Changes in Robot Framework Magik
 Robot Framework Magik release notes v0.4.4 - under develop
 ----------------------------------------------------------
 
+- Enh #12: additional sleep step added in keyword _Close Magik Connection_ #12 
+
+  - To avoid communication timing problems at the end of a test run against 
+    SW GIS 5.0 images, an additional sleep step before closing the connection 
+    is added
+  
 - Enh #13: prompt search works now with _MagikSF>_ and _Magik>_ 
 
   - future SW GIS 5.x releases maybe uses a _Magik>_ instead _MagikSF>_ prompt 
