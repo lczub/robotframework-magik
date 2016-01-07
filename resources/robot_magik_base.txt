@@ -150,14 +150,9 @@ Clean Magik Image
     Read Magik Output
 
 Close Magik Connection
-    [Arguments]    ${sleep_time}=10ms
     [Documentation]    Closes the telnet connection to remote_cli of a Smallworld Magik image
     ...
     ...    Returns any remaining output.
-    ...
-    ...    Optional argument *${sleep_time}* defines, how long an additional _sleep_ step should durate before the connection is closed. This avoid communication timing problems at the end of a test run against Smallworld 5 images.
-    Write Bare    exit()\n
-    Sleep    ${sleep_time}
     ${out}=    Close Connection
     [Return]    ${out}
 

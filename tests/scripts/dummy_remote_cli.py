@@ -26,7 +26,7 @@ import logging
 
 class dummy_remote_cli(object):
     # Echo server program
-    
+
     response_templates = {
         # Test keyword 'Write Magik Command'
         '1 + 1' : '2 ',
@@ -34,13 +34,13 @@ class dummy_remote_cli(object):
         'write("1 ernie", %newline, "2 bert", %newline, "3 bibo")' : '1 ernie\n2 bert\n3 bibo' ,
         '1.as_error()' : '''*** Fehler: Object 1 does not understand message as_error()
      does_not_understand(object=1, selector=:|as_error()|, arguments=sw:simple_vector:[1-0], iterator?=False, private?=False)
- 
+
 ---- traceback: remote_cli_client (heavy_thread 3779521) ----
 time=04.01.2016 20:52:41
 sw!version=4.3.0.6 (swaf)
 os_text_encoding=cp1252
 !snapshot_traceback?!=False
- 
+
 condition(information).raise(:does_not_understand, {{:object, 1, :selector, :|as_error()|, ... <size=10>}})
 1.does_not_understand(a sw:message, False)
 1.sys!send_error(:|as_error()|, method_table for sw:integer, False, 1, sw:simple_vector:[1-0])
@@ -52,7 +52,7 @@ remote_cli_client({0.port}, a sw:tcpip_connection)
 light_thread_launcher_proc_990928()''',
         # Test keyword 'Read Magik Output' - should search parser_error
         ':BigBird_:SmallBird' : '''**** Fehler (parser_error): on line 1
-:BigBird_:SmallBird 
+:BigBird_:SmallBird
          ^
 Missing end of statement''',
         # Test keyword 'Execute Magik Command'
@@ -86,17 +86,17 @@ Missing end of statement''',
         self.socket.listen(1)
         self.config_logger()
         self.logger = logging.getLogger('dummy_cli')
-        
+
     def set_prompt(self, prompt):
         lastpart = prompt
         if lastpart[-1] <> '>':
             # last sign must be '>'
             lastpart = '{}>'.format(lastpart)
         self.prompt = 'dummy:{}:{}'.format(self.port,lastpart)
-        
+
     def config_logger(self, level=logging.INFO):
         ' set up logging INFO messages or higher to the sys.stdout '
-        logging.basicConfig(level=logging.INFO, 
+        logging.basicConfig(level=logging.INFO,
                             format='%(asctime)s %(name)-10s %(levelname)-8s %(message)s',
                             datefmt='%m-%d %H:%M',
                             stream=sys.stdout)
@@ -125,7 +125,7 @@ Missing end of statement''',
             while (self.check_close_connection(data) is False):
                 self.send_response(data, first)
                 first = False
-                
+
                 data = self.connection.recv(1024).decode(self.coding)
                 self.logger.info( "{} wrote:".format(addr) )
                 self.logger.info( data )
@@ -135,25 +135,25 @@ Missing end of statement''',
         finally:
             self.connection.close()
             self.logger.info( 'dummy remote_cli closes connection' )
-            
+
         return self.check_close_socket(data)
 
     def calc_response(self, data):
         ''' Response is composed out of DATA plus Magik-Prompt
         From data, only the first line includes a MAgik expression.
         For this, a prepared response must be search or new calculated '''
-        
+
         a_magik_expression = data.split('\n')[0]
-        # try to get a prepared response. 
+        # try to get a prepared response.
         # Default response is the expression itself
         a_response = self.get_prepared_response(a_magik_expression)
-        
+
         return ' {}\n{}'.format(a_response,self.prompt)
-    
+
     def get_prepared_response(self, magik_expression):
-        ''' get a matching template for MAGIK_EXPRESSION from .response_template 
+        ''' get a matching template for MAGIK_EXPRESSION from .response_template
         and format it with attributes from self '''
-        
+
         if magik_expression.find('system.putenv') >= 0:
             # special case, we have to simulate to store environment variable
             # required for Test keyword 'Get Magik Environment Variable'
@@ -163,17 +163,17 @@ Missing end of statement''',
             # required for Test keyword 'Prepare Magik Image'
             # and Test keyword 'Clean Magik Image'
             magik_expression = self.store_objhash(magik_expression)
-            
-        a_template = self.response_templates.get(magik_expression, 
+
+        a_template = self.response_templates.get(magik_expression,
                                                  magik_expression)
         a_template = a_template.encode(self.coding)
         a_response = a_template.format(self)
         return a_response
-        
+
     def store_putenv(self, putenv_expression):
-        ''' extract from putenv expression the env value and store a getenv 
+        ''' extract from putenv expression the env value and store a getenv
         expression with this value inside .response_templates '''
-        
+
         # split 'system.putenv("ROBOT_MAGIK_KWTEST", "huhu")' into
         # ['system.putenv(', 'ROBOT_MAGIK_KWTEST', ', ', 'huhu', ')']
         splitter = putenv_expression.split('"')
@@ -188,58 +188,54 @@ Missing end of statement''',
             getenv_value = 'unset'
         self.response_templates[getenv_expression] = getenv_value
         return getenv_value
-    
+
     def store_objhash(self, objhash_expression):
-        ''' extract from objhash expression the state of the robot_objhash and 
+        ''' extract from objhash expression the state of the robot_objhash and
         store a robot_objhash expression with the state ubset or hash_table '''
-        
-        # split '_global robot_objhash << _unset' into 
+
+        # split '_global robot_objhash << _unset' into
         #      ['_global', 'robot_objhash', '<<', '_unset']
         # or    '_global robot_objhash << hash_table.new()' into
         #      ['_global', 'robot_objhash', '<<', 'hash_table.new()']
         splitter = objhash_expression.split(' ')
         # state objhash is set
         state  = 'sw:hash_table(10)'
-        
+
         if splitter[3] == '_unset':
             # state objhash is reset
             state = 'unset '
-             
+
         self.response_templates['robot_objhash'] = state
-            
+
         return state
-            
-    
+
+
     def send_response(self, data, first=False):
         ''' Calculates the CLI reponses.
-        First response is just the Prompt, the following a combination out of 
+        First response is just the Prompt, the following a combination out of
         data and the prompt '''
-        
+
         # the special case - just the prompt
         response = self.prompt
-        
+
         if not first:
-            # the default case - special data plus prompt 
+            # the default case - special data plus prompt
             response = self.calc_response(data)
         self.connection.sendall(response)
         self.logger.info( "send data: {}".format(response) )
 
     def check_close_socket(self, data):
         ' When quit() is required , the hole simulated cli session is closed '
-        
-        return ( data.find('quit()') == 0 ) 
-    
+
+        return ( data.find('quit()') == 0 )
+
     def check_close_connection(self, data):
-        ''' exit itself seams not When Exit() is required , a last empty response is send, before the 
-        connection closes '''
+        ' check if client will close the connection '
         check_close = False
         if not data:
             self.logger.info('close connection requested')
             check_close = True
-        elif (data.find('exit()') == 0):
-            self.logger.info('exit connection requested')
-            check_close = True
-            
+
         return (check_close) or (self.check_close_socket(data) )
 
 def main():

@@ -4,11 +4,12 @@ Changes in Robot Framework Magik
 Robot Framework Magik release notes v0.4.4 - under develop
 ----------------------------------------------------------
 
-- Enh #12: additional sleep step added in keyword _Close Magik Connection_ #12 
+- Bug #12: _Close Magik Connection_ does  not call exit() anymore #12 
 
-  - To avoid communication timing problems at the end of a test run against 
-    SW GIS 5.0 images, an additional sleep step before closing the connection 
-    is added
+  Keyword _Close Magik Connection_ has called _exit()_ before closing the connecting.
+  This was not correct, cause _exit()_ is only known inside the SW GIS internal cli client. 
+  Under GIS 4.0, this failure has no negativ effect. But under GIS 5.0, the remote_cli tries to 
+  write a traceback to the closed streams. This create than an endless traceback loop.
   
 - Enh #13: prompt search works now with _MagikSF>_ and _Magik>_ 
 
