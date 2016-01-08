@@ -1,0 +1,10 @@
+*** Settings ***
+Library           Process
+Library           ../../resources/RobotMagikLauncher.py
+
+*** Test Cases ***
+start dummy gis
+    Start Dummy Gis
+
+stop dummy gis
+    Stop Dummy Gis
