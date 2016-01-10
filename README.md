@@ -16,10 +16,11 @@ commands to Magik images and read there response.
 *   Precondition is, that the Magik image must have started a remote_cli.
 *   Details, how to start a remote_cli manually and which keywords exists, see 
     [Keyword Documentation robot_magik_base].
-*   Use the Python script *scripts/robot_start_magik_image.py* to start 
-    automatically an image with a remote_cli
+*   Use the Python script *resources/scripts/robot_start_magik_image.py* to 
+    start automatically an image with a remote_cli
 
-The Robot Magik keywords *robot_magik_dsview.txt* defines additional keywords for testing Smallworld ds_views, ds_collections and rwo records.
+The Robot Magik keywords *robot_magik_dsview.txt* defines additional keywords 
+for testing Smallworld ds_views, ds_collections and rwo records.
 *   see [Keyword Documentation robot_magik_dsview].
 
 The Python script *robot_start_magik_image.py*
@@ -37,7 +38,7 @@ Directory Layout
 resources/
 *   Definition of Robot Framework Magik keywords
 
-scripts/
+resources/scripts/
 *   Python and Magik scripts to start and stop automatically an image with a 
     remote_cli
 
@@ -82,7 +83,7 @@ Precondition
 
 ```
 SET PATH=%PATH%;C:\Python-27
-python scripts\robot_start_magik_image.py --msf_startup e:\Smallworld\CST42\product swaf
+python resources\scripts\robot_start_magik_image.py --msf_startup e:\Smallworld\CST42\product swaf
 ```
 
 *   The *swaf* image is running with a remote_cli, listening on port 14001.
@@ -104,7 +105,7 @@ pybot --exclude DsView* examples
 
 ```
 SET PATH=%PATH%;C:\Python-27
-python robot_stop_magik_image.py
+python resources\scripts\robot_stop_magik_image.py
 ```
 
 *   The image is closed and the pid-file *14001.pid* is deleted.
@@ -119,7 +120,8 @@ Precondition
 
 ```
 SET PATH=%PATH%;C:\Python-27
-python scripts\robot_start_magik_image.py --aliasfile e:\test\gis_aliases 
+python resources\scripts\robot_start_magik_image.py 
+       --aliasfile e:\test\gis_aliases 
        --piddir e:\tmp\robot\pids --logdir e:\tmp\robot\logs 
        --login root/  --cli_port 14003 --wait 10
        e:\Smallworld\CST42\product cam_db_open_swaf
@@ -151,7 +153,8 @@ pybot --include Keyword* --include Example* --variable CLI_PORT:14003
 
 ```
 SET PATH=%PATH%;C:\Python-27
-python robot_stop_magik_image.py --piddir e:\tmp\robot\pids --cli_port 14003
+python resources\scripts\robot_stop_magik_image.py 
+       --piddir e:\tmp\robot\pids --cli_port 14003
 ```
 
 The image is closed and the pid-file *14003.pid* is deleted.

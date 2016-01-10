@@ -81,9 +81,9 @@ class MagikStart(object):
     
         # start script - .\start_robot_remote_cli.script
         # -> loads .\robot_remote_cli.magik and starts the remote_cli
-        a_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
+        a_dir = os.path.abspath(os.path.dirname(__file__))
         defaults['robmag_script_dir'] = a_dir
-        defaults['robmag_dir'] = os.path.dirname(a_dir)
+        defaults['robmag_dir'] = os.path.dirname(os.path.join(a_dir, '..'))
         defaults['script'] = os.path.join(a_dir, 'start_robot_remote_cli.script')
         defaults['magikfile'] = os.path.join(a_dir, 'start_robot_remote_cli.magik')
     

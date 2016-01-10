@@ -1,4 +1,4 @@
-#  Copyright 2012-2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2016 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,14 +19,15 @@ Documentation     Test Python Scripts for starting and stopping Smallworld Magik
 ...
 ...               - issue discussion [https://github.com/robotframework/robotframework/issues/2085| robotframework #2085: Process library Wait For Process keyword does not return when used with some adb commands] \ and
 ...               - examples [https://gist.github.com/lczub/22b0f2a12a27c30d0a14#file-wait_process_tests-txt|Gist - robot framework samples - Wait For Process]
+Force Tags        ScriptTest
 Library           OperatingSystem
 Library           Process
 Library           String
-Force Tags        ScriptTest
 
 *** Variables ***
-${START_IMAGE_SCRIPT}    ${CURDIR}${/}..${/}..${/}scripts${/}robot_start_magik_image.py    # script under test for starting magik images
-${STOP_IMAGE_SCRIPT}    ${CURDIR}${/}..${/}..${/}scripts${/}robot_stop_magik_image.py    # script under test for starting magik images
+${SCRIPTDIR}      ${CURDIR}${/}..${/}..${/}resources${/}scripts${/}
+${START_IMAGE_SCRIPT}    ${SCRIPTDIR}${/}robot_start_magik_image.py    # script under test for starting magik images
+${STOP_IMAGE_SCRIPT}    ${SCRIPTDIR}${/}robot_stop_magik_image.py    # script under test for starting magik images
 ${DUMMY_LAUNCHER}    ${CURDIR}${/}dummy_gis_launcher.py
 ${RF_LOG_STDOUT}    ${TEMPDIR}${/}rf_stdout.log
 ${RF_LOG_STDERR}    ${TEMPDIR}${/}rf_stderr.log
@@ -91,7 +92,7 @@ Start Image Script with default settings
     Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
     Should Contain    ${result.stdout}    ROBOT_CLI_PORT=${DEFAULT_CLI_PORT}
     Should Contain    ${result.stdout}    SW_MSF_STARTUP_MAGIK=None
-    ${robot_magik_script}=    Normalize Path    ${robot_magik_dir}${/}scripts${/}start_robot_remote_cli.script
+    ${robot_magik_script}=    Normalize Path    ${robot_magik_dir}${/}resources${/}scripts${/}start_robot_remote_cli.script
     Should Contain    ${result.stdout}    -run_script ${robot_magik_script}
     Should Contain    ${result.stdout}    -i ${alias} ${TEMPDIR}
     ${robot_temp_dir}=    Normalize Path    ${TEMPDIR}${/}robot_magik
@@ -111,7 +112,7 @@ Start Image Script with -msf_startup
     ${robot_magik_dir}=    Normalize Path    ${CURDIR}${/}..${/}..
     Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
     Should Contain    ${result.stdout}    ROBOT_CLI_PORT=${DEFAULT_CLI_PORT}
-    ${robot_magik_script}=    Normalize Path    ${robot_magik_dir}${/}scripts${/}start_robot_remote_cli.magik
+    ${robot_magik_script}=    Normalize Path    ${robot_magik_dir}${/}resources${/}scripts${/}start_robot_remote_cli.magik
     Should Contain    ${result.stdout}    SW_MSF_STARTUP_MAGIK=${robot_magik_script}
     Should Not Contain    ${result.stdout}    -run_script
     Should Contain    ${result.stdout}    -i ${alias} ${TEMPDIR}

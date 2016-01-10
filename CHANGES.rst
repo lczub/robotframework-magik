@@ -4,6 +4,12 @@ Changes in Robot Framework Magik
 Robot Framework Magik release notes v0.4.4 - under develop
 ----------------------------------------------------------
 
+- Enh #16: new to start and stop Magik image / session - UNDER DEVELOP
+
+  New Library *resources/RobotMagikLaunch*
+  script directory with python and magik start stop scripts has moved to 
+  *resources/scripts*   
+
 - Bug #12: _Close Magik Connection_ does  not call exit() anymore #12 
 
   Keyword _Close Magik Connection_ has called _exit()_ before closing the connecting.

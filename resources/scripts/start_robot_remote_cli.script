@@ -33,7 +33,8 @@
 #           set CBG_ALIAS_FILE=....\gis_aliases
 #           set ROBOT_MAGIK_DIR=....\robotframework-magik
 #           set ROBOT_CLI_PORT=14001
-#           %SMALLWORLD_GIS%\bin\x86\gis.exe e -a %CBG_ALIAS_FILE% cam_db_open_swaf -login root/  -run_script %ROBOT_MAGIK_DIR%\scripts\start_robot_remote_cli.script
+#           %SMALLWORLD_GIS%\bin\x86\gis.exe e -a %CBG_ALIAS_FILE% cam_db_open_swaf 
+#                   -login root/  -run_script %ROBOT_MAGIK_DIR%\resources\scripts\start_robot_remote_cli.script
 #
 #           Example 2) start cambridge swaf open image with remote cli
 #                      listen to 14002 and accept connections from 111.222.333.*
@@ -43,8 +44,9 @@
 #           set ROBOT_MAGIK_DIR=....\robotframework-magik
 #           set ROBOT_CLI_PORT=14002
 #           set ROBOT_HOSTADDR=111.222.333.*
-#           %SMALLWORLD_GIS%\bin\x86\gis.exe -a %CBG_ALIAS_FILE% cam_db_open_swaf -login root/  -run_script %ROBOT_MAGIK_DIR%\scripts\start_robot_remote_cli.script 
+#           %SMALLWORLD_GIS%\bin\x86\gis.exe -a %CBG_ALIAS_FILE% cam_db_open_swaf 
+#                   -login root/  -run_script %ROBOT_MAGIK_DIR%\resources\scripts\start_robot_remote_cli.script 
 #
 #----------------------------------------------------------------------
-load_file %ROBOT_MAGIK_DIR%\scripts\robot_remote_cli.magik 
+load_file %ROBOT_MAGIK_DIR%\resources\scripts\robot_remote_cli.magik 
 run       robot_add_startup_procedure_remote_cli()

@@ -42,7 +42,7 @@
 #
 #           set SMALLWORLD_GIS=....\CST420\product
 #           set ROBOT_MAGIK_DIR=....\robotframework-magik
-#           set SW_MSF_STARTUP_MAGIK=%ROBOT_MAGIK_DIR%\scripts\start_robot_remote_cli.magik
+#           set SW_MSF_STARTUP_MAGIK=%ROBOT_MAGIK_DIR%\resources\scripts\start_robot_remote_cli.magik
 #           set ROBOT_CLI_PORT=14001
 #           %SMALLWORLD_GIS%\bin\x86\gis.exe swaf
 #
@@ -52,7 +52,7 @@
 #           set SMALLWORLD_GIS=....\CST420\product
 #           set CBG_ALIAS_FILE=....\gis_aliases
 #           set ROBOT_MAGIK_DIR=....\robotframework-magik
-#           set SW_MSF_STARTUP_MAGIK=%ROBOT_MAGIK_DIR%\scripts\start_robot_remote_cli.magik
+#           set SW_MSF_STARTUP_MAGIK=%ROBOT_MAGIK_DIR%\resources\scripts\start_robot_remote_cli.magik
 #           set ROBOT_CLI_PORT=14002
 #           set ROBOT_HOSTADDR=111.222.333.*
 #           %SMALLWORLD_GIS%\bin\x86\gis.exe -a %CBG_ALIAS_FILE% cam_db_open_swaf -login root/  
@@ -65,8 +65,11 @@ $
 _block
 	_local a_dir <<
 		system.pathname_from_components(
-			"scripts",
+			"resources",
 			system.getenv("ROBOT_MAGIK_DIR"))
+	a_dir <<
+		system.pathname_from_components(
+			"scripts", a_dir)
 	_local a_file <<
 		system.pathname_from_components(
 			"robot_remote_cli.magik", a_dir)

@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2012-2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2016 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -18,9 +18,12 @@
 # ------------------------------------------------------------------------
 
 from robot.libraries.BuiltIn import BuiltIn
-from robot.libraries.Process import Process
+from robot.libraries.Process import Process, logger
 import os
-from pydoc import cli
+# from resources.scripts.robot_start_magik_image import MagikStart
+#from scripts import robot_start_magik_image
+from scripts.robot_start_magik_image import MagikStart
+
 
 class RobotMagikLauncher(object):
     """ Robot Framework test library for starting and stopping Magik images 
@@ -44,7 +47,7 @@ class RobotMagikLauncher(object):
         
     def _get_script_dir(self):
         resouce_path = os.path.dirname(__file__)
-        script_path = os.path.join(resouce_path, '..', 'scripts')
+        script_path = os.path.join(resouce_path, 'scripts')
         return os.path.normpath(script_path)
     
     def _get_test_script_dir(self):
@@ -62,6 +65,8 @@ class RobotMagikLauncher(object):
     def start_dummy_gis(self, cli_port=14001, gis_alias='ALIAS_start_telnet'):
         ''' starts a dummy gis session , using python script 
         robot_start_magik_image.py '''
+        
+        a_starter = RobotMagikStart()
         
         wait_telnet = 0.1
         wait_process = wait_telnet + 2.0
@@ -81,6 +86,7 @@ class RobotMagikLauncher(object):
                                     timeout=wait_process, on_timeout='terminate')
         self._log_result(a_result)
         self._sessions[cli_port] = gis_alias
+        return a_result
         
     def stop_dummy_gis(self, cli_port=14001):
         ''' stops a running dummy gis session , using python script 
@@ -99,7 +105,15 @@ class RobotMagikLauncher(object):
                                                          **configurations)
         self._log_result(a_result)
         self._sessions[cli_port] = None
+        return a_result        
         
-        
+class RobotMagikStart(MagikStart):
+    
+    def __init__(self):
+        super(RobotMagikStart,self).__init__()
+        self.log_info('Robot Magik Starter initialised!')
+    
+    def _config_logger(self):
+        self._logger = logger
         
     

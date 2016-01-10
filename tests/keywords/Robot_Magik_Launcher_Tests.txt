@@ -4,7 +4,9 @@ Library           ../../resources/RobotMagikLauncher.py
 
 *** Test Cases ***
 start dummy gis
-    Start Dummy Gis
+    ${result}=    Start Dummy Gis
+    Should Be Equal As Integers    ${result.rc}    0
 
 stop dummy gis
-    Stop Dummy Gis
+    ${result}=    Stop Dummy Gis
+    Should Be Equal As Integers    ${result.rc}    0
