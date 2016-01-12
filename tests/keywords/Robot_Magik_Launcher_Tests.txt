@@ -1,12 +1,108 @@
 *** Settings ***
 Library           Process
-Library           ../../resources/RobotMagikLauncher.py
+Library           ../../resources/RobotMagikLauncher.py    cli_port=${CLI_PORT}    wait=0.1s
+
+*** Variables ***
+${DUMMY_LAUNCHER}    ${CURDIR}${/}..${/}scripts${/}dummy_gis_launcher.py
+${CLI_PORT}       ${14001}
+${DUMMY_CLI_PORT}    ${14011}
 
 *** Test Cases ***
-start dummy gis
-    ${result}=    Start Dummy Gis
-    Should Be Equal As Integers    ${result.rc}    0
+start magik session - no swproduct
+    [Documentation]    start magik session fails, cause required SWPRODUCT information is missing.
+    Run Keyword And Expect Error    swproduct is not defined - *    Start Magik Session    gis_alias=A_ALIAS    test_launch=haha
 
-stop dummy gis
-    ${result}=    Stop Dummy Gis
-    Should Be Equal As Integers    ${result.rc}    0
+start magik session - no gis_alias
+    [Documentation]    start magik session fails, cause required GIS_ALIAS information is missing.
+    Run Keyword And Expect Error    gis_alias is not defined - *    Start Magik Session    A_SWPRODUCT_PATH    test_launch=haha
+
+start magik session
+    [Documentation]    start magik session returns a session object with process informations
+    [Tags]    dummyLaunch    noTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    A_GIS_ALIAS    test_launch=${DUMMY_LAUNCHER}
+    ${pid}=    Get Process Id    ${msession.process_handle}
+    Should Be Equal As Integers    ${msession.process_id}    ${pid}
+    [Teardown]    Stop Magik Session
+
+start magik session - cli_port already in use
+    [Documentation]    Starting a second session for an alrready in used cli_port fails
+    [Tags]    dummyLaunch    noTelnet
+    ${cli_port2}=    Set Variable    ${CLI_PORT+1}
+    Start Magik Session    A_SWPRODUCT_PATH    A_GIS_ALIAS    cli_port=${cli_port2}    test_launch=${DUMMY_LAUNCHER}
+    Run Keyword And Expect Error    Port ${cli_port2} is already in use by another session!    Start Magik Session    A_SWPRODUCT_PATH    A_GIS_ALIAS    cli_port=14002    test_launch=${DUMMY_LAUNCHER}
+    [Teardown]    Stop Magik Session
+
+start and stop dummy magik session
+    [Documentation]    start magik session with a telent connection, check if the telent connection works and stop the session
+    [Tags]    dummyLaunch    withTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_start_telnet    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
+    Stop Magik Session
+    [Teardown]    Stop All Magik Sessions
+
+get session object - no active session
+    [Documentation]    get session object should fail, cause no session is started
+    Run Keyword And Expect Error    No active session!    Get Session Object
+    Run Keyword And Expect Error    No registered ${CLI_PORT} session!    Get Session Object    ${CLI_PORT}
+
+get session object
+    [Documentation]    get a session object returns the current active session or a session, registered for a specific cli_port
+    [Tags]    dummyLaunch    noTelnet
+    ${cli_port1}=    Set Variable    ${CLI_PORT}
+    ${cli_port2}=    Set Variable    ${CLI_PORT+1}
+    ${msession1}=    Start Magik Session    A_SWPRODUCT_PATH    A_GIS_ALIAS    cli_port=${cli_port1}    test_launch=${DUMMY_LAUNCHER}
+    ${msession}=    Get Session Object
+    Should Be Equal    ${msession}    ${msession1}
+    ${msession2}=    Start Magik Session    A_SWPRODUCT_PATH    A_GIS_ALIAS    cli_port=${cli_port2}    test_launch=${DUMMY_LAUNCHER}
+    ${msession}=    Get Session Object
+    Should Be Equal    ${msession}    ${msession2}
+    ${msession}=    Get Session Object    ${cli_port1}
+    Should Be Equal    ${msession}    ${msession1}
+    [Teardown]    Stop All Magik Sessions
+
+switch magik session
+    [Documentation]    the active session can be switch between registered session for special cli_ports
+    [Tags]    dummyLaunch    noTelnet
+    ${cli_port1}=    Set Variable    ${CLI_PORT}
+    ${cli_port2}=    Set Variable    ${CLI_PORT+1}
+    ${msession1}=    Start Magik Session    A_SWPRODUCT_PATH    A_GIS_ALIAS    cli_port=${cli_port1}    test_launch=${DUMMY_LAUNCHER}
+    ${msession2}=    Start Magik Session    A_SWPRODUCT_PATH    A_GIS_ALIAS    cli_port=${cli_port2}    test_launch=${DUMMY_LAUNCHER}
+    ${msession}=    Get Session Object
+    Should Be Equal    ${msession}    ${msession2}
+    ${msession}=    Switch Magik Session    ${cli_port1}
+    Should Be Equal    ${msession}    ${msession1}
+    ${msession}=    Get Session Object
+    Should Be Equal    ${msession}    ${msession1}
+    [Teardown]    Stop All Magik Sessions
+
+switch magik session - unknown session
+    [Documentation]    switch a magik session fails, when the the cli_port is not registeredd
+    [Tags]    dummyLaunch    noTelnet
+    ${cli_port1}=    Set Variable    ${CLI_PORT}
+    ${cli_port2}=    Set Variable    ${CLI_PORT+1}
+    ${msession1}=    Start Magik Session    A_SWPRODUCT_PATH    A_GIS_ALIAS    cli_port=${cli_port1}    test_launch=${DUMMY_LAUNCHER}
+    ${msession}=    Get Session Object
+    Should Be Equal    ${msession}    ${msession1}
+    Run Keyword And Expect Error    No registered ${cli_port2} session!    Switch Magik Session    ${cli_port2}
+    ${msession}=    Get Session Object
+    Should Be Equal    ${msession}    ${msession1}
+    [Teardown]    Stop All Magik Sessions
+
+session should be reachable - no telnet connection
+    [Documentation]    checking the telnet connection fails, when no session is active or the required cli_port is not registered for a session
+    [Tags]    dummyLaunch    noTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    A_GIS_ALIAS    cli_port=${CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
+    Run Keyword And Expect Error    Image is NOT reachable via telnet localhost:${CLI_PORT}    Session Should Be Reachable
+    Run Keyword And Expect Error    Image is NOT reachable via telnet localhost:${CLI_PORT}    Session Should Be Reachable    ${CLI_PORT}
+    Run Keyword And Expect Error    No registered ${CLI_PORT+11} session!    Session Should Be Reachable    ${CLI_PORT+11}
+    Stop Magik Session
+    Run Keyword And Expect Error    No active session!    Session Should Be Reachable
+    [Teardown]    Stop All Magik Sessions
+
+session should be reachable - open telnet connection
+    [Documentation]    checking the tekent connection works with the current active session or a session, registerd for a specific cli_port
+    [Tags]    dummyLaunch    withTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_start_telnet    cli_port=${DUMMY_CLI_PORT+1}    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
+    Session Should Be Reachable    ${DUMMY_CLI_PORT+1}
+    [Teardown]    Stop Magik Session
