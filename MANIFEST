@@ -1,7 +1,8 @@
 resources/*.txt
+resources/*.py
 doc/*.html
 tests
-scripts
+resources/scripts
 examples
 README.md
 LICENSE-2.0.txt
