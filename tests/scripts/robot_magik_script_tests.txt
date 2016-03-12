@@ -25,7 +25,7 @@ Library           Process
 Library           String
 
 *** Variables ***
-${SCRIPTDIR}      ${CURDIR}${/}..${/}..${/}resources${/}scripts${/}
+${SCRIPTDIR}      ${CURDIR}${/}..${/}..${/}resources${/}scripts
 ${START_IMAGE_SCRIPT}    ${SCRIPTDIR}${/}robot_start_magik_image.py    # script under test for starting magik images
 ${STOP_IMAGE_SCRIPT}    ${SCRIPTDIR}${/}robot_stop_magik_image.py    # script under test for starting magik images
 ${DUMMY_LAUNCHER}    ${CURDIR}${/}dummy_gis_launcher.py
@@ -33,6 +33,7 @@ ${RF_LOG_STDOUT}    ${TEMPDIR}${/}rf_stdout.log
 ${RF_LOG_STDERR}    ${TEMPDIR}${/}rf_stderr.log
 ${DUMMY_CLI_PORT}    ${14011}    # default port for communication with dummy_remote_cli
 ${DEFAULT_CLI_PORT}    ${14001}    # default port defined in start script
+${SWPRODUCT}      C:${/}Smallworld${/}430${/}CST430${/}product
 
 *** Test Cases ***
 Start Image Script without args
@@ -90,6 +91,7 @@ Start Image Script with default settings
     Log Result    ${result}
     ${robot_magik_dir}=    Normalize Path    ${CURDIR}${/}..${/}..
     Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
+    Should Not Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}${/}
     Should Contain    ${result.stdout}    ROBOT_CLI_PORT=${DEFAULT_CLI_PORT}
     Should Contain    ${result.stdout}    SW_MSF_STARTUP_MAGIK=None
     ${robot_magik_script}=    Normalize Path    ${robot_magik_dir}${/}resources${/}scripts${/}start_robot_remote_cli.script
@@ -148,6 +150,34 @@ Start and stop with default settings
     ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    0.1    --cli_port
     ...    ${cli_port}    --test_launch    ${CURDIR}${/}dummy_gis_launcher.py    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}
     ...    stderr=${RF_LOG_STDERR
+    Log Result    ${result_start}
+    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
+    Log Result    ${result_stop}
+    Should Be Equal As Integers    ${result_start.rc}    0
+    Should Be Equal As Integers    ${result_stop.rc}    0
+
+Start and stop - swaf
+    [Tags]    withTelnet
+    ${alias}=    Set Variable    swaf
+    ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
+    ${wait}=    Set Variable    5.0
+    ${swproduct}    Set Variable    ${SWPRODUCT}
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${wait}
+    ...    --cli_port    ${cli_port}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    Log Result    ${result_start}
+    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
+    Log Result    ${result_stop}
+    Should Be Equal As Integers    ${result_start.rc}    0
+    Should Be Equal As Integers    ${result_stop.rc}    0
+
+Start and stop - cambridge
+    [Tags]    withTelnet
+    ${alias}=    Set Variable    cam_db_open_swaf
+    ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
+    ${wait}=    Set Variable    5.0
+    ${swproduct}    Set Variable    ${SWPRODUCT}
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait}    --cli_port
+    ...    ${cli_port}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
     Log Result    ${result_start}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}
