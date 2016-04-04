@@ -13,6 +13,7 @@
 #  limitations under the License.
 
 *** Settings ***
+Force Tags        gisLaunch
 Library           Process
 Library           ../../resources/RobotMagikLauncher.py    cli_port=${CLI_PORT}    wait=0.1s
 Resource          ../../resources/robot_magik_base.txt
@@ -24,7 +25,7 @@ ${SWPRODUCT}      C:${/}Smallworld${/}430${/}CST430${/}product
 *** Test Cases ***
 start cambridge
     [Documentation]    start magik session with a telent connection, check if the telent connection works and stop the session
-    [Tags]    gisLaunch    withTelnet
+    [Tags]    withTelnet
     ${alias}=    Set Variable    cam_db_open_swaf
     ${cli_port}=    Set Variable    ${CLI_PORT}
     ${wait}=    Set Variable    5.0
@@ -35,7 +36,7 @@ start cambridge
 
 calc cambridge
     [Documentation]    start magik session with a telent connection, check if the telent connection works and stop the session
-    [Tags]    gisLaunch    withTelnet
+    [Tags]    withTelnet
     ${out}=    Open Magik Connection
     ${out}=    Execute Magik Command    3 - 2
     Should Be Equal As Integers    ${out}    1
@@ -43,5 +44,5 @@ calc cambridge
 
 stop cambridge
     [Documentation]    start magik session with a telent connection, check if the telent connection works and stop the session
-    [Tags]    gisLaunch    withTelnet
+    [Tags]    withTelnet
     Stop Magik Session

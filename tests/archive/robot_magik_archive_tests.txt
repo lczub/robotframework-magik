@@ -11,6 +11,7 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+
 *** Settings ***
 Documentation     Test content of extracted Robot Framework Magik archive
 Force Tags        ArchiveTest
@@ -54,7 +55,8 @@ Test robot magik self tests exist in tests directory
     [Template]    File Should Exist
     ${ROBOT_MAGIK_DIR}/tests/keywords/robot_magik_base_tests.txt
     ${ROBOT_MAGIK_DIR}/tests/keywords/robot_magik_dsview_tests.txt
-    ${ROBOT_MAGIK_DIR}/tests/keywords/Robot_Magik_Launcher_Tests.txt
+    ${ROBOT_MAGIK_DIR}/tests/keywords/Robot_Magik_Launcher_Dummy_Tests.txt
+    ${ROBOT_MAGIK_DIR}/tests/keywords/Robot_Magik_Launcher_Gis_Tests.txt
     ${ROBOT_MAGIK_DIR}/tests/archive/robot_magik_archive_tests.txt
     ${ROBOT_MAGIK_DIR}/tests/scripts/robot_magik_prompt_tests.txt
     ${ROBOT_MAGIK_DIR}/tests/scripts/robot_magik_script_tests.txt
