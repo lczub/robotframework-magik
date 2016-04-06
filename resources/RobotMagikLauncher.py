@@ -27,12 +27,31 @@ class RobotMagikLauncher(object):
     """ Robot Framework test library for starting and stopping Magik images
     (SW GIS 4.x) and sessions (SW GIS 5.x)
 
-        Example:
-        | Start Magik Session  | gis_alias=cam_db_open_swaf  | cli_port=14002 | wait=5.0 |
-        | Open Magik Connection  | cli_port=14002 |
-        | ${out}= | Execute Magik Command | 3 - 2 |
-        | Close Magik Connection |
-        | Stop Magik Session |
+        Example starts cambridge session, calculates 3 - 2 and closes the session:
+        | *** Settings *** |
+        | Suite Setup | Start And Wait For Magik Session |
+        | Suite Teardown | Stop Magik Session |
+        | Library | Process
+        | Library | ../resources/RobotMagikLauncher.py | swproduct=${SWPRODUCT_PATH} | cli_port=${CLI_PORT} | wait=${START_WAIT} |
+
+        | *** Variables ***
+        | ${CLI_PORT}  |  ${14001} |
+        | ${START_WAIT}  | 30s |
+        | ${SWPRODUCT_PATH}   |  C:${/}Smallworld${/}product |
+        | ${ALIASFILE}  |  C:${/}Smallworld${/}cambridge_db${/}config${/}gis_aliases |
+        | ${ALIASNAME}  |  cambridge_db_open |
+
+
+        | *** Test Cases *** |
+        | Calculate something with Magik |
+        |  | Open Magik Connection  | cli_port=14001 |
+        |  | ${out}= | Execute Magik Command | 3 - 2 |
+        |  | Close Magik Connection |
+
+        | *** Keywords *** |
+        | Start And Wait For Magik Session |
+        |  | Start Magik Session | aliasfile=${ALIASFILE} | gis_alias=${ALIASNAME} |
+        |  | Session Should Be Reachable |
 
 
     """

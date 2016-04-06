@@ -24,7 +24,7 @@ ${SWPRODUCT}      C:${/}Smallworld${/}430${/}CST430${/}product
 
 *** Test Cases ***
 start cambridge
-    [Documentation]    start magik session with a telent connection, check if the telent connection works and stop the session
+    [Documentation]    start magik session with a telnet connection, check if the telnet connection works and stop the session
     [Tags]    withTelnet
     ${alias}=    Set Variable    cam_db_open_swaf
     ${cli_port}=    Set Variable    ${CLI_PORT}

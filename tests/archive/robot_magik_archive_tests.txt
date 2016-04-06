@@ -65,6 +65,7 @@ Test robot magik self tests exist in tests directory
 
 Test robot magik examples exist in examples directory
     [Template]    File Should Exist
+    ${ROBOT_MAGIK_DIR}/examples/__init__.txt
     ${ROBOT_MAGIK_DIR}/examples/coordinate_tests.txt
     ${ROBOT_MAGIK_DIR}/examples/cs_collection_tests.txt
 
