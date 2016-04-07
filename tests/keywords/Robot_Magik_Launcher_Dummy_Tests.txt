@@ -21,7 +21,7 @@ Library           ../../resources/RobotMagikLauncher.py    cli_port=${CLI_PORT} 
 ${DUMMY_LAUNCHER}    ${CURDIR}${/}..${/}scripts${/}dummy_gis_launcher.py
 ${CLI_PORT}       ${14001}
 ${DUMMY_CLI_PORT}    ${14011}
-${SWPRODUCT}      C:${/}Smallworld${/}430${/}CST430${/}product
+${SWPRODUCT}    C:${/}Smallworld${/}core
 
 *** Test Cases ***
 start magik session - no swproduct

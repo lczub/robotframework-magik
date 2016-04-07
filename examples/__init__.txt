@@ -17,13 +17,13 @@ Documentation     Example - Initialization file starting a Magik Session as Suit
 Suite Setup       Start And Wait For Magik Session
 Suite Teardown    Stop Magik Session
 Library           Process
-Library           ../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT_PATH}    cli_port=${CLI_PORT}    wait=${START_WAIT}
+Library           ../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}
 
 *** Variables ***
-${CLI_PORT}       ${14001}
+${CLI_PORT}       14001
 ${START_WAIT}     30s
-${SWPRODUCT_PATH}    C:${/}Smallworld${/}430${/}CST430${/}product
-${ALIASFILE}      C:${/}Smallworld${/}430${/}CST430${/}cambridge_db${/}config${/}gis_aliases
+${SWPRODUCT}      C:${/}Smallworld${/}core
+${ALIASFILE}      ${SWPRODUCT}{/}..{/}cambridge_db${/}config${/}gis_aliases
 ${ALIASNAME}      cambridge_db_open
 
 *** Keywords ***

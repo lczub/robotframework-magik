@@ -20,13 +20,14 @@ Resource          ../../resources/robot_magik_base.txt
 
 *** Variables ***
 ${CLI_PORT}       ${14001}
-${SWPRODUCT}      C:${/}Smallworld${/}430${/}CST430${/}product
+${SWPRODUCT}      C:${/}Smallworld${/}core
+${ALIAS_CBG}      cambridge_db_open
 
 *** Test Cases ***
 start cambridge
     [Documentation]    start magik session with a telnet connection, check if the telnet connection works and stop the session
     [Tags]    withTelnet
-    ${alias}=    Set Variable    cam_db_open_swaf
+    ${alias}=    Set Variable    ${ALIAS_CBG}
     ${cli_port}=    Set Variable    ${CLI_PORT}
     ${wait}=    Set Variable    5.0
     ${swproduct}=    Set Variable    ${SWPRODUCT}

@@ -27,28 +27,29 @@ class RobotMagikLauncher(object):
     """ Robot Framework test library for starting and stopping Magik images
     (SW GIS 4.x) and sessions (SW GIS 5.x)
 
-        Example starts cambridge session, calculates 3 - 2 and closes the session:
-        | *** Settings *** |
+        Example starts cambridge session, calculates a distance and closes the session:
+        | * Settings * |
         | Suite Setup | Start And Wait For Magik Session |
         | Suite Teardown | Stop Magik Session |
-        | Library | Process
-        | Library | ../resources/RobotMagikLauncher.py | swproduct=${SWPRODUCT_PATH} | cli_port=${CLI_PORT} | wait=${START_WAIT} |
+        | Library | Process |
+        | Library | ../resources/RobotMagikLauncher.py | swproduct=${SWPRODUCT} | cli_port=${CLI_PORT} | wait=${START_WAIT} |
+        | Resource | ../resources/robot_magik_base.txt |
 
-        | *** Variables ***
-        | ${CLI_PORT}  |  ${14001} |
+        | * Variables * |
+        | ${CLI_PORT}  |  14001 |
         | ${START_WAIT}  | 30s |
-        | ${SWPRODUCT_PATH}   |  C:${/}Smallworld${/}product |
-        | ${ALIASFILE}  |  C:${/}Smallworld${/}cambridge_db${/}config${/}gis_aliases |
+        | ${SWPRODUCT}   |  C:${/}Smallworld${/}core |
+        | ${ALIASFILE}  |  ${SWPRODUCT}${/}..${/}cambridge_db${/}config${/}gis_aliases |
         | ${ALIASNAME}  |  cambridge_db_open |
 
-
-        | *** Test Cases *** |
-        | Calculate something with Magik |
-        |  | Open Magik Connection  | cli_port=14001 |
-        |  | ${out}= | Execute Magik Command | 3 - 2 |
+        | * Test Cases * |
+        | Calculate Distance with Magik |
+        |  | Open Magik Connection  | cli_port=${CLI_PORT} |
+        |  | ${out}= | Execute Magik Command | coordinate.new(0,0).distance_to(coordinate.new(3,4)) |
+        |  | Should Be Equal as Numbers | 5.0 | ${out} |
         |  | Close Magik Connection |
 
-        | *** Keywords *** |
+        | * Keywords * |
         | Start And Wait For Magik Session |
         |  | Start Magik Session | aliasfile=${ALIASFILE} | gis_alias=${ALIASNAME} |
         |  | Session Should Be Reachable |
@@ -145,7 +146,11 @@ class RobotMagikLauncher(object):
         The ``swproduct``, ``gis_alias``, ``cli_port``, ``aliasfile``,
         ``logdir``, ``login`` arguments get default values when the library is
         [#Importing|imported].
-        Setting them here overrides those values for the opened connection."""
+        Setting them here overrides those values for the opened connection.
+
+        This keyword just starts the session and does not check, if its reachable.
+        Use keyword `Session Should Be Reachable` to wait till the session response.
+        """
 
         outputdir = BuiltIn().replace_variables('${OUTPUTDIR}')
 
@@ -207,6 +212,9 @@ class RobotMagikLauncher(object):
         | # currently active session is A_GIS_ALIAS_2 14002 |
         | Switch Process | 14001 |
         | # now active process  is A_GIS_ALIAS_1 14001 |
+
+        Attention: this has no influence to the current active Magik Connection.
+        To switch this telent communication, use the Telnet keyword ``Switch Connection``.
         """
         a_session = self.get_session_object(cli_port)
         self._current_session = a_session

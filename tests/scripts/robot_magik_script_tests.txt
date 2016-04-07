@@ -33,7 +33,8 @@ ${RF_LOG_STDOUT}    ${TEMPDIR}${/}rf_stdout.log
 ${RF_LOG_STDERR}    ${TEMPDIR}${/}rf_stderr.log
 ${DUMMY_CLI_PORT}    ${14011}    # default port for communication with dummy_remote_cli
 ${DEFAULT_CLI_PORT}    ${14001}    # default port defined in start script
-${SWPRODUCT}      C:${/}Smallworld${/}430${/}CST430${/}product
+${SWPRODUCT}      C:${/}Smallworld${/}core
+${ALIAS_CBG}      cambridge_db_open
 
 *** Test Cases ***
 Start Image Script without args
@@ -172,7 +173,7 @@ Start and stop - swaf
 
 Start and stop - cambridge
     [Tags]    withTelnet
-    ${alias}=    Set Variable    cam_db_open_swaf
+    ${alias}=    Set Variable    ${ALIAS_CBG}
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
     ${wait}=    Set Variable    5.0
     ${swproduct}    Set Variable    ${SWPRODUCT}
