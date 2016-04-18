@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "C:\scgit\robotframework-magik\tests\scripts\..\..\resources\scripts\robot_start_magik_image.py", line 354, in <module>
+    a_starter.start_session()
+  File "C:\scgit\robotframework-magik\tests\scripts\..\..\resources\scripts\robot_start_magik_image.py", line 184, in start_session
+    self._start_process()
+  File "C:\scgit\robotframework-magik\tests\scripts\..\..\resources\scripts\robot_start_magik_image.py", line 336, in _start_process
+    super(CmdMagikSession, self)._start_process()
+  File "C:\scgit\robotframework-magik\tests\scripts\..\..\resources\scripts\robot_start_magik_image.py", line 190, in _start_process
+    self.process_popen = Popen(self.gis_args, env=self.gis_envs)
+  File "C:\Test-Tools\Portable-Python-Robot-2710.292.1.0\App\lib\subprocess.py", line 710, in __init__
+    errread, errwrite)
+  File "C:\Test-Tools\Portable-Python-Robot-2710.292.1.0\App\lib\subprocess.py", line 958, in _execute_child
+    startupinfo)
+WindowsError: [Error 2] Das System kann die angegebene Datei nicht finden

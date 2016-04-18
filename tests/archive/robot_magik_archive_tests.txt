@@ -68,6 +68,8 @@ Test robot magik examples exist in examples directory
     ${ROBOT_MAGIK_DIR}/examples/__init__.txt
     ${ROBOT_MAGIK_DIR}/examples/coordinate_tests.txt
     ${ROBOT_MAGIK_DIR}/examples/cs_collection_tests.txt
+    ${ROBOT_MAGIK_DIR}/examples/variables_sw4.py
+    ${ROBOT_MAGIK_DIR}/examples/variables_sw5.py
 
 Test file 'MANIFEST' not exist
     File Should Not Exist    ${ROBOT_MAGIK_DIR}/MANIFEST
@@ -87,6 +89,7 @@ Test robot magik resources includes copyright info
     ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.py
     ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_COPYRIGHT}    *.txt    2
     ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_COPYRIGHT}    *.txt
+    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_COPYRIGHT}    *.py
     ${ROBOT_MAGIK_DIR}    ${ROBOT_MAGIK_COPYRIGHT}    README.md
     ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.py
     ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.magik
@@ -100,6 +103,7 @@ Test robot magik resources includes license info
     ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_LICENSE}    *.py
     ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_LICENSE}    *.txt    2
     ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_LICENSE}    *.txt
+    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_LICENSE}    *.py
     ${ROBOT_MAGIK_DIR}    ${ROBOT_MAGIK_LICENSE}    README.md    2
     ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_LICENSE}    *.txt
     ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_LICENSE}    *.py

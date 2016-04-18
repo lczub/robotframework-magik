@@ -8,20 +8,27 @@ Introduction
 ------------
 
 Provides [Robot Framework] high level keywords for automated testing 
-[Smallworld Magik] images and Python scripts to start and stop Smallworld 
-Images with a remote_cli.
+[Smallworld Magik] images / sessions and Python scripts to start and stop 
+Smallworld Images with a remote_cli.
 
 The Robot Magik keywords *robot_magik_base.txt* uses the [TelnetLibrary] to send
 commands to Magik images and read there response. 
-*   Precondition is, that the Magik image must have started a remote_cli.
+*   Precondition is, that the Magik image or session must have started a remote_cli.
+    See library *RobotMagikLauncher.py* or script *robot_start_magik_image.py*
 *   Details, how to start a remote_cli manually and which keywords exists, see 
     [Keyword Documentation robot_magik_base].
-*   Use the Python script *resources/scripts/robot_start_magik_image.py* to 
-    start automatically an image with a remote_cli
+*   Use library *RobotMagikLauncher.py* to start an image or session directly 
+    inside the robot test suite (for example as setup )
+*   or use the Python script *resources/scripts/robot_start_magik_image.py* to 
+    start automatically an image with a remote_cli outside the robot test
 
 The Robot Magik keywords *robot_magik_dsview.txt* defines additional keywords 
 for testing Smallworld ds_views, ds_collections and rwo records.
 *   see [Keyword Documentation robot_magik_dsview].
+
+The Robot Magik library *RobotMagikLauncher.py* defines keyword to start and stop 
+Magik images (SW4.x) or sessions (SW5.x) directly inside a robot test suite
+*   see [Keyword Documentation RobotMagikLauncher].
 
 The Python script *robot_start_magik_image.py*
 *   starts a Smallworld Magik image via the gis.exe launcher program on Windows
@@ -61,19 +68,44 @@ download current [master as zip] or latest [releases]
 Tutorial
 --------
 
-The Python script *robot_start_magik_image.py* implements two different start
+The library *RobotMagikLauncher.py* (and also the Python script *robot_start_magik_image.py*) implements two different start
 mechanism for closed and startup images.
 *   for closed images, the environment variable *SW_MSF_STARTUP_MAGIK* is used 
     to load the Magik script *start_robot_remote_cli.magik*, which starts 
 	remote_cli. 
-*   for startup images, the image command line option *-run_script* is used to 
+*   for startup images, the gis launcher command line option *-run_script* is used to 
     load the script *start_robot_remote_cli.script*, which adds a 
 	startup_procedur to start the remote_cli as last startup action.
+*   Cause Smallworld 5.0 does not support the gis launcher command line option *-run_script*, 
+    Smallworld 5.0 sessions must be started using the environment variable *SW_MSF_STARTUP_MAGIK*
 	
 The following examples explains, how the start, test and stop of an image 
 works.
 
-### Example A - run tests in a closed image
+### Example A - start gis and run example test completly inside robot
+
+Precondition
+*   Adjust variable file .\examples\variables_sw4.py for your SW4.x product 
+*   Adjust variable file .\examples\variables_sw5.py for your SW5.x product
+
+#### start gis and run example test under Smallworld 4.x
+
+```
+SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
+pybot --critical DsView* --variablefile variables_sw4.py examples
+```
+
+
+#### run example test under Smallworld 5.x
+
+```
+SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
+pybot --critical DsView* --variablefile variables_sw5.py examples
+```
+
+
+
+### Example B - run tests in a closed image
 
 Precondition
 *   Alias *swaf* is defined in the products gis_alias file
@@ -94,7 +126,7 @@ python resources\scripts\robot_start_magik_image.py --msf_startup e:\Smallworld\
 
 ```
 SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
-pybot --exclude DsView* examples
+pybot --exclude DsView* examples\c*
 ```
 
 *   run all _Non DsView_ example tests - see *[TAGS]* label inside the test definition files
@@ -110,7 +142,7 @@ python resources\scripts\robot_stop_magik_image.py
 
 *   The image is closed and the pid-file *14001.pid* is deleted.
 
-### Example B - run tests in a startup image
+### Example C - run tests in a startup image
 
 Precondition
 *   Alias *cam_db_open_swaf* is defined in a separate gis_alias file
@@ -140,7 +172,7 @@ python resources\scripts\robot_start_magik_image.py
 SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
 pybot --include Keyword* --include Example* --variable CLI_PORT:14003
       --outputdir e:\tmp\robot\logs --xunitfile cbg_tests.xml 
-	  .\tests .\examples
+	  .\tests .\examples\c*
 ```
 
 *   The [Robot Framework] test reports are written into *e:\tmp\robot\logs*
@@ -168,5 +200,6 @@ The image is closed and the pid-file *14003.pid* is deleted.
 [TelnetLibrary]: http://robotframework.org/robotframework/latest/libraries/Telnet.html
 [Keyword Documentation robot_magik_base]: http://lczub.github.com/robotframework-magik/doc/robot_magik_base.html
 [Keyword Documentation robot_magik_dsview]: http://lczub.github.com/robotframework-magik/doc/robot_magik_dsview.html
+[Keyword Documentation RobotMagikLauncher]: http://lczub.github.com/robotframework-magik/doc/RobotMagikLauncher.html
 [releases]: https://github.com/lczub/robotframework-magik/releases
 [master as zip]: https://github.com/lczub/robotframework-magik/archive/master.zip

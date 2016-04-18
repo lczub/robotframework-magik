@@ -138,7 +138,7 @@ class RobotMagikLauncher(object):
         else:
             logger.info('Port {} is free to use'.format(cli_port))
 
-    def start_magik_session(self, swproduct=None, gis_alias=None, cli_port=14001,
+    def start_magik_session(self, swproduct=None, gis_alias=None, cli_port=None,
                             aliasfile=None, logdir=None, login=None, script=None,
                             msf_startup=None, wait=None, test_launch=None):
         """starts a new Magik session / image with the given SWPRODUCT and ALIAS
