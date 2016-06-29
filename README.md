@@ -85,14 +85,14 @@ works.
 ### Example A - start gis and run example test completly inside robot
 
 Precondition
-*   Adjust variable file .\examples\variables_sw4.py for your SW4.x product 
-*   Adjust variable file .\examples\variables_sw5.py for your SW5.x product
+*   Adjust variable file .\resources\params\variables_sw43_cbg.py for your SW4.x product 
+*   Adjust variable file .\resources\params\variables_sw51_cbg.py for your SW5.x product
 
 #### start gis and run example test under Smallworld 4.x
 
 ```
 SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
-pybot --critical DsView* --variablefile variables_sw4.py examples
+pybot --critical DsView* --variablefile variables_sw43_cbg.py examples
 ```
 
 
@@ -100,7 +100,7 @@ pybot --critical DsView* --variablefile variables_sw4.py examples
 
 ```
 SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
-pybot --critical DsView* --variablefile variables_sw5.py examples
+pybot --critical DsView* --variablefile variables_sw51_cbg.py examples
 ```
 
 

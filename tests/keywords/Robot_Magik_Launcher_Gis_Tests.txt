@@ -15,35 +15,34 @@
 *** Settings ***
 Force Tags        gisLaunch
 Library           Process
-Library           ../../resources/RobotMagikLauncher.py    cli_port=${CLI_PORT}    wait=0.1s
+Variables         ../../resources/params/variables_sw43_cbg.py
+Library           ../../resources/RobotMagikLauncher.py     swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}
 Resource          ../../resources/robot_magik_base.txt
 
 *** Variables ***
-${CLI_PORT}       ${14001}
-${SWPRODUCT}      C:${/}Smallworld${/}core
-${ALIAS_CBG}      cambridge_db_open
+${ALIAS_CBG}      ${ALIASNAME}
 
 *** Test Cases ***
-start cambridge
-    [Documentation]    start magik session with a telnet connection, check if the telnet connection works and stop the session
+start magik session
+    [Documentation]    start magik session, prepare telnet connection and check that the telnet connection
     [Tags]    withTelnet
     ${alias}=    Set Variable    ${ALIAS_CBG}
     ${cli_port}=    Set Variable    ${CLI_PORT}
     ${wait}=    Set Variable    5.0
     ${swproduct}=    Set Variable    ${SWPRODUCT}
-    ${msession}=    Start Magik Session    ${swproduct}    ${alias}    ${cli_port}    wait=${wait}
+    ${msession}=    Start Magik Session         aliasfile=${ALIASFILE}    gis_alias=${ALIASNAME}    msf_startup=${MSFSTARTUP}    login=${LOGIN}
     Session Should Be Reachable
     #    Stop Magik Session
 
-calc cambridge
-    [Documentation]    start magik session with a telent connection, check if the telent connection works and stop the session
+calc with magik session
+    [Documentation]    calculate something with the magik session with a telent connection, check if the telent connection works and stop the session
     [Tags]    withTelnet
     ${out}=    Open Magik Connection
     ${out}=    Execute Magik Command    3 - 2
     Should Be Equal As Integers    ${out}    1
     ${out}=    Close Magik Connection
 
-stop cambridge
-    [Documentation]    start magik session with a telent connection, check if the telent connection works and stop the session
+stop magik session
+    [Documentation]     the magik session
     [Tags]    withTelnet
     Stop Magik Session

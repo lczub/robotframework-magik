@@ -4,22 +4,25 @@ Changes in Robot Framework Magik
 Robot Framework Magik release notes v0.4.4 - under develop
 ----------------------------------------------------------
 
-- Enh #16: new to start and stop Magik image / session - UNDER DEVELOP
+- Enh #16: keywords to start and stop Magik image / session - UNDER DEVELOP
 
   New Library *resources/RobotMagikLaunch*
+  
   script directory with python and magik start stop scripts has moved to 
-  *resources/scripts*   
+  *resources/scripts*
 
-- Bug #12: _Close Magik Connection_ does  not call exit() anymore #12 
+  new directory *resources/params* with variable files for different gis and sesion definition
 
-  Keyword _Close Magik Connection_ has called _exit()_ before closing the connecting.
-  This was not correct, cause _exit()_ is only known inside the SW GIS internal cli client. 
+- Bug #12: *Close Magik Connection* does not call exit() anymore #12 
+
+  Keyword *Close Magik Connection* has called *exit()* before closing the connecting.
+  This was not correct, cause *exit()* is only known inside the SW GIS internal cli client. 
   Under GIS 4.0, this failure has no negativ effect. But under GIS 5.0, the remote_cli tries to 
   write a traceback to the closed streams. This create than an endless traceback loop.
   
-- Enh #13: prompt search works now with _MagikSF>_ and _Magik>_ 
+- Enh #13: prompt search works now with *MagikSF>* and *Magik>* 
 
-  - future SW GIS 5.x releases maybe uses a _Magik>_ instead _MagikSF>_ prompt 
+  - future SW GIS 5.x releases maybe uses a *Magik>* instead *MagikSF>* prompt 
 
 - Enh #15: internal tests for start stop scripts 
 
