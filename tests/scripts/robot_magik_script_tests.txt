@@ -23,6 +23,7 @@ Force Tags        ScriptTest
 Library           OperatingSystem
 Library           Process
 Library           String
+Variables         ../../resources/params/variables_sw43_cbg.py
 
 *** Variables ***
 ${SCRIPTDIR}      ${CURDIR}${/}..${/}..${/}resources${/}scripts
@@ -33,8 +34,8 @@ ${RF_LOG_STDOUT}    ${TEMPDIR}${/}rf_stdout.log
 ${RF_LOG_STDERR}    ${TEMPDIR}${/}rf_stderr.log
 ${DUMMY_CLI_PORT}    ${14011}    # default port for communication with dummy_remote_cli
 ${DEFAULT_CLI_PORT}    ${14001}    # default port defined in start script
-${SWPRODUCT}      C:${/}Smallworld${/}core
-${ALIAS_CBG}      cambridge_db_open
+${ALIAS_CBG}    ${ALIASNAME}
+${ALIAS_SWAF}    swaf
 
 *** Test Cases ***
 Start Image Script without args
@@ -72,7 +73,7 @@ Stop Image Script with -h
 Start Image Script - not reachable via telnet
     [Tags]    dummyLaunch    noTelnet
     ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    0.5    --test_launch
-    ...    ${CURDIR}${/}dummy_gis_launcher.py    A_SWPRODUCT    A_ALIAS
+    ...    ${DUMMY_LAUNCHER}     A_SWPRODUCT    A_ALIAS
     Log Result    ${result}
     Should Contain    ${result.stderr}    Image is NOT reachable via telnet localhost:${DEFAULT_CLI_PORT}
     Should Be Equal As Integers    ${result.rc}    1
@@ -88,7 +89,7 @@ Start Image Script with default settings
     [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
     ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    0.1    --test_launch
-    ...    ${CURDIR}${/}dummy_gis_launcher.py    A_SWPRODUCT    ${alias}
+    ...    ${DUMMY_LAUNCHER}     A_SWPRODUCT    ${alias}
     Log Result    ${result}
     ${robot_magik_dir}=    Normalize Path    ${CURDIR}${/}..${/}..
     Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
@@ -110,7 +111,7 @@ Start Image Script with -msf_startup
     [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
     ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    0.1
-    ...    --test_launch    ${CURDIR}${/}dummy_gis_launcher.py    A_SWPRODUCT    ${alias}
+    ...    --test_launch    ${DUMMY_LAUNCHER}     A_SWPRODUCT    ${alias}
     Log Result    ${result}
     ${robot_magik_dir}=    Normalize Path    ${CURDIR}${/}..${/}..
     Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
@@ -149,7 +150,7 @@ Start and stop with default settings
     ${alias}=    Set Variable    ALIAS_start_telnet
     ${cli_port}=    Set Variable    ${DUMMY_CLI_PORT+1}
     ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    0.1    --cli_port
-    ...    ${cli_port}    --test_launch    ${CURDIR}${/}dummy_gis_launcher.py    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}
+    ...    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}     A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}
     ...    stderr=${RF_LOG_STDERR
     Log Result    ${result_start}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
@@ -159,7 +160,7 @@ Start and stop with default settings
 
 Start and stop - swaf
     [Tags]    withTelnet
-    ${alias}=    Set Variable    swaf
+    ${alias}=    Set Variable    ${ALIAS_SWAF}
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
     ${wait}=    Set Variable    5.0
     ${swproduct}    Set Variable    ${SWPRODUCT}
@@ -191,7 +192,7 @@ Start Dummy Gis Launcher
     ${wait_process}=    Convert To Number    ${wait_telnet}
     ${wait_process}=    Set Variable    ${wait_process + 2.0}
     ${handle_start}=    Process.Start Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait_telnet}    --cli_port
-    ...    ${cli_port}    --test_launch    ${CURDIR}${/}dummy_gis_launcher.py    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}
+    ...    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}     A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}
     ...    stderr=${RF_LOG_STDERR}
     ${result_start}=    Wait For Process    handle=${handle_start}    timeout=${wait_process}    on_timeout=terminate
     Log Result    ${result_start}

@@ -17,7 +17,7 @@ Documentation     Example - Initialization file starting a Magik Session as Suit
 Suite Setup       Start And Wait For Magik Session
 Suite Teardown    Stop Magik Session
 Library           Process
-Variables         variables_sw4.py
+Variables         ../resources/params/variables_sw43_cbg.py
 Library           ../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}
 
 *** Keywords ***

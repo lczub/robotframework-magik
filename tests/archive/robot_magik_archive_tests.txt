@@ -68,8 +68,11 @@ Test robot magik examples exist in examples directory
     ${ROBOT_MAGIK_DIR}/examples/__init__.txt
     ${ROBOT_MAGIK_DIR}/examples/coordinate_tests.txt
     ${ROBOT_MAGIK_DIR}/examples/cs_collection_tests.txt
-    ${ROBOT_MAGIK_DIR}/examples/variables_sw4.py
-    ${ROBOT_MAGIK_DIR}/examples/variables_sw5.py
+	
+Test robot magik default parameter exist in resources directory
+    [Template]    File Should Exist
+    ${ROBOT_MAGIK_DIR}/resources/params/variables_sw43_cbg.py
+    ${ROBOT_MAGIK_DIR}/resources/params/variables_sw51_cbg.py
 
 Test file 'MANIFEST' not exist
     File Should Not Exist    ${ROBOT_MAGIK_DIR}/MANIFEST
@@ -107,6 +110,10 @@ Test robot magik resources includes license info
     ${ROBOT_MAGIK_DIR}    ${ROBOT_MAGIK_LICENSE}    README.md    2
     ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_LICENSE}    *.txt
     ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_LICENSE}    *.py
+	
+Test no '*.pyc' should be included
+    [Template]    File Should Exist
+    ${ROBOT_MAGIK_DIR}/resources/scripts/*.pyc	
 
 *** Keywords ***
 Check Header Info for file

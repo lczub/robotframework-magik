@@ -13,24 +13,20 @@
 #  limitations under the License.
 
 *** Settings ***
+Documentation     minimal test workflow - start session, calculate something , close the session
 Force Tags        gisLaunch
 Library           Process
 Variables         ../../resources/params/variables_sw43_cbg.py
-Library           ../../resources/RobotMagikLauncher.py     swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}
+Library           ../../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}
 Resource          ../../resources/robot_magik_base.txt
 
 *** Variables ***
-${ALIAS_CBG}      ${ALIASNAME}
 
 *** Test Cases ***
 start magik session
     [Documentation]    start magik session, prepare telnet connection and check that the telnet connection
     [Tags]    withTelnet
-    ${alias}=    Set Variable    ${ALIAS_CBG}
-    ${cli_port}=    Set Variable    ${CLI_PORT}
-    ${wait}=    Set Variable    5.0
-    ${swproduct}=    Set Variable    ${SWPRODUCT}
-    ${msession}=    Start Magik Session         aliasfile=${ALIASFILE}    gis_alias=${ALIASNAME}    msf_startup=${MSFSTARTUP}    login=${LOGIN}
+    ${msession}=    Start Magik Session    aliasfile=${ALIASFILE}    gis_alias=${ALIASNAME}    msf_startup=${MSFSTARTUP}    login=${LOGIN}
     Session Should Be Reachable
     #    Stop Magik Session
 
@@ -43,6 +39,6 @@ calc with magik session
     ${out}=    Close Magik Connection
 
 stop magik session
-    [Documentation]     the magik session
+    [Documentation]    stop the magik session
     [Tags]    withTelnet
     Stop Magik Session
