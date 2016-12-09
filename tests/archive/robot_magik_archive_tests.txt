@@ -53,8 +53,10 @@ Test robot magik start and stop scripts exist in scripts directory
 
 Test robot magik self tests exist in tests directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/tests/keywords/robot_magik_base_tests.txt
-    ${ROBOT_MAGIK_DIR}/tests/keywords/robot_magik_dsview_tests.txt
+    ${ROBOT_MAGIK_DIR}/tests/keywords/noDB/__init__.txt
+    ${ROBOT_MAGIK_DIR}/tests/keywords/noDB/robot_magik_base_tests.txt
+    ${ROBOT_MAGIK_DIR}/tests/keywords/withDB/robot_magik_dsview_tests.txt
+    ${ROBOT_MAGIK_DIR}/tests/keywords/withDB/__init__.txt
     ${ROBOT_MAGIK_DIR}/tests/keywords/Robot_Magik_Launcher_Dummy_Tests.txt
     ${ROBOT_MAGIK_DIR}/tests/keywords/Robot_Magik_Launcher_Gis_Tests.txt
     ${ROBOT_MAGIK_DIR}/tests/archive/robot_magik_archive_tests.txt

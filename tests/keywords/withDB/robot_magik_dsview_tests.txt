@@ -19,7 +19,7 @@ Documentation     Test Robot Framework Magik keywords for Smallworld ds_views an
 Suite Setup       Run Keywords    Open Magik Connection    Prepare Magik Image
 Suite Teardown    Run Keywords    Clean Magik Image    Close Magik Connection
 Force Tags        KeywordTest    DsViewTest
-Resource          ../../resources/robot_magik_dsview.txt
+Resource          ../../../resources/robot_magik_dsview.txt
 
 *** Test Cases ***
 Test keyword 'Get DsView' for ace view

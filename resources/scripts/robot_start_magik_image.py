@@ -233,7 +233,8 @@ class MagikSession(object):
     def stop_session(self):
         ''' Stops the Magik session just killing the process '''
 
-        pass
+        #pass
+        sleep(2)
 
 
 class CmdMagikSession(MagikSession):

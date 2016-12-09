@@ -28,7 +28,7 @@
 # communication should be available
 START_WAIT = "30s"
 # path to smallworld core product
-SWPRODUCT = "C:\\Smallworld\\NRM51-B6-c18\\core"
+SWPRODUCT = "C:\\Smallworld\\NRM51-B9-i82\\core"
 # file with gis alias definitions
 ALIASFILE = SWPRODUCT + "\\..\\cambridge_db\\config\\gis_aliases"
 # gis alias name for cambridge image / session
