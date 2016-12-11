@@ -132,7 +132,7 @@ class MagikSession(object):
 
         # log file
         alias = self._gis_alias
-        info = strftime("%m%d_%H%M")
+        info = strftime("%m%d_%H%M%S")
         self._log_fname = os.path.join(self._logdir,
                                 '%s-%s-%i.log' % (alias, info, self.cli_port))
         self.gis_args.extend(['-l', self._log_fname, '-i', alias])
@@ -230,11 +230,13 @@ class MagikSession(object):
 
         return prompt
 
-    def stop_session(self):
-        ''' Stops the Magik session just killing the process '''
+    def stop_session(self, kill=True):
+        ''' Stops the Magik session - currently just killing the process '''
 
-        #pass
-        sleep(2)
+        # ToDo - soft terminate by sending quit via telnet
+        # ToDo - hard kill does not close log file in a clean way - the log file
+        #        is still locked
+        self.process_popen.kill()
 
 
 class CmdMagikSession(MagikSession):

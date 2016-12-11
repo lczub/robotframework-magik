@@ -228,16 +228,19 @@ class RobotMagikLauncher(object):
         a_session = self.get_session_object(cli_port)
         a_session.check_telnet_connection()
 
-    def stop_magik_session(self, cli_port=None, kill=False):
+    def stop_magik_session(self, cli_port=None, kill=True):
         """ Stops the current running magik session
 
         If ``cli_port`` is not given, uses the current `active session`.
+
+        Currently, the session is stopped with a hard kill
 
         """
         a_session = self.get_session_object(cli_port)
         logger.debug('stop_magik_session {}'.format(a_session))
         self._unregister_session(a_session)
-        a_session.stop_session()
+        a_session.stop_session(kill)
+
 
     def stop_all_magik_sessions(self):
         ''' Stops the all Magik session '''
