@@ -37,16 +37,17 @@ class dummy_gis_launcher(object):
         return self.args[index+1]
 
     def get_max_connections(self):
-        ''' Used port define the maximum number of connections. 
+        ''' Used port define the maximum number of connections.
         Rule is: PORT modulo
-        Examples: 
-        - port 14004: max connections => 2
+        Examples:
+        - port 14004: max connections => 4
         - port 14011: max connections => 1'''
         return self.port % 10
 
     def run_dummy_gis(self):
         self.logger.info('Hello GIS World!')
-        env_list = ['ROBOT_MAGIK_DIR', 'ROBOT_CLI_PORT', 'SW_MSF_STARTUP_MAGIK']
+        env_list = ['ROBOT_MAGIK_DIR', 'ROBOT_CLI_PORT', 'SW_MSF_STARTUP_MAGIK',
+                    'SW_GIS_ENVIRONMENT_FILE']
         for env_name in env_list:
             self.logger.info('%s=%s' % (env_name, os.getenv(env_name)) )
         self.logger.info('PID=%i' % os.getpid())
@@ -60,7 +61,7 @@ class dummy_gis_launcher(object):
 
 
     def config_logger(self, fname, level=logging.INFO):
-        ''' set up logging INFO messages or higher to the sys.stdout and into 
+        ''' set up logging INFO messages or higher to the sys.stdout and into
             file FNAME '''
         logging.basicConfig(level=logging.INFO,
                     format='%(name)-10s: %(message)s',

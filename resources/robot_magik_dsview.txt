@@ -15,7 +15,7 @@
 *** Settings ***
 Documentation     Robot Framework Magik keywords for testing Smallworld ds_views, ds_collections and rwo records.
 ...
-...               These keywords uses the [http://robotframework.org/robotframework/2.8.2/libraries/Telnet.html|TelnetLibrary] to send commands to Magik images and read there response.
+...               These keywords uses the [http://robotframework.org/robotframework/libraries/Telnet.html|TelnetLibrary] to send commands to Magik images and read there response.
 ...
 ...               Details see [./robot_magik_base.html|robot_magik_base] documentation
 Resource          robot_magik_base.txt

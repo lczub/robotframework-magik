@@ -50,13 +50,14 @@ class MagikSession(object):
     ''' Class for starting Magik Sessions '''
 
     def __init__(self, swproduct, gis_alias, cli_port=14001, aliasfile=None,
-                 logdir=None, login=None, script=None, msf_startup=False,
-                 wait=30, test_launch=None):
+                 envfile=None, logdir=None, login=None, script=None,
+                 msf_startup=False, wait=30, test_launch=None):
         self._defaults = self._defaults_for_start()
         self._swproduct = swproduct
         self._gis_alias = gis_alias
         self.cli_port = int(cli_port or 14001)
         self._aliasfile = aliasfile
+        self._envfile = envfile
         self._logdir = logdir or self._defaults['logdir']
         self._login = login
         self._script = script or self._defaults['script']
@@ -125,6 +126,11 @@ class MagikSession(object):
         # check, if special alias file required
         if self._aliasfile:
             self.gis_args.extend(["-a", self._aliasfile])
+
+        # check, if special environment file required
+        if self._envfile:
+            self.gis_args.extend(["-e", self._envfile])
+            self.gis_envs['SW_GIS_ENVIRONMENT_FILE'] = self._envfile
 
         # check if log file directory exists
         if not os.path.exists(self._logdir):
@@ -197,7 +203,7 @@ class MagikSession(object):
         port = self.cli_port
         prompt = self._get_telnet_prompt(port, self._wait)
         if prompt is None:
-            msg = 'Image is NOT reachable via telnet localhost:{}'.format(port)
+            msg = 'Image is NOT reachable via telnet localhost:{} waiting {}s'.format(port, self._wait)
             self.log_error(msg)
             exit_code = msg
         else:
@@ -280,6 +286,8 @@ class CmdMagikSession(MagikSession):
                               help='alias file which includes the ALIAS definition')
         a_parser.add_argument('--cli_port', type=int, default=14001,
                               help='port, the remote_cli listens on (default: %(default)s)')
+        a_parser.add_argument('--envfile',
+                              help='file with session specific environment settings')
         a_parser.add_argument('--piddir', default=defaultargs['piddir'],
                               help='directory for the pidfile (default: %(default)s) ')
         a_parser.add_argument('--logdir', default=defaultargs['logdir'],
@@ -318,6 +326,7 @@ class CmdMagikSession(MagikSession):
         self._gis_alias = start_args.alias
         self.cli_port = start_args.cli_port
         self._aliasfile = start_args.aliasfile
+        self._envfile = start_args.envfile
         self._logdir = start_args.logdir
         self._login = start_args.login
         self._script = start_args.script

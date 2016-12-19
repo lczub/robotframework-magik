@@ -15,7 +15,7 @@
 *** Settings ***
 Documentation     [http://robotframework.org|Robot Framework] high level keywords for automated testing [https://en.wikipedia.org/wiki/Magik_%28programming_language%29|Smallworld Magik] images.
 ...
-...               These keywords uses the [http://robotframework.org/robotframework/latest/2.8.2/Telnet.html|TelnetLibrary] to send commands to Magik images and read there response.
+...               These keywords uses the [http://robotframework.org/robotframework/latest/Telnet.html|TelnetLibrary] to send commands to Magik images and read there response.
 ...
 ...               The Magik image must have started a remote_cli:
 ...               - remote_cli.new(_optional port auth_proc)

@@ -60,13 +60,14 @@ class RobotMagikLauncher(object):
     ROBOT_LIBRARY_SCOPE = 'GLOBAL'
 
     def __init__(self, swproduct=None, gis_alias=None, cli_port=14001,
-                 aliasfile=None, logdir=None, login=None, script=None,
+                 aliasfile=None, envfile=None, logdir=None, login=None, script=None,
                  msf_startup=None, wait='30s', test_launch=None):
 
         self._swproduct = swproduct
         self._gis_alias = gis_alias
         self.cli_port = cli_port or 14001
         self._aliasfile = aliasfile
+        self._envfile = envfile
         self._logdir = logdir
         self._login = login
         self._script = script
@@ -139,11 +140,11 @@ class RobotMagikLauncher(object):
             logger.info('Port {} is free to use'.format(cli_port))
 
     def start_magik_session(self, swproduct=None, gis_alias=None, cli_port=None,
-                            aliasfile=None, logdir=None, login=None, script=None,
+                            aliasfile=None, envfile=None, logdir=None, login=None, script=None,
                             msf_startup=None, wait=None, test_launch=None):
         """starts a new Magik session / image with the given SWPRODUCT and ALIAS
 
-        The ``swproduct``, ``gis_alias``, ``cli_port``, ``aliasfile``,
+        The ``swproduct``, ``gis_alias``, ``cli_port``, ``aliasfile``, ``envfile``,
         ``logdir``, ``login`` arguments get default values when the library is
         [#Importing|imported].
         Setting them here overrides those values for the opened connection.
@@ -156,6 +157,7 @@ class RobotMagikLauncher(object):
 
         swproduct = swproduct or self._swproduct
         gis_alias = gis_alias or self._gis_alias
+        envfile = envfile or self._envfile
         cli_port = cli_port or self.cli_port
         aliasfile = aliasfile or self._aliasfile
         logdir = logdir or self._logdir or outputdir
@@ -176,7 +178,7 @@ class RobotMagikLauncher(object):
 
         a_session = RobotMagikSession(self._ProcessInstance(),
                                     swproduct, gis_alias, cli_port, aliasfile,
-                                    logdir, login, script, msf_startup,
+                                    envfile, logdir, login, script, msf_startup,
                                     timestr_to_secs(wait), test_launch)
         a_session.start_session()
         self._register_session(a_session)
@@ -201,20 +203,17 @@ class RobotMagikLauncher(object):
         return a_session
 
     def switch_magik_session(self, cli_port):
-        """Makes the specified magik session the current `active session`.
-
-        The handle can be an identifier returned by `Start Process` or
-        the ``alias`` given to it explicitly.
+        """Makes the magik session using CLI_PORT the current `active session`.
 
         Example:
         | Start Magik Session  | gis_alias=A_GIS_ALIAS_1  | cli_port=14001 |
         | Start Magik Session  | gis_alias=A_GIS_ALIAS_2  | cli_port=14002 |
         | # currently active session is A_GIS_ALIAS_2 14002 |
-        | Switch Process | 14001 |
+        | Switch Magik Session | 14001 |
         | # now active process  is A_GIS_ALIAS_1 14001 |
 
         Attention: this has no influence to the current active Magik Connection.
-        To switch this telent communication, use the Telnet keyword ``Switch Connection``.
+        To switch this telnet communication, use the Telnet keyword ``Switch Connection``.
         """
         a_session = self.get_session_object(cli_port)
         self._current_session = a_session
@@ -239,7 +238,7 @@ class RobotMagikLauncher(object):
         a_session = self.get_session_object(cli_port)
         logger.debug('stop_magik_session {}'.format(a_session))
         self._unregister_session(a_session)
-        a_session.stop_session(kill)
+        return a_session.stop_session(kill)
 
 
     def stop_all_magik_sessions(self):
@@ -279,3 +278,15 @@ class RobotMagikSession(MagikSession):
         self.process_handle = a_handle
         self.process_id     = self._ProcessInstance.get_process_id(a_handle)
         self.process_popen  = self._ProcessInstance.get_process_object(a_handle)
+
+    def stop_session(self, kill=True):
+        ''' Stops the Magik session - currently just killing the process '''
+
+        # ToDo - soft terminate by sending quit via telnet
+        # ToDo - hard kill does not close log file in a clean way - the log file
+        #        is still locked
+        result = self._ProcessInstance.terminate_process(self.process_handle)
+        BuiltIn().log(result.stdout)
+        if result.stderr:
+            BuiltIn().log(result.stderr, 'WARN')
+        return result

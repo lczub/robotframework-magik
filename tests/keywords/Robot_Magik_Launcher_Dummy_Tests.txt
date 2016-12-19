@@ -20,6 +20,7 @@ Library           ../../resources/RobotMagikLauncher.py    cli_port=${DUMMY_CLI_
 *** Variables ***
 ${DUMMY_LAUNCHER}    ${CURDIR}${/}..${/}scripts${/}dummy_gis_launcher.py
 ${DUMMY_CLI_PORT}    ${14011}
+${DUMMY_ENVFILE}    ${CURDIR}${/}dummy_envfile.bat
 
 *** Test Cases ***
 start magik session - no swproduct
@@ -94,7 +95,7 @@ switch magik session - unknown session
     [Tags]    noTelnet
     ${DUMMY_CLI_port1}=    Set Variable    ${DUMMY_CLI_PORT}
     ${DUMMY_CLI_port2}=    Set Variable    ${DUMMY_CLI_PORT+1}
-    ${msession1}=    Start Magik Session    A_SWPRODUCT_PATH    A_GIS_ALIAS    cli_port=${DUMMY_CLI_port1}    test_launch=${DUMMY_LAUNCHER}
+    ${msession1}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_unknown_session    cli_port=${DUMMY_CLI_port1}    test_launch=${DUMMY_LAUNCHER}
     ${msession}=    Get Session Object
     Should Be Equal    ${msession}    ${msession1}
     Run Keyword And Expect Error    No registered ${DUMMY_CLI_port2} session!    Switch Magik Session    ${DUMMY_CLI_port2}
@@ -105,18 +106,28 @@ switch magik session - unknown session
 session should be reachable - no telnet connection
     [Documentation]    checking the telnet connection fails, when no session is active or the required cli_port is not registered for a session
     [Tags]    noTelnet
-    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    A_GIS_ALIAS    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
-    Run Keyword And Expect Error    Image is NOT reachable via telnet localhost:${DUMMY_CLI_PORT}    Session Should Be Reachable
-    Run Keyword And Expect Error    Image is NOT reachable via telnet localhost:${DUMMY_CLI_PORT}    Session Should Be Reachable    ${DUMMY_CLI_PORT}
+    ${wait}=    Set Variable    ${0.2}
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_no_telnet    cli_port=${DUMMY_CLI_PORT}    wait=${wait}    test_launch=${DUMMY_LAUNCHER}
+    Run Keyword And Expect Error    Image is NOT reachable via telnet localhost:${DUMMY_CLI_PORT} waiting ${wait}s    Session Should Be Reachable
+    Run Keyword And Expect Error    Image is NOT reachable via telnet localhost:${DUMMY_CLI_PORT} waiting ${wait}s    Session Should Be Reachable    ${DUMMY_CLI_PORT}
     Run Keyword And Expect Error    No registered ${DUMMY_CLI_PORT+11} session!    Session Should Be Reachable    ${DUMMY_CLI_PORT+11}
     Stop Magik Session
     Run Keyword And Expect Error    No active session!    Session Should Be Reachable
     [Teardown]    Stop All Magik Sessions
 
 session should be reachable - open telnet connection
-    [Documentation]    checking the tekent connection works with the current active session or a session, registerd for a specific cli_port
+    [Documentation]    checking the telnet connection works with the current active session or a session, registerd for a specific cli_port
     [Tags]    withTelnet
     ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_start_telnet    cli_port=${DUMMY_CLI_PORT+1}    test_launch=${DUMMY_LAUNCHER}
     Session Should Be Reachable
     Session Should Be Reachable    ${DUMMY_CLI_PORT+1}
     [Teardown]    Stop Magik Session
+
+start session with special environment
+    [Documentation]    starting a session with a special environment file should set the environment varibale SW_GIS_ENVIRONMENT_FILE
+    [Tags]    noTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_envfile_start_telnet    envfile=${DUMMY_ENVFILE}    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
+    ${result}=    Stop Magik Session
+    Should Contain    ${result.stdout}    SW_GIS_ENVIRONMENT_FILE=${DUMMY_ENVFILE}
+    [Teardown]    Stop All Magik Sessions
