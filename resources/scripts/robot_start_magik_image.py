@@ -24,6 +24,7 @@
 # python robot_start_magik_image.py --msf_startup e:\Smallworld\CST42\product swaf
 #
 # python robot_start_magik_image.py --aliasfile e:\test\gis_aliases
+#                                   --envfile e:\test\my_environment.bat
 #                                   --piddir e:\tmp\robot\pids
 #                                   --logdir e:\tmp\robot\logs
 #                                   --login root/

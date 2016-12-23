@@ -5,6 +5,6 @@ tests
 resources/scripts
 resources/params
 examples
-README.md
+README.rst
 LICENSE-2.0.txt
 CHANGES.rst

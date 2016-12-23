@@ -26,7 +26,7 @@ ${ROBOT_MAGIK_LICENSE}    Apache License*2.0
 *** Test Cases ***
 Test robot magik info files exist in main directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/README.md
+    ${ROBOT_MAGIK_DIR}/README.rst
     ${ROBOT_MAGIK_DIR}/LICENSE-2.0.txt
     ${ROBOT_MAGIK_DIR}/CHANGES.rst
 

@@ -7,34 +7,55 @@ License `Apache License 2.0`_
 Introduction
 ------------
 
-Provides `Robot Framework`_ high level keywords for automated testing 
-`Smallworld Magik`_ images / sessions and Python scripts to start and stop 
-Smallworld Images with a remote_cli.
+Provides `Robot Framework`_ keywords for automated testing `Smallworld Magik`_
+images (4.x) and sessions (5.x). 
+It includes also a Robot library and Python scripts to start and stop Magik 
+images (4.x) / sessions (5.x) with a remote_cli.
 
-The Robot Magik keywords robot_magik_base.txt_ uses the `TelnetLibrary`_ to send
-commands to Magik images and read there response. 
 
-- Precondition is, that the Magik image or session must have started remote_cli.
-  See library RobotMagikLauncher.py_ or script robot_start_magik_image.py_
-- Details, how to start a remote_cli manually and which keywords exists, see 
-  `Keyword Documentation robot_magik_base`_.
-- Use library RobotMagikLauncher.py_ to start an image or session directly 
-  inside the robot test suite (for example as setup )
+Some feature
+^^^^^^^^^^^^
+
+- each production image / session based on a *swaf* can be tested without loading additional modification code
+- `Robot Framework`_ keyword-driven testing approach allows to hide complex Magik requests in readable keywords
+- supports Smallworld 4.2/4.3 images and Smallworld 5.1 sessions
+- it is possible to handle several images / sessions during one test run, for example to test there interaction
+- the combination with Robot Framework `Standard Test Libraries`_  like *XML /  OperatingSystem* or `External Test Libraries`_ like *Selenium2Library / Database Library / HTTP library* allows to test the interaction with external systems 
+- the communication via telnet allows to test images / sessions running in a different network
+- running in a Jython_ environment allows to test the interaction with Java libraries
+
+**Robot Framework Magik** can also be used as a remote control for Magik images (4.x) and sessions (5.x)
+
+Some details
+^^^^^^^^^^^^
+
+The Robot Magik keywords robot_magik_base.txt_ uses the TelnetLibrary_ to send
+commands to Magik images / sessions and read there response. 
+Precondition is, that the Magik image / session under test has started a 
+remote_cli to allow a telnet communication.
+
+- `Keyword Documentation robot_magik_base`_ explains, how to start a remote_cli
+  manually and which keywords exists
+- Use library RobotMagikLauncher.py_ to start an image / session directly 
+  inside the robot tests (for example as suite setup )
 - or use the Python script robot_start_magik_image.py_ to 
-  start automatically an image with a remote_cli outside the robot test
+  start an image / session with a remote_cli from outside the robot test
 
 The Robot Magik keywords robot_magik_dsview.txt_ defines additional keywords 
-for testing Smallworld ds_views, ds_collections and rwo records.
+for testing Smallworld ds_views, ds_collections and rwo_records.
 
 - see `Keyword Documentation robot_magik_dsview`_.
 
 The Robot Magik library RobotMagikLauncher.py_ defines keyword to start and stop 
-Magik images (SW4.x) or sessions (SW5.x) directly inside a robot test suite
+Magik images (SW4.x) or sessions (SW5.x) directly inside a robot test suite via 
+the gis.exe launcher program on Windows
 
 - see `Keyword Documentation RobotMagikLauncher`_.
+- uses the ProcessLibrary_ for handling the image / session process
 
-The Python script robot_start_magik_image.py_
-- starts a Smallworld Magik image via the gis.exe launcher program on Windows
+The Python script robot_start_magik_image.py_ starts Magik images (SW4.x) or 
+sessions (SW5.x) outside a robot test run via the gis.exe launcher program on Windows
+
 - starts a remote_cli inside this image
 - stores the process id in a Pid-File
 
@@ -43,6 +64,33 @@ The Python script robot_stop_magik_image.py_
 - reads the Pid-File and stops the Smallworld Magik image by sending a kill 
   signal to the process
 
+Installation
+^^^^^^^^^^^^
+Robot Framework Version >= 2.8.2 is required, running in a Python 2.7 environment.
+Robot Framework Version 3.x is recommended.
+
+good practice is to us a separate virtualenv::
+
+ C:\Python27\Scripts\virtualenv.exe D:\pyenv\robot
+ D:\pyenv\robot\scripts\activate
+ pip install --no-cache-dir robotframework
+ 
+download current `master as zip`_ or latest `releases`_ and extract it (for example
+to *D:\robotframework-magik*). Now you are able to start the example test via::
+
+ D:\pyenv\robot\scripts\activate
+ cd D:\robotframework-magik
+ pybot --critical DsView* --variablefile resources/params/variables_sw43_cbg.py examples
+
+Alternative installations under Jython_ or with the *Standalone JAR distribution* in
+a Java environment see `RobotFramework UserGuide Installation`_
+
+- compatability with Jython 2.7 or the *Standalone JAR distribution* is not full tested currently
+
+History
+^^^^^^^^^^^^
+see `<CHANGES.rst>`_
+
 Directory Layout
 ----------------
 
@@ -50,25 +98,18 @@ resources/
     Definition of Robot Framework Magik keywords
 
 resources/scripts/
-    Python and Magik scripts to start and stop automatically an image with a 
-    remote_cli
+    Python and Magik scripts to start and stop an image / session with a remote_cli
 
 doc/
     Documentation for Robot Framework Magik keywords
 
 tests/
-    Test suites for Robot Framework Magik keywords
+    Test suites for Robot Framework Magik keywords, library and scripts
 
 examples/
     Examples, how Robot Framework Magik keywords could be used for automated 
-    testing `Smallworld Magik`_ images
+    testing `Smallworld Magik`_ images / sessions
 
-Download
---------
-
-download current `master as zip`_ or latest `releases`_
-
-- Attention: the tags are listed in an alphabetic order and not after the date!
 
 Tutorial
 --------
@@ -78,41 +119,43 @@ robot_start_magik_image.py_) implements two different start mechanism for
 closed and startup images.
 
 - for closed images, the environment variable *SW_MSF_STARTUP_MAGIK* is used 
-  to load the Magik script start_robot_remote_cli.magik_, which starts 
+  to load the Magik script start_robot_remote_cli.magik_, which starts a
   remote_cli. 
 - for startup images, the gis launcher command line option *-run_script* is 
   used to load the script start_robot_remote_cli.script_, which adds a 
-  startup_procedur to start the remote_cli as last startup action.
-- Cause Smallworld 5.0 does not support the gis launcher command line option
-  *-run_script*, Smallworld 5.0 sessions must be started using the environment
+  startup_procedure to start the remote_cli as last startup action.
+- Cause Smallworld 5.x does not support the gis launcher command line option
+  *-run_script*, Smallworld 5.x sessions must be started using the environment
   variable *SW_MSF_STARTUP_MAGIK*
 	
 The following examples explains, how the start, test and stop of an image 
 works.
 
 Example A - start gis and run example test completly inside robot
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Precondition
 
-- Adjust variable file .\\resources\\params\\variables_sw43_cbg.py for your SW4.x product 
-- Adjust variable file .\\resources\\params\\variables_sw51_cbg.py for your SW5.x product
+- Adjust variable file variables_sw43_cbg.py_ for your SW4.x image to test
+- Adjust variable file variables_sw51_cbg.py_ for your SW5.x session to test
 
-start gis and run example test under Smallworld 4.x
-####################################################
+Expectation:
+
+- Test should start the image / session , run and check a calculation and stop the image / session
+
+run example test under Smallworld 4.x
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
- pybot --critical DsView* --variablefile variables_sw43_cbg.py examples
+ pybot --critical DsView* --variablefile resources/params/variables_sw43_cbg.py examples
 
 run example test under Smallworld 5.x
-####################################################
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
- pybot --critical DsView* --variablefile variables_sw51_cbg.py examples
+ pybot --critical DsView* --variablefile resources/params/variables_sw51_cbg.py examples
 
 Example B - run tests in a closed image
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Precondition
 
@@ -120,10 +163,9 @@ Precondition
 - current working directory is *robotframework-magik*
 
 start the closed image with remote_cli
-####################################################
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- SET PATH=%PATH%;C:\Python-27
  python resources\scripts\robot_start_magik_image.py --msf_startup e:\Smallworld\CST42\product swaf
 
 - The *swaf* image is running with a remote_cli, listening on port 14001.
@@ -131,10 +173,9 @@ start the closed image with remote_cli
   *14001.pid* are written to the users temp directory.
 
 run example tests on the closed image
-####################################################
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
  pybot --exclude DsView* examples\c*
 
 - run all *Non DsView* example tests - see *[TAGS]* label inside the test definition files
@@ -142,26 +183,25 @@ run example tests on the closed image
   directory.
 
 stop the closed image
-####################################################
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- SET PATH=%PATH%;C:\Python-27
  python resources\scripts\robot_stop_magik_image.py
 
 - The image is closed and the pid-file *14001.pid* is deleted.
 
 Example C - run tests in a startup image
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Precondition
+
 - Alias *cam_db_open_swaf* is defined in a separate gis_alias file
 - current working directory is *robotframework-magik*
 
 start the startup image with remote_cli
-####################################################
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- SET PATH=%PATH%;C:\Python-27
  python resources\scripts\robot_start_magik_image.py 
         --aliasfile e:\test\gis_aliases 
         --piddir e:\tmp\robot\pids --logdir e:\tmp\robot\logs 
@@ -176,10 +216,9 @@ start the startup image with remote_cli
 - The start process has wait *10 seconds* for checking the telnet connection.
 
 run example and self tests on the startup image
-####################################################
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- SET PATH=%PATH%;C:\Python-27;C:\Python-27\Scripts
  pybot --include Keyword* --include Example* --variable CLI_PORT:14003
        --outputdir e:\tmp\robot\logs --xunitfile cbg_tests.xml 
 	   .\tests .\examples\c*
@@ -191,10 +230,9 @@ run example and self tests on the startup image
  
 
 stop the startup image
-####################################################
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- SET PATH=%PATH%;C:\Python-27
  python resources\scripts\robot_stop_magik_image.py 
         --piddir e:\tmp\robot\pids --cli_port 14003
 
@@ -219,3 +257,10 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _robot_stop_magik_image.py: resources/scripts/robot_stop_magik_image.py
 .. _start_robot_remote_cli.magik: resources/scripts/start_robot_remote_cli.magik
 .. _start_robot_remote_cli.script: resources/scripts/start_robot_remote_cli.script
+.. _Standard Test Libraries: http://robotframework.org/#libraries-standard
+.. _External Test Libraries: http://robotframework.org/#libraries-external
+.. _ProcessLibrary: http://robotframework.org/robotframework/latest/libraries/Process.html
+.. _RobotFramework UserGuide Installation: http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions
+.. _Jython: http://jython.org/
+.. _variables_sw43_cbg.py: resources/params/variables_sw43_cbg.py
+.. _variables_sw51_cbg.py: resources/params/variables_sw51_cbg.py

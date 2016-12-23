@@ -1,19 +1,27 @@
 Changes in Robot Framework Magik
 ================================
 
-Robot Framework Magik release notes v0.4.4 - under develop
+Robot Framework Magik release notes v0.4.4
 ----------------------------------------------------------
 
-- Enh #16: keywords to start and stop Magik image / session - UNDER DEVELOP
+- Enh #18: session start with special environment.bat files
 
-  New Library *resources/RobotMagikLaunch*
-  
-  script directory with python and magik start stop scripts has moved to 
-  *resources/scripts*
+  - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* ae extend with new argument *envfile*
+  - if defined, environment variable SW_GIS_ENVIRONMENT_FILE is defined and *gis.exe* is call with param *-e*
 
-  new directory *resources/params* with variable files for different gis and sesion definition
+- Enh #17: variablefiles for example and self tests
 
-- Bug #12: *Close Magik Connection* does not call exit() anymore #12 
+  - varibles for example and robot magik own test runs can no be defined in variablefiles
+  - new directory *resources/params* includes templates for different gis and session definitions
+
+- Enh #16: Robot library RobotMagikLaunch to start and stop Magik image / session
+
+  - New Library *resources/RobotMagikLaunch* defines keyword to start, stop and handle several Magik images / sessions
+  - library *RobotMagikLaunch* uses the Robot Framework library *Process* for handling the image / session process
+  - Python script *robot_start_magik_image.py* and library *RobotMagikLaunch* uses new Python class *MagikSession* for handling imagee / sessions
+  - script directory with Python and Magik start stop scripts are moved to *resources/scripts*
+
+- Bug #12: *Close Magik Connection* does not call exit() anymore
 
   Keyword *Close Magik Connection* has called *exit()* before closing the connecting.
   This was not correct, cause *exit()* is only known inside the SW GIS internal cli client. 
@@ -27,10 +35,10 @@ Robot Framework Magik release notes v0.4.4 - under develop
 - Enh #15: internal tests for start stop scripts 
 
   - new robot suite tests/scripts/robot_magik_script_tests.txt
-  - new python helper scripts _dummy_gis_launcher.py_ and _dummy_remote_cli.py_ 
+  - new python helper scripts *dummy_gis_launcher.py* and *dummy_remote_cli.py* 
 
 - Enh #14: robot_start_remote_cli except know unconventional localhost IP addresses
-  matching _*.0.0.0.0.0.0.1_
+  matching *\*.0.0.0.0.0.0.1*
 
 
 Robot Framework Magik release notes v0.3.2 (Apr. 2015)
