@@ -1,7 +1,7 @@
 Changes in Robot Framework Magik
 ================================
 
-Robot Framework Magik release notes v0.4.4
+Robot Framework Magik release notes v0.4.4 (Dec. 2016)
 ----------------------------------------------------------
 
 - Enh #18: session start with special environment.bat files
