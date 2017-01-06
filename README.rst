@@ -81,11 +81,13 @@ to *D:\robotframework-magik*). Now you are able to start the example test via::
  D:\pyenv\robot\scripts\activate
  cd D:\robotframework-magik
  pybot --critical DsView* --variablefile resources/params/variables_sw43_cbg.py examples
-
+ 
 Alternative installations under Jython_ or with the *Standalone JAR distribution* in
 a Java environment see `RobotFramework UserGuide Installation`_
 
 - compatability with Jython 2.7 or the *Standalone JAR distribution* is not full tested currently
+
+Alternatively use `PortablePythonWithRobot`_, a portable (standalone) installation of the test automation `Robot Framework`_ which includes *robotframework-magik*, the *Ride* editor and sample scripts.
 
 History
 ^^^^^^^^^^^^
@@ -264,3 +266,4 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _Jython: http://jython.org/
 .. _variables_sw43_cbg.py: resources/params/variables_sw43_cbg.py
 .. _variables_sw51_cbg.py: resources/params/variables_sw51_cbg.py
+.. _PortablePythonWithRobot: https://github.com/lczub/PortablePythonWithRobot/blob/robot/config/Robot/scripts/README.rst
