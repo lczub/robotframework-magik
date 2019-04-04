@@ -228,7 +228,7 @@ class MagikSession(object):
             self._logger.debug('check telnet loop {}, will wait till {}'.format(duration, maxwait))
             try:
                 a_connection.open('localhost', port, 10)
-                prompt = a_connection.read_until( '>' )
+                prompt = a_connection.read_until( '>'.encode() )
                 a_connection.close()
                 connected = True
             except IOError:

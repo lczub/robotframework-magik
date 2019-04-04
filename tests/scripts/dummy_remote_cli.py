@@ -89,7 +89,7 @@ Missing end of statement''',
 
     def set_prompt(self, prompt):
         lastpart = prompt
-        if lastpart[-1] <> '>':
+        if lastpart[-1] != '>':
             # last sign must be '>'
             lastpart = '{}>'.format(lastpart)
         self.prompt = 'dummy:{}:{}'.format(self.port,lastpart)
@@ -166,7 +166,6 @@ Missing end of statement''',
 
         a_template = self.response_templates.get(magik_expression,
                                                  magik_expression)
-        a_template = a_template.encode(self.coding)
         a_response = a_template.format(self)
         return a_response
 
@@ -221,7 +220,7 @@ Missing end of statement''',
         if not first:
             # the default case - special data plus prompt
             response = self.calc_response(data)
-        self.connection.sendall(response)
+        self.connection.sendall( response.encode(self.coding) )
         self.logger.info( "send data: {}".format(response) )
 
     def check_close_socket(self, data):

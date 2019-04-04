@@ -125,7 +125,7 @@ class RobotMagikLauncher(object):
     def _port_alias(self, cli_port=None):
         " Build a session alias for CLI_PORT. If not defined, None is returned "
         alias = None
-        if cli_port <> None:
+        if cli_port != None:
             alias = int(cli_port)
         return alias
 
@@ -133,7 +133,7 @@ class RobotMagikLauncher(object):
         " Checks if a session already uses the CLI_PORT"
 
         alias = self._port_alias(cli_port)
-        if self._sessions.has_key(alias):
+        if alias in self._sessions:
             error_msg = 'Port {} is already in use by another session!'.format(cli_port)
             raise AssertionError(error_msg)
         else:
