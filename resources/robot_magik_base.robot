@@ -1,4 +1,4 @@
-#  Copyright 2012-2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...
 ...               To minimise the number of global variables, tests should use the keywords `Store Magik Object`
 ...               and `Get Magik Object`.
-...               They store the result of a Magik expression in a hash_table and returns another Magik expression, 
+...               They store the result of a Magik expression in a hash_table and returns another Magik expression,
 ...               which will return this result. So it is possible to share Magik objects between keywords (and tests)
 ...               and clean the image during the teardown from all created global variables. Only this hash_table must be set to *_unset*.
 ...
@@ -62,7 +62,7 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...
 ...               == Switching between sessions under test ==
 ...
-...               Tests handling with more than one magik session should use the TelnetLibrary keyword 
+...               Tests handling with more than one magik session should use the TelnetLibrary keyword
 ...               [http://robotframework.org/robotframework/latest/libraries/Telnet.html#Switch%20Connection|Switch Connection]
 ...               to switch the current connection between these sessions.
 ...

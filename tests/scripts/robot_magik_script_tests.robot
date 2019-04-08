@@ -1,4 +1,4 @@
-#  Copyright 2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2016-2019 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -154,7 +154,8 @@ Start and stop with default settings
     ${alias}=    Set Variable    ALIAS_start_telnet
     ${cli_port}=    Set Variable    ${DUMMY_CLI_PORT+1}
     ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    0.1    --cli_port
-    ...    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ...    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}
+    ...    stderr=${RF_LOG_STDERR
     Log Result    ${result_start}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}
@@ -183,7 +184,8 @@ Start and stop - cambridge
     ${wait}=    Set Variable    5.0
     ${swproduct}    Set Variable    ${SWPRODUCT}
     ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait}    --cli_port
-    ...    ${cli_port}    --aliasfile    ${aliasfile}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ...    ${cli_port}    --aliasfile    ${aliasfile}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}
+    ...    stderr=${RF_LOG_STDERR
     Log Result    ${result_start}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}
@@ -207,7 +209,8 @@ Start Dummy Gis Launcher
     ${wait_process}=    Convert To Number    ${wait_telnet}
     ${wait_process}=    Set Variable    ${wait_process + 2.0}
     ${handle_start}=    Process.Start Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait_telnet}    --cli_port
-    ...    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+    ...    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}
+    ...    stderr=${RF_LOG_STDERR}
     ${result_start}=    Wait For Process    handle=${handle_start}    timeout=${wait_process}    on_timeout=terminate
     Log Result    ${result_start}
     [Return]    ${result_start}

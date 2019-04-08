@@ -1,7 +1,7 @@
 Robot Framework Magik
 =====================
 
-Copyright 2012-2016 Luiko Czub, `Smallcases Software GmbH`_
+Copyright 2012-2019 Luiko Czub, `Smallcases Software GmbH`_
 License `Apache License 2.0`_
 
 Introduction
@@ -23,13 +23,13 @@ Some feature
 - the combination with Robot Framework `Standard Test Libraries`_  like *XML /  OperatingSystem* or `External Test Libraries`_ like *Selenium2Library / Database Library / HTTP library* allows to test the interaction with external systems 
 - the communication via telnet allows to test images / sessions running in a different network
 - running in a Jython_ environment allows to test the interaction with Java libraries
-
+  !!!unclear if PY37 changes compatible with Jython!!!
 **Robot Framework Magik** can also be used as a remote control for Magik images (4.x) and sessions (5.x)
 
 Some details
 ^^^^^^^^^^^^
 
-The Robot Magik keywords robot_magik_base.txt_ uses the TelnetLibrary_ to send
+The Robot Magik keywords robot_magik_base.robot_ uses the TelnetLibrary_ to send
 commands to Magik images / sessions and read there response. 
 Precondition is, that the Magik image / session under test has started a 
 remote_cli to allow a telnet communication.
@@ -41,7 +41,7 @@ remote_cli to allow a telnet communication.
 - or use the Python script robot_start_magik_image.py_ to 
   start an image / session with a remote_cli from outside the robot test
 
-The Robot Magik keywords robot_magik_dsview.txt_ defines additional keywords 
+The Robot Magik keywords robot_magik_dsview.robot_ defines additional keywords 
 for testing Smallworld ds_views, ds_collections and rwo_records.
 
 - see `Keyword Documentation robot_magik_dsview`_.
@@ -66,12 +66,11 @@ The Python script robot_stop_magik_image.py_
 
 Installation
 ^^^^^^^^^^^^
-Robot Framework Version >= 2.8.2 is required, running in a Python 2.7 environment.
-Robot Framework Version 3.x is recommended.
+Robot Framework Version >= 3.1.1 is required, running in a Python 3.7 environment.
 
 good practice is to us a separate virtualenv::
 
- C:\Python27\Scripts\virtualenv.exe D:\pyenv\robot
+ C:\Python37\Scripts\virtualenv.exe D:\pyenv\robot
  D:\pyenv\robot\scripts\activate
  pip install --no-cache-dir robotframework
  
@@ -148,13 +147,13 @@ run example test under Smallworld 4.x
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- pybot --critical DsView* --variablefile resources/params/variables_sw43_cbg.py examples
+ robot --critical DsView* --variablefile resources/params/variables_sw43_cbg.py examples
 
 run example test under Smallworld 5.x
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- pybot --critical DsView* --variablefile resources/params/variables_sw51_cbg.py examples
+ robot --critical DsView* --variablefile resources/params/variables_sw51_cbg.py examples
 
 Example B - run tests in a closed image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -178,7 +177,7 @@ run example tests on the closed image
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- pybot --exclude DsView* examples\c*
+ robot --exclude DsView* examples\c*
 
 - run all *Non DsView* example tests - see *[TAGS]* label inside the test definition files
 - The `Robot Framework`_ test reports are written into the current working 
@@ -221,7 +220,7 @@ run example and self tests on the startup image
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- pybot --include Keyword* --include Example* --variable CLI_PORT:14003
+ robot --include Keyword* --include Example* --variable CLI_PORT:14003
        --outputdir e:\tmp\robot\logs --xunitfile cbg_tests.xml 
 	   .\tests .\examples\c*
 
@@ -254,8 +253,8 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _master as zip: https://github.com/lczub/robotframework-magik/archive/master.zip
 .. _RobotMagikLauncher.py: resources/RobotMagikLauncher.py
 .. _robot_start_magik_image.py: resources/scripts/robot_start_magik_image.py
-.. _robot_magik_base.txt: resources/robot_magik_base.txt
-.. _robot_magik_dsview.txt: resources/robot_magik_dsview.txt
+.. _robot_magik_base.robot: resources/robot_magik_base.robot
+.. _robot_magik_dsview.robot: resources/robot_magik_dsview.robot
 .. _robot_stop_magik_image.py: resources/scripts/robot_stop_magik_image.py
 .. _start_robot_remote_cli.magik: resources/scripts/start_robot_remote_cli.magik
 .. _start_robot_remote_cli.script: resources/scripts/start_robot_remote_cli.script

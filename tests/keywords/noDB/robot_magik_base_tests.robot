@@ -1,4 +1,4 @@
-#  Copyright 2012-2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ Documentation     Test Robot Framework high level keywords for Smallworld Magik
 ...               Tests base connection to a smallworld swaf image with remote_cli via telnet
 Suite Teardown    Close All Connections
 Force Tags        KeywordTest    BaseTest
-Resource          ../../../resources/robot_magik_base.txt
+Resource          ../../../resources/robot_magik_base.robot
 Variables         ../../../resources/params/variables_sw43_cbg.py
 
 *** Test Cases ***

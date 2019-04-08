@@ -1,4 +1,4 @@
-#  Copyright 2012-2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ Documentation     Example - Test Smallworld Magik coordinates with RobotFramewor
 Suite Setup       Run Keywords    Open Magik Connection    Prepare Magik Image
 Suite Teardown    Run Keywords    Clean Magik Image    Close Magik Connection
 Force Tags        ExampleTest    CoordinateTest
-Resource          ../resources/robot_magik_base.txt
+Resource          ../resources/robot_magik_base.robot
 
 *** Test Cases ***
 Test example - single distance calculation between two coordinates

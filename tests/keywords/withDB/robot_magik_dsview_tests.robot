@@ -1,4 +1,4 @@
-#  Copyright 2012-2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ Documentation     Test Robot Framework Magik keywords for Smallworld ds_views an
 Suite Setup       Run Keywords    Open Magik Connection    Prepare Magik Image
 Suite Teardown    Run Keywords    Clean Magik Image    Close Magik Connection
 Force Tags        KeywordTest    DsViewTest
-Resource          ../../../resources/robot_magik_dsview.txt
+Resource          ../../../resources/robot_magik_dsview.robot
 
 *** Test Cases ***
 Test keyword 'Get DsView' for ace view

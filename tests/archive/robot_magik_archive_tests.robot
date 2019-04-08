@@ -1,4 +1,4 @@
-#  Copyright 2012-2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ Library           String
 
 *** Variables ***
 ${ROBOT_MAGIK_DIR}    ${CURDIR}/../..
-${ROBOT_MAGIK_COPYRIGHT}    Copyright*2016*Luiko Czub*Smallcases Software GmbH
+${ROBOT_MAGIK_COPYRIGHT}    Copyright*2019*Luiko Czub*Smallcases Software GmbH
 ${ROBOT_MAGIK_LICENSE}    Apache License*2.0
 
 *** Test Cases ***
@@ -38,8 +38,8 @@ Test robot magik documentation files exist in doc directory
 
 Test robot magik keyword definitions exist in resources directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/resources/robot_magik_base.txt
-    ${ROBOT_MAGIK_DIR}/resources/robot_magik_dsview.txt
+    ${ROBOT_MAGIK_DIR}/resources/robot_magik_base.robot
+    ${ROBOT_MAGIK_DIR}/resources/robot_magik_dsview.robot
     ${ROBOT_MAGIK_DIR}/resources/RobotMagikLauncher.py
 
 Test robot magik start and stop scripts exist in scripts directory
@@ -53,24 +53,24 @@ Test robot magik start and stop scripts exist in scripts directory
 
 Test robot magik self tests exist in tests directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/tests/keywords/noDB/__init__.txt
-    ${ROBOT_MAGIK_DIR}/tests/keywords/noDB/robot_magik_base_tests.txt
-    ${ROBOT_MAGIK_DIR}/tests/keywords/withDB/robot_magik_dsview_tests.txt
-    ${ROBOT_MAGIK_DIR}/tests/keywords/withDB/__init__.txt
-    ${ROBOT_MAGIK_DIR}/tests/keywords/Robot_Magik_Launcher_Dummy_Tests.txt
-    ${ROBOT_MAGIK_DIR}/tests/keywords/Robot_Magik_Launcher_Gis_Tests.txt
-    ${ROBOT_MAGIK_DIR}/tests/archive/robot_magik_archive_tests.txt
-    ${ROBOT_MAGIK_DIR}/tests/scripts/robot_magik_prompt_tests.txt
-    ${ROBOT_MAGIK_DIR}/tests/scripts/robot_magik_script_tests.txt
+    ${ROBOT_MAGIK_DIR}/tests/keywords/noDB/__init__.robot
+    ${ROBOT_MAGIK_DIR}/tests/keywords/noDB/robot_magik_base_tests.robot
+    ${ROBOT_MAGIK_DIR}/tests/keywords/withDB/robot_magik_dsview_tests.robot
+    ${ROBOT_MAGIK_DIR}/tests/keywords/withDB/__init__.robot
+    ${ROBOT_MAGIK_DIR}/tests/keywords/Robot_Magik_Launcher_Dummy_Tests.robot
+    ${ROBOT_MAGIK_DIR}/tests/keywords/Robot_Magik_Launcher_Gis_Tests.robot
+    ${ROBOT_MAGIK_DIR}/tests/archive/robot_magik_archive_tests.robot
+    ${ROBOT_MAGIK_DIR}/tests/scripts/robot_magik_prompt_tests.robot
+    ${ROBOT_MAGIK_DIR}/tests/scripts/robot_magik_script_tests.robot
     ${ROBOT_MAGIK_DIR}/tests/scripts/dummy_gis_launcher.py
     ${ROBOT_MAGIK_DIR}/tests/scripts/dummy_remote_cli.py
 
 Test robot magik examples exist in examples directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/examples/__init__.txt
-    ${ROBOT_MAGIK_DIR}/examples/coordinate_tests.txt
-    ${ROBOT_MAGIK_DIR}/examples/cs_collection_tests.txt
-	
+    ${ROBOT_MAGIK_DIR}/examples/__init__.robot
+    ${ROBOT_MAGIK_DIR}/examples/coordinate_tests.robot
+    ${ROBOT_MAGIK_DIR}/examples/cs_collection_tests.robot
+
 Test robot magik default parameter exist in resources directory
     [Template]    File Should Exist
     ${ROBOT_MAGIK_DIR}/resources/params/variables_sw43_cbg.py
@@ -87,13 +87,13 @@ Test file 'VERSION.bat' not exist
 
 Test robot magik resources includes copyright info
     [Template]    Check Header Info for directory
-    ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_COPYRIGHT}    *.txt
+    ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
     ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_COPYRIGHT}    *.py
-    ${ROBOT_MAGIK_DIR}/tests/keywords    ${ROBOT_MAGIK_COPYRIGHT}    *.txt
-    ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.txt
+    ${ROBOT_MAGIK_DIR}/tests/keywords    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
+    ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
     ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.py
-    ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_COPYRIGHT}    *.txt    2
-    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_COPYRIGHT}    *.txt
+    ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_COPYRIGHT}    *.robot    2
+    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
     ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_COPYRIGHT}    *.py
     ${ROBOT_MAGIK_DIR}    ${ROBOT_MAGIK_COPYRIGHT}    README.md
     ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.py
@@ -101,21 +101,21 @@ Test robot magik resources includes copyright info
 
 Test robot magik resources includes license info
     [Template]    Check Header Info for directory
-    ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_LICENSE}    *.txt
+    ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_LICENSE}    *.robot
     ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_LICENSE}    *.py
-    ${ROBOT_MAGIK_DIR}/tests/keywords    ${ROBOT_MAGIK_LICENSE}    *.txt
-    ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_LICENSE}    *.txt
+    ${ROBOT_MAGIK_DIR}/tests/keywords    ${ROBOT_MAGIK_LICENSE}    *.robot
+    ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_LICENSE}    *.robot
     ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_LICENSE}    *.py
-    ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_LICENSE}    *.txt    2
-    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_LICENSE}    *.txt
+    ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_LICENSE}    *.robot    2
+    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_LICENSE}    *.robot
     ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_LICENSE}    *.py
     ${ROBOT_MAGIK_DIR}    ${ROBOT_MAGIK_LICENSE}    README.md    2
-    ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_LICENSE}    *.txt
+    ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_LICENSE}    *.robot
     ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_LICENSE}    *.py
-	
+
 Test no '*.pyc' should be included
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/resources/scripts/*.pyc	
+    ${ROBOT_MAGIK_DIR}/resources/scripts/*.pyc
 
 *** Keywords ***
 Check Header Info for file

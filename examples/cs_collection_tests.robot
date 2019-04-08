@@ -1,4 +1,4 @@
-#  Copyright 2012-2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ Documentation     Example - Test Smallworld coordinate system collection with Ro
 Suite Setup       Run Keywords    Open Magik Connection    Prepare Magik Image    Get DsView
 Suite Teardown    Run Keywords    Rollback DsView    Clean Magik Image    Close Magik Connection
 Force Tags        ExampleTest    CoordinateTest    DsViewTest
-Resource          ../resources/robot_magik_dsview.txt
+Resource          ../resources/robot_magik_dsview.robot
 
 *** Test Cases ***
 Test example - Get coordinate_system collection

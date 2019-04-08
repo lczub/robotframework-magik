@@ -1,6 +1,14 @@
 Changes in Robot Framework Magik
 ================================
 
+Robot Framework Magik release notes v0.5.0 (under construction)
+----------------------------------------------------------
+
+- Enh #19: Support Robot Framework 3.1 and Python 3.7
+
+  - resource and test filenames extension changed from *.txt* to *.robot*
+  - Python 3.7 is now required - changes not compatible with PY27
+
 Robot Framework Magik release notes v0.4.4 (Dec. 2016)
 ----------------------------------------------------------
 

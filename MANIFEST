@@ -1,4 +1,4 @@
-resources/*.txt
+resources/*.robot
 resources/*.py
 doc/*.html
 tests

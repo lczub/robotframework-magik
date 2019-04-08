@@ -1,4 +1,4 @@
-#  Copyright 2012-2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ Documentation     Robot Framework Magik keywords for testing Smallworld ds_views
 ...               These keywords uses the [http://robotframework.org/robotframework/libraries/Telnet.html|TelnetLibrary] to send commands to Magik images and read there response.
 ...
 ...               Details see [./robot_magik_base.html|robot_magik_base] documentation
-Resource          robot_magik_base.txt
+Resource          robot_magik_base.robot
 
 *** Variables ***
 ${CLI_DSVIEW_NAME}    gis

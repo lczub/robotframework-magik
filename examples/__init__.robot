@@ -1,4 +1,4 @@
-#  Copyright 2012-2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@ Documentation     Example - Initialization file starting a Magik Session as Suit
 Suite Setup       Start And Wait For Magik Session
 Suite Teardown    Stop Magik Session
 Library           Process
-Variables         ../../../resources/params/variables_sw43_cbg.py
-Library           ../../../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}
+Variables         ../resources/params/variables_sw43_cbg.py
+Library           ../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}
 
 *** Keywords ***
 Start And Wait For Magik Session
