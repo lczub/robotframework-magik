@@ -51,7 +51,7 @@ class MagikSession(object):
     ''' Class for starting Magik Sessions '''
 
     def __init__(self, swproduct, gis_alias, cli_port=14001, aliasfile=None,
-                 envfile=None, logdir=None, login=None, script=None,
+                 envfile=None, java_home=None, logdir=None, login=None, script=None,
                  msf_startup=False, wait=30, test_launch=None):
         self._defaults = self._defaults_for_start()
         self._swproduct = swproduct
@@ -59,6 +59,7 @@ class MagikSession(object):
         self.cli_port = int(cli_port or 14001)
         self._aliasfile = aliasfile
         self._envfile = envfile
+        self._java_home = java_home
         self._logdir = logdir or self._defaults['logdir']
         self._login = login
         self._script = script or self._defaults['script']
@@ -132,6 +133,12 @@ class MagikSession(object):
         if self._envfile:
             self.gis_args.extend(["-e", self._envfile])
             self.gis_envs['SW_GIS_ENVIRONMENT_FILE'] = self._envfile
+
+        # check, if special jre / jdk required
+        if self._java_home:
+            jhome = self._java_home
+            self.gis_envs['JAVA_HOME'] = jhome 
+            self.log_info('JAVA_HOME set to {}'.format(jhome))
 
         # check if log file directory exists
         if not os.path.exists(self._logdir):
@@ -289,6 +296,8 @@ class CmdMagikSession(MagikSession):
                               help='port, the remote_cli listens on (default: %(default)s)')
         a_parser.add_argument('--envfile',
                               help='file with session specific environment settings')
+        a_parser.add_argument('--java_home',
+                              help='special jre/jdk to use for acp or sw5x sessions')
         a_parser.add_argument('--piddir', default=defaultargs['piddir'],
                               help='directory for the pidfile (default: %(default)s) ')
         a_parser.add_argument('--logdir', default=defaultargs['logdir'],
@@ -328,6 +337,7 @@ class CmdMagikSession(MagikSession):
         self.cli_port = start_args.cli_port
         self._aliasfile = start_args.aliasfile
         self._envfile = start_args.envfile
+        self._java_home = start_args.java_home
         self._logdir = start_args.logdir
         self._login = start_args.login
         self._script = start_args.script

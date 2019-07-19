@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2016 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2016-2019 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ class RobotMagikLauncher(object):
         | ${SWPRODUCT}   |  C:${/}Smallworld${/}core |
         | ${ALIASFILE}  |  ${SWPRODUCT}${/}..${/}cambridge_db${/}config${/}gis_aliases |
         | ${ALIASNAME}  |  cambridge_db_open |
+        | ${JAVA_HOME}   |  C:${/}Tools${/}jre |
 
         | * Test Cases * |
         | Calculate Distance with Magik |
@@ -51,7 +52,7 @@ class RobotMagikLauncher(object):
 
         | * Keywords * |
         | Start And Wait For Magik Session |
-        |  | Start Magik Session | aliasfile=${ALIASFILE} | gis_alias=${ALIASNAME} |
+        |  | Start Magik Session | aliasfile=${ALIASFILE} | gis_alias=${ALIASNAME} | java_home=${JAVA_HOME} |
         |  | Session Should Be Reachable |
 
 
@@ -60,14 +61,15 @@ class RobotMagikLauncher(object):
     ROBOT_LIBRARY_SCOPE = 'GLOBAL'
 
     def __init__(self, swproduct=None, gis_alias=None, cli_port=14001,
-                 aliasfile=None, envfile=None, logdir=None, login=None, script=None,
-                 msf_startup=None, wait='30s', test_launch=None):
+                 aliasfile=None, envfile=None, java_home=None, logdir=None, login=None,
+                 script=None, msf_startup=None, wait='30s', test_launch=None):
 
         self._swproduct = swproduct
         self._gis_alias = gis_alias
         self.cli_port = cli_port or 14001
         self._aliasfile = aliasfile
         self._envfile = envfile
+        self._java_home = java_home
         self._logdir = logdir
         self._login = login
         self._script = script
@@ -140,12 +142,12 @@ class RobotMagikLauncher(object):
             logger.info('Port {} is free to use'.format(cli_port))
 
     def start_magik_session(self, swproduct=None, gis_alias=None, cli_port=None,
-                            aliasfile=None, envfile=None, logdir=None, login=None, script=None,
-                            msf_startup=None, wait=None, test_launch=None):
+                            aliasfile=None, envfile=None, java_home=None, logdir=None, login=None, 
+                            script=None, msf_startup=None, wait=None, test_launch=None):
         """starts a new Magik session / image with the given SWPRODUCT and ALIAS
 
         The ``swproduct``, ``gis_alias``, ``cli_port``, ``aliasfile``, ``envfile``,
-        ``logdir``, ``login`` arguments get default values when the library is
+        ``java_home``, ``logdir``, ``login`` arguments get default values when the library is
         [#Importing|imported].
         Setting them here overrides those values for the opened connection.
 
@@ -158,6 +160,7 @@ class RobotMagikLauncher(object):
         swproduct = swproduct or self._swproduct
         gis_alias = gis_alias or self._gis_alias
         envfile = envfile or self._envfile
+        java_home = java_home or self._java_home
         cli_port = cli_port or self.cli_port
         aliasfile = aliasfile or self._aliasfile
         logdir = logdir or self._logdir or outputdir
@@ -178,8 +181,8 @@ class RobotMagikLauncher(object):
 
         a_session = RobotMagikSession(self._ProcessInstance(),
                                     swproduct, gis_alias, cli_port, aliasfile,
-                                    envfile, logdir, login, script, msf_startup,
-                                    timestr_to_secs(wait), test_launch)
+                                    envfile, java_home, logdir, login, script, 
+                                    msf_startup, timestr_to_secs(wait), test_launch)
         a_session.start_session()
         self._register_session(a_session)
         return a_session

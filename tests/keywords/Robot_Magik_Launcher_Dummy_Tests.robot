@@ -21,6 +21,7 @@ Library           ../../resources/RobotMagikLauncher.py    cli_port=${DUMMY_CLI_
 ${DUMMY_LAUNCHER}    ${CURDIR}${/}..${/}scripts${/}dummy_gis_launcher.py
 ${DUMMY_CLI_PORT}    ${14011}
 ${DUMMY_ENVFILE}    ${CURDIR}${/}dummy_envfile.bat
+${DUMMY_JRE}      ${CURDIR}${/}jre_dummy
 
 *** Test Cases ***
 start magik session - no swproduct
@@ -130,4 +131,13 @@ start session with special environment
     Session Should Be Reachable
     ${result}=    Stop Magik Session
     Should Contain    ${result.stdout}    SW_GIS_ENVIRONMENT_FILE=${DUMMY_ENVFILE}
+    [Teardown]    Stop All Magik Sessions
+
+start session with special java
+    [Documentation]    starting a session with a special jre / jdk should set the environment variable JAVA_HOME
+    [Tags]    noTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_envfile_start_telnet    java_home=${DUMMY_JRE}    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
+    ${result}=    Stop Magik Session
+    Should Contain    ${result.stdout}    JAVA_HOME=${DUMMY_JRE}
     [Teardown]    Stop All Magik Sessions

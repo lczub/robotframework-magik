@@ -26,9 +26,9 @@
 
 # time in sec to wait while starting the magik image / session till a telnet
 # communication should be available
-START_WAIT = "30s"
+START_WAIT = "60s"
 # path to smallworld core product
-SWPRODUCT = "C:\\Smallworld\\NRM51-B9-i82\\core"
+SWPRODUCT = "C:\\Smallworld\\519NRM\\core"
 # file with gis alias definitions
 ALIASFILE = SWPRODUCT + "\\..\\cambridge_db\\config\\gis_aliases"
 # gis alias name for cambridge image / session
@@ -44,6 +44,11 @@ LOGIN = "root/ "
 # - the startup magik file to init the required telnet communication will be
 #   loaded using the environment variable SW_MSF_STARTUP_MAGIK
 MSFSTARTUP = True
+
+# Starting Smallworld 5.x sessions must define jre / jdk to be used
+# - 5.2 can works with open jdk12, 5.1 requires an 1.8 ??
+# Starting Smallworld 4.3 images doesn't requires this, except images works with java acp
+JAVA_HOME = "C:\\Smallworld\\Tools\\jdk\\jdk1.8.0_202-x64"
 
 # ========================================================================
 # settings for communicate with the magik session

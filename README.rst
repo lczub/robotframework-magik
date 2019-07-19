@@ -68,7 +68,7 @@ Installation
 ^^^^^^^^^^^^
 Robot Framework Version >= 3.1.1 is required, running in a Python 3.7 environment.
 
-good practice is to us a separate virtualenv::
+good practice is to use a separate virtualenv::
 
  C:\Python37\Scripts\virtualenv.exe D:\pyenv\robot
  D:\pyenv\robot\scripts\activate
@@ -79,13 +79,13 @@ to *D:\robotframework-magik*). Now you are able to start the example test via::
 
  D:\pyenv\robot\scripts\activate
  cd D:\robotframework-magik
- pybot --critical DsView* --variablefile resources/params/variables_sw43_cbg.py examples
+ robot --critical DsView* --variablefile resources\params\variables_sw43_cbg.py examples
  
 Alternative installations under Jython_ or with the *Standalone JAR distribution* in
 a Java environment see `RobotFramework UserGuide Installation`_
 
 - compatability with Jython 2.7 or the *Standalone JAR distribution* is not full tested currently
-
+ mn
 Alternatively use `PortablePythonWithRobot`_, a portable (standalone) installation of the test automation `Robot Framework`_ which includes *robotframework-magik*, the *Ride* editor and sample scripts.
 
 History
@@ -204,10 +204,11 @@ start the startup image with remote_cli
 ::
 
  python resources\scripts\robot_start_magik_image.py 
+        --msf_startup --java_home e:\tools\jre
         --aliasfile e:\test\gis_aliases 
         --piddir e:\tmp\robot\pids --logdir e:\tmp\robot\logs 
         --login root/  --cli_port 14003 --wait 10
-        e:\Smallworld\CST42\product cam_db_open_swaf
+        e:\Smallworld\CST51\product cam_db_open_swaf
 
 - Now the cam_db_open_swaf image is running with a remote_cli, listening on 
   port 14003 under user *root*.
@@ -215,6 +216,9 @@ start the startup image with remote_cli
   written to *e:\\tmp\\robot\\logs*.
 - The pid-file *14003.pid* is written to *e:\\tmp\\robot\\pids*
 - The start process has wait *10 seconds* for checking the telnet connection.
+- starting a SW5.x session requires to define a --java_home and --msf_startup
+- definition --java_home can be replace with defining --env_file ENV_FILE, 
+  when ENV_FILE includes a JAVA_HOME defintion or when JAVA_HOME is defined globaly
 
 run example and self tests on the startup image
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -18,7 +18,7 @@ Suite Setup       Start And Wait For Magik Session
 Suite Teardown    Stop Magik Session
 Library           Process
 Variables         ../../../resources/params/variables_sw43_cbg.py
-Library           ../../../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}
+Library           ../../../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}    java_home=${JAVA_HOME}
 
 *** Keywords ***
 Start And Wait For Magik Session
