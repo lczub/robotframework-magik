@@ -91,16 +91,16 @@ Test keyword 'Prepare Magik Image'
 
 Test keyword 'Build Magik Object Expression'
     ${obj_exp}=    Build Magik Object Expression    bibo
-    Should Be Equal As Strings    ${obj_exp}    ${CLI_OBJ_HASH}[:bibo]
+    Should Be Equal As Strings    ${obj_exp}    ${CLI_OBJ_HASH}\[:bibo]
 
 Test keyword 'Store Magik Object'
     ${obj_exp}=    Store Magik Object    ernie    2 * 11
-    Should Be Equal As Strings    ${obj_exp}    ${CLI_OBJ_HASH}[:ernie]
+    Should Be Equal As Strings    ${obj_exp}    ${CLI_OBJ_HASH}\[:ernie]
     ${obj}=    Execute Magik Command    ${obj_exp}
     Should Be Equal As Integers    ${obj}    22
 
 Test keyword 'Get Magik Object'
-    Execute Magik Command    ${CLI_OBJ_HASH}[:monster] << :no_bird
+    Execute Magik Command    ${CLI_OBJ_HASH}\[:monster] << :no_bird
     ${obj}=    Get Magik Object    monster
     Should Be Equal    ${obj}    :no_bird
     Should Match Regexp    ${obj}    ^:no_bird$

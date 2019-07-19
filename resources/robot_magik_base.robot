@@ -183,7 +183,7 @@ Build Magik Object Expression
     [Documentation]    Returns a Magik expression, which will return a Magik object from the global hash_table
     ...
     ...    This is an internal keyword, used by `Store Magik Object` and `Get Magik Object`
-    ${obj_expression}=    Convert To String    ${CLI_OBJ_HASH}[:${obj_name}]
+    ${obj_expression}=    Convert To String    ${CLI_OBJ_HASH}\[:${obj_name}]
     [Return]    ${obj_expression}
 
 Store Magik Object
