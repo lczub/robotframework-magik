@@ -17,7 +17,7 @@
 #  limitations under the License.
 #
 # ------------------------------------------------------------------------
-# variables for robot magik example test agains smallworld 519 - swaf
+# variables for robot magik example test agains smallworld 520 - cbg
 # ------------------------------------------------------------------------
 
 # ========================================================================
@@ -26,15 +26,15 @@
 
 # time in sec to wait while starting the magik image / session till a telnet
 # communication should be available
-START_WAIT = "30s"
+START_WAIT = "60s"
 # path to smallworld core product
-SWPRODUCT = "C:\\Smallworld\\519NRM\\core"
+SWPRODUCT = "C:\\Smallworld\\520NRM\\core"
 # file with gis alias definitions
-ALIASFILE = SWPRODUCT + "\\config\\gis_aliases"
+ALIASFILE = SWPRODUCT + "\\..\\cambridge_db\\config\\gis_aliases"
 # gis alias name for cambridge image / session
-ALIASNAME = "swaf"
+ALIASNAME = "cambridge_db_open"
 # Login for authorisation - user/password
-# LOGIN = "root/ "
+LOGIN = "root/ "
 
 # starting Smallworld 4.3 images should set MSFSTARTUP = None or False
 # - the startup script to init the required telnet communication will be
@@ -48,8 +48,7 @@ MSFSTARTUP = True
 # Starting Smallworld 5.x sessions must define jre / jdk to be used
 # - 5.2 can works with open jdk12, 5.1 requires an 1.8 ??
 # Starting Smallworld 4.3 images doesn't requires this, except images works with java acp
-JAVA_HOME = "C:\\Smallworld\\Tools\\jdk\\jdk1.8.0_202-x64"
-
+JAVA_HOME = "C:\\Smallworld\\Tools\\jdk\\jdk-12"
 
 # ========================================================================
 # settings for communicate with the magik session
@@ -64,4 +63,4 @@ CLI_TIMEOUT = 10.0
 # settings for dataset test
 # ========================================================================
 # Name of the dataset, which should be used for tests
-#CLI_DSVIEW_NAME = "gis"
+CLI_DSVIEW_NAME = "gis"

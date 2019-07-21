@@ -17,7 +17,7 @@
 #  limitations under the License.
 #
 # ------------------------------------------------------------------------
-# variables for robot magik example test agains smallworld 519 - swaf
+# variables for robot magik example test agains smallworld 520 - swaf
 # ------------------------------------------------------------------------
 
 # ========================================================================
@@ -28,7 +28,7 @@
 # communication should be available
 START_WAIT = "30s"
 # path to smallworld core product
-SWPRODUCT = "C:\\Smallworld\\519NRM\\core"
+SWPRODUCT = "C:\\Smallworld\\520NRM\\core"
 # file with gis alias definitions
 ALIASFILE = SWPRODUCT + "\\config\\gis_aliases"
 # gis alias name for cambridge image / session
@@ -48,7 +48,7 @@ MSFSTARTUP = True
 # Starting Smallworld 5.x sessions must define jre / jdk to be used
 # - 5.2 can works with open jdk12, 5.1 requires an 1.8 ??
 # Starting Smallworld 4.3 images doesn't requires this, except images works with java acp
-JAVA_HOME = "C:\\Smallworld\\Tools\\jdk\\jdk1.8.0_202-x64"
+JAVA_HOME = "C:\\Smallworld\\Tools\\jdk\\jdk-12"
 
 
 # ========================================================================

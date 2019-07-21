@@ -17,7 +17,7 @@
 #  limitations under the License.
 #
 # ------------------------------------------------------------------------
-# variables for robot magik example test agains smallworld 510 - cbg
+# variables for robot magik example test agains smallworld 519 - cbg
 # ------------------------------------------------------------------------
 
 # ========================================================================
