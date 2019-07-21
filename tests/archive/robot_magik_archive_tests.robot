@@ -114,7 +114,7 @@ Test robot magik resources includes license info
     ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_LICENSE}    *.py
 
 Test no '*.pyc' should be included
-    [Template]    File Should Exist
+    [Template]    File Should Not Exist
     ${ROBOT_MAGIK_DIR}/resources/scripts/*.pyc
 
 *** Keywords ***
@@ -122,9 +122,9 @@ Check Header Info for file
     [Arguments]    ${file_path}    ${header_info}    ${expected_count}=1
     Log    Suche '${header_info}'
     ${info_lines}=    Grep File    ${file_path}    ${header_info}
-    Should Not Be Empty    ${info_lines}    Wrong or missing header info in ${file_path}
+    Run Keyword And Continue On Failure    Should Not Be Empty    ${info_lines}    Wrong or missing header info in ${file_path}
     ${info_counts}=    Get Line Count    ${info_lines}
-    Should Be Equal As Integers    ${expected_count}    ${info_counts}    Unexpected number of header infos in ${file_path}
+    Run Keyword And Continue On Failure    Should Be Equal As Integers    ${expected_count}    ${info_counts}    Unexpected number of header infos in ${file_path}
 
 Check Header Info for directory
     [Arguments]    ${directory}    ${header_info}    ${file_pattern}=${None}    ${expected_count_per_file}=1

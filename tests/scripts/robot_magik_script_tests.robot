@@ -200,7 +200,7 @@ Start Image Script with special environment
     Log Result    ${result}
     Should Contain    ${result.stdout}    SW_GIS_ENVIRONMENT_FILE=${DUMMY_ENVFILE}
     Should Contain    ${result.stdout}    -e ${DUMMY_ENVFILE}
-    Should Contain    ${result.stdout}    Image is now reachable via telnet localhost:${DEFAULT_CLI_PORT} with prompt dummy:${DEFAULT_CLI_PORT}:MagikSF>
+    Should Contain    ${result.stdout}    Image is now reachable via telnet localhost:${DEFAULT_CLI_PORT} with prompt b'dummy:${DEFAULT_CLI_PORT}:MagikSF>
     Should Be Equal As Integers    ${result.rc}    0
 
 *** Keywords ***

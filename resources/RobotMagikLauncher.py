@@ -244,7 +244,10 @@ class RobotMagikLauncher(object):
     def stop_all_magik_sessions(self):
         ''' Stops the all Magik session '''
 
-        session_list = self._sessions.values()
+        # ensure working with a list and not a view
+        # otherwise py3 can abort with an error
+        # - dictionary changed size during iteration
+        session_list = list( self._sessions.values() )
         for a_session in session_list:
             self._current_session = a_session
             self.stop_magik_session()
