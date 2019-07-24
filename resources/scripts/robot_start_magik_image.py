@@ -76,6 +76,10 @@ class MagikSession(object):
         # build gis start command line and environment variables
         self.gis_args = [] # command line arguments gis start
         self.gis_envs = {} # special robot environment variables gis session
+        
+        # base environment  see https://www.scivision.dev/python-calling-python-subprocess/
+        self.gis_envs.update(os.environ)
+
         self._prepare_gis_args_and_envs()
 
     def _config_logger(self):
@@ -193,14 +197,13 @@ class MagikSession(object):
         # start the gis (or test) launcher
         self.log_info('Start gis session with: {}'.format(' '.join(self.gis_args)))
 
-        # add general parent environment settings to special child environments
-        self.gis_envs.update(os.environ)
         self._start_process()
         self.log_info('Logfile see {}'.format(self._log_fname))
 
 
     def _start_process(self):
         ''' start this gis launcher program '''
+        
         self.process_popen = Popen(self.gis_args, env=self.gis_envs)
         self.process_id    = self.process_popen.pid
 

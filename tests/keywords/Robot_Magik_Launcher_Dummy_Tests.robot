@@ -16,6 +16,7 @@
 Force Tags        dummyLaunch
 Library           Process
 Library           ../../resources/RobotMagikLauncher.py    cli_port=${DUMMY_CLI_PORT}    wait=0.1s
+Library    OperatingSystem
 
 *** Variables ***
 ${DUMMY_LAUNCHER}    ${CURDIR}${/}..${/}scripts${/}dummy_gis_launcher.py
@@ -140,4 +141,24 @@ start session with special java
     Session Should Be Reachable
     ${result}=    Stop Magik Session
     Should Contain    ${result.stdout}    JAVA_HOME=${DUMMY_JRE}
+    [Teardown]    Stop All Magik Sessions
+
+start session with diferent java
+    [Documentation]    starting a session with a jre diffferent from current JAVA_HOME
+    [Tags]    noTelnet
+    Set Environment Variable    JAVA_HOME    NOT_WANTED_JRE
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_envfile_start_telnet    java_home=${DUMMY_JRE}    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
+    ${result}=    Stop Magik Session
+    Should Contain    ${result.stdout}    JAVA_HOME=${DUMMY_JRE}
+    [Teardown]    Stop All Magik Sessions
+    
+start session with default java
+    [Documentation]    starting a session using the system JAVA_HOME
+    [Tags]    noTelnet
+    Set Environment Variable    JAVA_HOME    SYSTEM_JRE
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_envfile_start_telnet    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
+    ${result}=    Stop Magik Session
+    Should Contain    ${result.stdout}    JAVA_HOME=SYSTEM_JRE
     [Teardown]    Stop All Magik Sessions
