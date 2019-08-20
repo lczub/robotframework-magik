@@ -29,6 +29,7 @@ Test robot magik info files exist in main directory
     ${ROBOT_MAGIK_DIR}/README.rst
     ${ROBOT_MAGIK_DIR}/LICENSE-2.0.txt
     ${ROBOT_MAGIK_DIR}/CHANGES.rst
+    ${ROBOT_MAGIK_DIR}/Pipfile
 
 Test robot magik documentation files exist in doc directory
     [Template]    File Should Exist
