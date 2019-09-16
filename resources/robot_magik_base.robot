@@ -43,7 +43,7 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...               These connection parameters could be set for each test run separatly via variables (see `Open Magik Connection`).
 ...
 ...               Example, how to start the [../examples/coordinate_tests.txt|coordinate tests] with special connection settings:
-...               | pybot --variable CLI_PORT:14099 --variable CLI_HOST:111.222.333.44 --variable CLI_TIMEOUT:15 coordinate_tests.txt
+...               | robot --variable CLI_PORT:14099 --variable CLI_HOST:111.222.333.44 --variable CLI_TIMEOUT:15 coordinate_tests.txt
 ...
 ...               To minimise the number of global variables, tests should use the keywords `Store Magik Object`
 ...               and `Get Magik Object`.
@@ -71,8 +71,8 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...               - keywords for testing Smallworld ds_views, ds_collections and rwo records see [./robot_magik_dsview.html|robot_magik_dsview]
 ...
 ...               == Requirements ==
-...               Robot Framework Version >= 2.8.2 is required, cause `Execute Magik Command` uses the String library keyword
-...               [http://robotframework.org/robotframework/latest/libraries/String.html#Replace%20String%20Using%20Regexp|Remove String Using Regexp]
+...               Robot Framework Version >= 3.1.1 is required, running in a Python 3.7 environment.
+...               
 Library           Telnet    3.0
 Library           String
 

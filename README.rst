@@ -18,8 +18,8 @@ Some feature
 
 - each production image / session based on a *swaf* can be tested without loading additional modification code
 - `Robot Framework`_ keyword-driven testing approach allows to hide complex Magik requests in readable keywords
-- supports Smallworld 4.2/4.3 images and Smallworld 5.1 sessions
-- it is possible to handle several images / sessions during one test run, for example to test there interaction
+- supports Smallworld 4.2/4.3 images and Smallworld 5.1/5.2 sessions
+- it is possible to handle several images / sessions during one test run, for example to test their interaction
 - the combination with Robot Framework `Standard Test Libraries`_  like *XML /  OperatingSystem* or `External Test Libraries`_ like *Selenium2Library / Database Library / HTTP library* allows to test the interaction with external systems 
 - the communication via telnet allows to test images / sessions running in a different network
 - running in a Jython_ environment allows to test the interaction with Java libraries
@@ -30,7 +30,7 @@ Some details
 ^^^^^^^^^^^^
 
 The Robot Magik keywords robot_magik_base.robot_ uses the TelnetLibrary_ to send
-commands to Magik images / sessions and read there response. 
+commands to Magik images / sessions and read their response. 
 Precondition is, that the Magik image / session under test has started a 
 remote_cli to allow a telnet communication.
 
@@ -75,7 +75,7 @@ good practice is to use a separate virtualenv::
  pip install --no-cache-dir robotframework
  
 download current `master as zip`_ or latest `releases`_ and extract it (for example
-to *D:\robotframework-magik*). Now you are able to start the example test via::
+to *D:\\robotframework-magik*). Now you are able to start the example test via::
 
  D:\pyenv\robot\scripts\activate
  cd D:\robotframework-magik
@@ -85,8 +85,8 @@ Alternative installations under Jython_ or with the *Standalone JAR distribution
 a Java environment see `RobotFramework UserGuide Installation`_
 
 - compatability with Jython 2.7 or the *Standalone JAR distribution* is not full tested currently
- mn
-Alternatively use `PortablePythonWithRobot`_, a portable (standalone) installation of the test automation `Robot Framework`_ which includes *robotframework-magik*, the *Ride* editor and sample scripts.
+
+Or use `Pipenv`_ to automatically creates and manages a virtualenv for your robot magik project. The download includes a sample Pipfile_ . 
 
 History
 ^^^^^^^^^^^^
@@ -105,7 +105,8 @@ doc/
     Documentation for Robot Framework Magik keywords
 
 tests/
-    Test suites for Robot Framework Magik keywords, library and scripts
+    self-testig suites for Robot Framework Magik keywords, library and scripts
+    
 
 examples/
     Examples, how Robot Framework Magik keywords could be used for automated 
@@ -137,7 +138,7 @@ Example A - start gis and run example test completly inside robot
 Precondition
 
 - Adjust variable file variables_sw43_cbg.py_ for your SW4.x image to test
-- Adjust variable file variables_sw51_cbg.py_ for your SW5.x session to test
+- Adjust variable file variables_sw51_cbg.py_ or variables_sw52_cbg.py_ for your SW5.x session to test
 
 Expectation:
 
@@ -269,4 +270,6 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _Jython: http://jython.org/
 .. _variables_sw43_cbg.py: resources/params/variables_sw43_cbg.py
 .. _variables_sw51_cbg.py: resources/params/variables_sw51_cbg.py
-.. _PortablePythonWithRobot: https://github.com/lczub/PortablePythonWithRobot/blob/robot/config/Robot/scripts/README.rst
+.. _variables_sw52_cbg.py: resources/params/variables_sw52_cbg.py
+.. _Pipenv: https://docs.pipenv.org/en/latest/
+.. _Pipfile: Pipfile
