@@ -20,18 +20,18 @@ Some feature
 - `Robot Framework`_ keyword-driven testing approach allows to hide complex Magik requests in readable keywords
 - supports Smallworld 4.2/4.3 images and Smallworld 5.1/5.2 sessions
 - it is possible to handle several images / sessions during one test run, for example to test their interaction
-- the combination with Robot Framework `Standard Test Libraries`_  like *XML /  OperatingSystem* or `External Test Libraries`_ like *Selenium2Library / Database Library / HTTP library* allows to test the interaction with external systems 
+- in combination with RobotFramework `Standalone JAR distribution`_ test can run in a pure Java environment without a separate python installation.
+- in combination with Robot Framework `Standard Test Libraries`_  like *XML /  OperatingSystem* or `External Test Libraries`_ like *Selenium2Library / Database Library / HTTP library* allows to test the interaction with external systems 
 - the communication via telnet allows to test images / sessions running in a different network
-- running in a Jython_ environment allows to test the interaction with Java libraries
-  !!!unclear if PY37 changes compatible with Jython!!!
+
 **Robot Framework Magik** can also be used as a remote control for Magik images (4.x) and sessions (5.x)
 
 Some details
 ^^^^^^^^^^^^
 
-The Robot Magik keywords robot_magik_base.robot_ uses the TelnetLibrary_ to send
+The Robot Magik keywords robot_magik_base.robot_ uses the TelnetLibrary_ sending
 commands to Magik images / sessions and read their response. 
-Precondition is, that the Magik image / session under test has started a 
+Precondition is, that  Magik image / session under test has started a 
 remote_cli to allow a telnet communication.
 
 - `Keyword Documentation robot_magik_base`_ explains, how to start a remote_cli
@@ -66,7 +66,7 @@ The Python script robot_stop_magik_image.py_
 
 Installation
 ^^^^^^^^^^^^
-Robot Framework Version >= 3.1.1 is required, running in a Python 3.7 environment.
+A Python 3.7 environment is recommended with Robot Framework Version >= 3.1.1 or the `Standalone JAR distribution`_ .
 
 good practice is to use a separate virtualenv::
 
@@ -81,12 +81,12 @@ to *D:\\robotframework-magik*). Now you are able to start the example test via::
  cd D:\robotframework-magik
  robot --critical DsView* --variablefile resources\params\variables_sw43_cbg.py examples
  
-Alternative installations under Jython_ or with the *Standalone JAR distribution* in
-a Java environment see `RobotFramework UserGuide Installation`_
+With the `Standalone JAR distribution`_ , just one java call is requried::
 
-- compatability with Jython 2.7 or the *Standalone JAR distribution* is not full tested currently
-
-Or use `Pipenv`_ to automatically creates and manages a virtualenv for your robot magik project. The download includes a sample Pipfile_ . 
+ java -jar robotframework-3.1.2.jar  --critical DsView* --variablefile resources\params\variables_sw43_cbg.py examples
+ 
+Alternative installations see `RobotFramework UserGuide Installation`_ .
+Or use `Pipenv`_ to create and manages a virtualenv for your robot magik project. The download includes a sample Pipfile_ . 
 
 History
 ^^^^^^^^^^^^
@@ -263,10 +263,11 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _robot_stop_magik_image.py: resources/scripts/robot_stop_magik_image.py
 .. _start_robot_remote_cli.magik: resources/scripts/start_robot_remote_cli.magik
 .. _start_robot_remote_cli.script: resources/scripts/start_robot_remote_cli.script
-.. _Standard Test Libraries: http://robotframework.org/#libraries-standard
-.. _External Test Libraries: http://robotframework.org/#libraries-external
+.. _Standard Test Libraries: http://robotframework.org/#libraries
+.. _External Test Libraries: http://robotframework.org/#libraries
 .. _ProcessLibrary: http://robotframework.org/robotframework/latest/libraries/Process.html
 .. _RobotFramework UserGuide Installation: http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions
+.. _Standalone JAR distribution: http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#standalone-jar-distribution
 .. _Jython: http://jython.org/
 .. _variables_sw43_cbg.py: resources/params/variables_sw43_cbg.py
 .. _variables_sw51_cbg.py: resources/params/variables_sw51_cbg.py

@@ -71,7 +71,7 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...               - keywords for testing Smallworld ds_views, ds_collections and rwo records see [./robot_magik_dsview.html|robot_magik_dsview]
 ...
 ...               == Requirements ==
-...               Robot Framework Version >= 3.1.1 is required, running in a Python 3.7 environment.
+...               Robot Framework Version >= 3.1.1 is required.
 ...               
 Library           Telnet    3.0
 Library           String

@@ -1,20 +1,35 @@
 Changes in Robot Framework Magik
 ================================
 
-Robot Framework Magik release notes v0.5.0 (under construction)
+Robot Framework Magik release notes v0.5.0 (Sep. 2019)
 ----------------------------------------------------------
+
+- Support Robot Standalone JAR Distribution
+
+  - changes #19 and #20 allow to run Robot Framework Magik tests in a pure jave envrionment using the Robot Standalone JAR Distribution
+  - a separate Python installation is not required
+  - tested with robotframework-3.1.2.jar
 
 - Enh #19: Support Robot Framework 3.1 and Python 3.7
 
-  - resource and test filenames extension changed from *.txt* to *.robot*
-  - Python 3.7 is now required - changes not compatible with PY27
+  - Robot Framework Magik keywords are now compatible with Robot Framework Version 3.1.1
+  - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are now compatible with Python 3.7
+  - resource and test filename extension changed from *.txt* to *.robot*
+ 
+- Enh #20: session start with special java environment
+
+  - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are extend with new argument *java_home*
+  - if defined, environment variable JAVA_HOME is set (or overwritten) for the process
+  - required to start sw5x sessions or testing java acp with a specific java 
+
+- Enh #21: SW 5.2 sample configuration added
 
 Robot Framework Magik release notes v0.4.4 (Dec. 2016)
 ----------------------------------------------------------
 
 - Enh #18: session start with special environment.bat files
 
-  - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* ae extend with new argument *envfile*
+  - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are extend with new argument *envfile*
   - if defined, environment variable SW_GIS_ENVIRONMENT_FILE is defined and *gis.exe* is call with param *-e*
 
 - Enh #17: variablefiles for example and self tests

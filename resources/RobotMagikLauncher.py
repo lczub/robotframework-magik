@@ -55,6 +55,8 @@ class RobotMagikLauncher(object):
         |  | Start Magik Session | aliasfile=${ALIASFILE} | gis_alias=${ALIASNAME} | java_home=${JAVA_HOME} |
         |  | Session Should Be Reachable |
 
+        == Requirements ==
+        Robot Framework Version >= 3.1.1 is required and Python 3.7 recommended.
 
     """
 
