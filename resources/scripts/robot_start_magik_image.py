@@ -153,7 +153,12 @@ class MagikSession(object):
         info = strftime("%m%d_%H%M%S")
         self._log_fname = os.path.join(self._logdir,
                                 '%s-%s-%i.log' % (alias, info, self.cli_port))
-        self.gis_args.extend(['-l', self._log_fname, '-i', alias])
+        if 'ROBOT_SKIP_GIS_LOG' in self.gis_envs:
+            #Suppress -l argument for use with MP400 images on SW4.1
+            self.gis_args.extend(['-i', alias])
+            self.log_info('ROBOT_SKIP_GIS_LOG used to skip -l argument for use on SW4.1')
+        else: 
+            self.gis_args.extend(['-l', self._log_fname, '-i', alias])
 
         # Temp Path for msfext.xxxx file
         # some nrm images seams to requires this parameter.
@@ -198,7 +203,8 @@ class MagikSession(object):
         self.log_info('Start gis session with: {}'.format(' '.join(self.gis_args)))
 
         self._start_process()
-        self.log_info('Logfile see {}'.format(self._log_fname))
+        if not 'ROBOT_SKIP_GIS_LOG' in self.gis_envs:
+           self.log_info('Logfile see {}'.format(self._log_fname))
 
 
     def _start_process(self):

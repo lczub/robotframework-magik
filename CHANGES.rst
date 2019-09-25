@@ -1,6 +1,11 @@
 Changes in Robot Framework Magik
 ================================
 
+Robot Framework Magik release notes v0.5.1 (under construction)
+---------------------------------------------------------------
+
+- Enh #21: Support SW 4.1 (under construction)
+
 Robot Framework Magik release notes v0.5.0 (Sep. 2019)
 ----------------------------------------------------------
 
