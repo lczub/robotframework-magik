@@ -24,6 +24,7 @@ Library           OperatingSystem
 Library           Process
 Library           String
 Variables         ../../resources/params/variables_sw43_cbg.py
+Library           DateTime
 
 *** Variables ***
 ${SCRIPTDIR}      ${CURDIR}${/}..${/}..${/}resources${/}scripts
@@ -37,6 +38,7 @@ ${DEFAULT_CLI_PORT}    ${14001}    # default port defined in start script
 ${ALIAS_CBG}      ${ALIASNAME}
 ${ALIASFILE_CBG}    ${ALIASFILE}
 ${ALIAS_SWAF}     swaf
+${LOGIN_CBG}      ${LOGIN}
 ${DUMMY_ENVFILE}    ${CURDIR}${/}dummy_envfile.bat
 
 *** Test Cases ***
@@ -49,7 +51,7 @@ Start Image Script without args
 Start Image Script with -h
     ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    -h
     Log Result    ${result}
-    Should Contain    ${result.stdout}    starts a Magik image and activates the remote cli
+    Should Contain    ${result.stdout}    starts a Magik 4.x image (or 5.x session) and activates the remote cli.
     Should Contain    ${result.stdout}    swproduct alias
     Should Contain    ${result.stdout}    -h, --help
     Should Contain    ${result.stdout}    --envfile ENVFILE
@@ -61,6 +63,7 @@ Start Image Script with -h
     Should Contain    ${result.stdout}    --script SCRIPT
     Should Contain    ${result.stdout}    --msf_startup
     Should Contain    ${result.stdout}    --wait WAIT
+    Should Contain    ${result.stdout}    --nested_alias
     Should Contain    ${result.stdout}    --test_launch TEST_LAUNCH
     Should Be Equal As Integers    ${result.rc}    0
 
@@ -134,7 +137,7 @@ Start Image Script with -msf_startup
 Start Dummy Gis Launcher
     [Tags]    dummyLaunch    withTelnet
     ${cli_port}=    Set Variable    ${DUMMY_CLI_PORT+1}
-    ${result_start}=    Start Dummy Gis Launcher    alias=ALIAS_start_telnet    cli_port=${cli_port}
+    ${result_start}=    Start Dummy Gis Launcher    alias=ALIAS_start_telnet    cli_port=${cli_port}    wait_telnet=1
     Should Be Equal As Integers    ${result_start.rc}    0
     Should Not Contain    ${result_start.stderr}    Traceback
     ${robot_temp_dir}=    Normalize Path    ${TEMPDIR}${/}robot_magik
@@ -161,36 +164,64 @@ Start and stop with default settings
     Log Result    ${result_stop}
     Should Be Equal As Integers    ${result_start.rc}    0
     Should Be Equal As Integers    ${result_stop.rc}    0
+    Should Not Contain    ${result_stop.stdout}    WinError
 
 Start and stop - swaf
     [Tags]    withTelnet
     ${alias}=    Set Variable    ${ALIAS_SWAF}
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
-    ${wait}=    Set Variable    5.0
+    ${wait}=    Convert Time    ${START_WAIT}
+    ${swproduct}=    Set Variable    ${SWPRODUCT}
+    ${logdir}=    Create Empty Test Directory    swaf_with_log
+    ${piddir}=    Create Empty Test Directory    swaf_pid
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --logdir    ${logdir}
+    ...    --piddir    ${piddir}    --wait    ${wait}    --cli_port    ${cli_port}
+    ...    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    Log Result    ${result_start}
+    Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
+    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir
+    ...    ${piddir}
+    Log Result    ${result_stop}
+    Should Be Equal As Integers    ${result_start.rc}    0
+    Should Be Equal As Integers    ${result_stop.rc}    0
+    Directory Should Not Be Empty    ${logdir}
+    Directory Should Be Empty    ${piddir}
+    Should Not Contain    ${result_stop.stdout}    WinError
+
+Start and stop - cambridge with -run_script
+    [Tags]    withTelnet
+    Pass Execution If    '${GIS_VERSION}'!='43'    gis launcher command line argumemt -run_script works only with 43 well
+    ${alias}=    Set Variable    ${ALIAS_CBG}
+    ${aliasfile}=    Set Variable    ${ALIASFILE_CBG}
+    ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
+    ${wait}=    Convert Time    ${START_WAIT}
     ${swproduct}    Set Variable    ${SWPRODUCT}
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${wait}
-    ...    --cli_port    ${cli_port}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait}    --cli_port
+    ...    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}
+    ...    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
     Log Result    ${result_start}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}
     Should Be Equal As Integers    ${result_start.rc}    0
     Should Be Equal As Integers    ${result_stop.rc}    0
+    Should Not Contain    ${result_stop.stdout}    WinError
 
-Start and stop - cambridge
+Start and stop - cambridge with SW_MSF_STARTUP_MAGIK
     [Tags]    withTelnet
     ${alias}=    Set Variable    ${ALIAS_CBG}
     ${aliasfile}=    Set Variable    ${ALIASFILE_CBG}
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
-    ${wait}=    Set Variable    5.0
+    ${wait}=    Convert Time    ${START_WAIT}
     ${swproduct}    Set Variable    ${SWPRODUCT}
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait}    --cli_port
-    ...    ${cli_port}    --aliasfile    ${aliasfile}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}
-    ...    stderr=${RF_LOG_STDERR
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${wait}
+    ...    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}
+    ...    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
     Log Result    ${result_start}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}
     Should Be Equal As Integers    ${result_start.rc}    0
     Should Be Equal As Integers    ${result_stop.rc}    0
+    Should Not Contain    ${result_stop.stdout}    WinError
 
 Start Image Script with special environment
     [Tags]    dummyLaunch    withTelnet
@@ -202,6 +233,28 @@ Start Image Script with special environment
     Should Contain    ${result.stdout}    -e ${DUMMY_ENVFILE}
     Should Contain    ${result.stdout}    Image is now reachable via telnet localhost:${DEFAULT_CLI_PORT} with prompt b'dummy:${DEFAULT_CLI_PORT}:MagikSF>
     Should Be Equal As Integers    ${result.rc}    0
+
+Start and stop - swaf with no gis logfile
+    [Tags]    withTelnet
+    ${alias}=    Set Variable    ${ALIAS_SWAF}
+    ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+2}
+    ${wait}=    Convert Time    ${START_WAIT}
+    ${swproduct}=    Set Variable    ${SWPRODUCT}
+    ${logdir}=    Create Empty Test Directory    swaf_with_log
+    ${piddir}=    Create Empty Test Directory    swaf_pid
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --nested_alias    --msf_startup    --logdir
+    ...    ${logdir}    --piddir    ${piddir}    --wait    ${wait}    --cli_port
+    ...    ${cli_port}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    Log Result    ${result_start}
+    Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
+    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir
+    ...    ${piddir}
+    Log Result    ${result_stop}
+    Should Be Equal As Integers    ${result_start.rc}    0
+    Should Be Equal As Integers    ${result_stop.rc}    0
+    Directory Should Be Empty    ${logdir}
+    Directory Should Be Empty    ${piddir}
+    Should Not Contain    ${result_stop.stdout}    WinError
 
 *** Keywords ***
 Start Dummy Gis Launcher
@@ -226,3 +279,11 @@ Check PID File
     ${pid_info}=    Get File    ${pid_file}
     ${pid}=    Get Line    ${pid_info}    0
     [Return]    ${pid}
+
+Create Empty Test Directory
+    [Arguments]    ${dname}=t1    ${dpath}=${TEMPDIR}
+    ${test_dir}=    Set Variable    ${dpath}${/}${dname}
+    Remove Directory    ${test_dir}    recursive=True
+    Create Directory    ${test_dir}
+    Directory Should Be Empty    ${test_dir}
+    [Return]    ${test_dir}

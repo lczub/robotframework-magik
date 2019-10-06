@@ -52,7 +52,7 @@ class MagikSession(object):
 
     def __init__(self, swproduct, gis_alias, cli_port=14001, aliasfile=None,
                  envfile=None, java_home=None, logdir=None, login=None, script=None,
-                 msf_startup=False, wait=30, test_launch=None):
+                 msf_startup=False, wait=30, nested_alias=None, test_launch=None):
         self._defaults = self._defaults_for_start()
         self._swproduct = swproduct
         self._gis_alias = gis_alias
@@ -65,6 +65,7 @@ class MagikSession(object):
         self._script = script or self._defaults['script']
         self._msf_startup = msf_startup or False
         self._wait = wait or 30
+        self._nested_alias = nested_alias or False
         self._test_launch = test_launch
 
         self._log_fname = None
@@ -150,15 +151,20 @@ class MagikSession(object):
 
         # log file
         alias = self._gis_alias
-        info = strftime("%m%d_%H%M%S")
-        self._log_fname = os.path.join(self._logdir,
-                                '%s-%s-%i.log' % (alias, info, self.cli_port))
-        if 'ROBOT_SKIP_GIS_LOG' in self.gis_envs:
-            #Suppress -l argument for use with MP400 images on SW4.1
-            self.gis_args.extend(['-i', alias])
-            self.log_info('ROBOT_SKIP_GIS_LOG used to skip -l argument for use on SW4.1')
+        if self._nested_alias is True:
+            # special case , starting without a logfile 
+            # required,  when nested gis_aliases are used, where -l makes trouble (see issue #22)
+            self.log_info('Magik session will be started with skipped -l argument ')
         else: 
-            self.gis_args.extend(['-l', self._log_fname, '-i', alias])
+            # default is to start with -l argument
+            info = strftime("%m%d_%H%M%S")
+            self._log_fname = os.path.join(self._logdir,
+                                           '%s-%s-%i.log' % (alias, info, self.cli_port))
+            self.gis_args.extend(['-l', self._log_fname])
+
+        # interactive mode and alias 
+        # IMPORTANT argument -i must be placedafter <-l logfile>, otherwise -l is ignored
+        self.gis_args.extend(['-i', alias])
 
         # Temp Path for msfext.xxxx file
         # some nrm images seams to requires this parameter.
@@ -203,8 +209,10 @@ class MagikSession(object):
         self.log_info('Start gis session with: {}'.format(' '.join(self.gis_args)))
 
         self._start_process()
-        if not 'ROBOT_SKIP_GIS_LOG' in self.gis_envs:
-           self.log_info('Logfile see {}'.format(self._log_fname))
+        if self._nested_alias is True:
+            self.log_info('session started without a logfile')
+        else:
+            self.log_info('Logfile see {}'.format(self._log_fname))
 
 
     def _start_process(self):
@@ -290,7 +298,7 @@ class CmdMagikSession(MagikSession):
 
         defaultargs = self._defaults
         a_parser = ArgumentParser(
-                    description='starts a Magik image and activates the remote cli.')
+                    description='starts a Magik 4.x image (or 5.x session) and activates the remote cli.')
 
         # required command line parameters
         a_parser.add_argument('swproduct',
@@ -322,12 +330,17 @@ class CmdMagikSession(MagikSession):
         help_info = 'If set, the  environment variable SW_MSF_STARTUP_MAGIK '
         help_info += 'will be defined with the script %s' % defaultargs['magikfile']
         help_info += ' to start the remote_cli. '
-        help_info += 'Useful for closed images, where startup actions not work.'
+        help_info += 'Useful for closed images, where startup actions not work .'
+        help_info += 'Mandatory for none 4.2/4.3 images (missing script engine support)'
         a_parser.add_argument('--msf_startup', action='store_true', help=help_info)
         help_info =  'seconds, how long the process should wait for the check, '
         help_info += 'that the image is really reachable via telnet. '
         help_info += '(default: %(default)s)'
         a_parser.add_argument('--wait', type=float, default=30, help=help_info)
+
+        help_info = 'If set, Magik image is started without setting the argument <-l logfile>.'
+        help_info += 'Useful when working with nested gis_alias definitions'
+        a_parser.add_argument('--nested_alias', action='store_true', help=help_info)
 
         help_info = 'Hook to start a test script instead the gis launcher.'
         a_parser.add_argument('--test_launch', help=help_info)
@@ -352,6 +365,7 @@ class CmdMagikSession(MagikSession):
         self._script = start_args.script
         self._msf_startup = start_args.msf_startup
         self._wait = start_args.wait
+        self._nested_alias = start_args.nested_alias
         self._test_launch = start_args.test_launch or self._test_launch
 
         self._piddir = start_args.piddir

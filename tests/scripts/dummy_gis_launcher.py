@@ -24,17 +24,20 @@ from dummy_remote_cli import dummy_remote_cli
 class dummy_gis_launcher(object):
     def __init__(self, args):
         self.args = args
-        log_fname = self.get_arg('-l')
+        log_fname = self.get_arg_after('-l')
         self.config_logger(log_fname)
         self.logger = logging.getLogger('dummy_gis')
-        self.alias = self.get_arg('-i').lower()
+        self.alias = self.get_arg_after('-i').lower()
         self.port = int(os.getenv('ROBOT_CLI_PORT', '14011'))
         self.max_connections = self.get_max_connections()
 
 
-    def get_arg(self, arg_name):
-        index = self.args.index(arg_name)
-        return self.args[index+1]
+    def get_arg_after(self, arg_name):
+        arg_after = None
+        if arg_name in self.args:
+            index = self.args.index(arg_name)
+            arg_after = self.args[index+1]
+        return arg_after
 
     def get_max_connections(self):
         ''' Used port define the maximum number of connections.
@@ -60,23 +63,26 @@ class dummy_gis_launcher(object):
             a_cli.listen_socket()
 
 
-    def config_logger(self, fname, level=logging.INFO):
+    def config_logger(self, fname=None, level=logging.INFO):
         ''' set up logging INFO messages or higher to the sys.stdout and into
             file FNAME '''
         logging.basicConfig(level=logging.INFO,
                     format='%(name)-10s: %(message)s',
                     datefmt='%m-%d %H:%M',
                     stream=sys.stdout)
-
-        # define a filehHandler which writes INFO messages to file
-        hfile = logging.FileHandler(fname, mode='w')
-        hfile.setLevel(level)
-        # set a format which is simpler for console use
-        formatter = logging.Formatter('%(asctime)s %(name)-10s %(levelname)-8s %(message)s')
-        # tell the handler to use this format
-        hfile.setFormatter(formatter)
-        # add the handler to the root logger
-        logging.getLogger('').addHandler(hfile)
+        if fname:
+            # define a filehHandler which writes INFO messages to file
+            hfile = logging.FileHandler(fname, mode='w')
+            hfile.setLevel(level)
+            # set a format which is simpler for console use
+            formatter = logging.Formatter('%(asctime)s %(name)-10s %(levelname)-8s %(message)s')
+            # tell the handler to use this format
+            hfile.setFormatter(formatter)
+            # add the handler to the root logger
+            logging.getLogger('').addHandler(hfile)
+            logging.getLogger('').info('session started with -l - LOGFILE is %s' % fname)
+        else:
+            logging.getLogger('').info('session started without -l - NO LOGFILE ')
 
 
 def main():

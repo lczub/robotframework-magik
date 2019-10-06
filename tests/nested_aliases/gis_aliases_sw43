@@ -1,0 +1,153 @@
+#
+# Smallworld Core Windows Platforms Standard Core Product Aliases
+#
+# The Smallworld Product's standard aliases file should not be edited
+# by hand.  A user can have personal aliases by placing them in a file
+# named `gis_aliases' in his/her home directory, but the alias names
+# must be chosen not to clash with those in the standard aliases file.
+#
+# An alias file should contain one or more stanzas of the form
+#
+#     <alias>:
+#           title      = <title>
+#           directory  = <directory>
+#           program    = <program>
+#           script     = <script>
+#           image      = <image>
+#           args       = <args>
+#           log_file   = <file>
+#           timeout    = <seconds>
+#           wait_line  = <text>
+#           icon_file  = <file>
+#           icon_index = <index>
+#           product    = <product>
+#           interactive = <interactive_or_not>
+#           <other>    = <value>
+#
+# where the meaning of each item is
+#
+#     alias       The alias name for the command represented by this
+#                 stanza.  The name should start with a letter and
+#                 contain only letters, digits, `-' and `_'.  Lower-
+#                 and uppercase letters are not distinguished.
+#
+#     title       An arbitrary line of unquoted text, specifying a
+#                 title associated with the command alias.  This
+#                 simply causes the environment variable
+#
+#                       SW_GIS_CONSOLE_TITLE
+#
+#                 to be set to the supplied string: it is up to
+#                 the run program whether to notice this and to
+#                 display it in some way.  It is also used to
+#                 set the title displayed for the command in a
+#                 Program Manager Group item.
+#
+#     directory   The working directory in which to run the program.
+#                 If not specified, the current directory is used.
+#
+#     program     The name of the executable program to run.
+#                 Assuming the program can be found in the PATH
+#                 (e.g. as set by the environment file), it is
+#                 not necessary to specify the directory part of
+#                 the program name (nor normally its suffix).
+#                 If the program name is not specified, the default
+#                 is `sw_magik_win32'.
+#
+#     script      The name of a script - e.g. a batch file. If no file
+#                 extension is specified the values specified in the
+#                 PATHEXT environment variable are tried as defaults.
+#                 If no directory is specifided the directories of the
+#                 specified gis alias files and then the directories listed
+#                 PATH environment vairable are searched for a matching 
+#                 script.
+#
+#     image       The name of a Magik image file to pass as argument
+#                 to the program.  This item is optional, and should
+#                 be specified if and only if <program> expects an
+#                 image argument.
+#
+#     args        This item is optional, and may comprise any
+#                 additional arguments to pass to <program>.
+#
+#     log_file    This item is optional.  It specifies a log file
+#                 for standard output and standard error.
+#
+#     timeout     This item is optional.  It specifies a timeout
+#                 for waiting for the application to start.  Only
+#                 relevant if a log file is used: a window will
+#                 be displayed for timeout seconds saying that the
+#                 application is being started.
+#
+#     wait_line   This item is optional.  It specifies the start
+#                 of a line in the log file to wait for on starting
+#                 the application: a window will be displayed saying
+#                 that the application is being started, until a
+#                 matching line appears in the log file.
+# 
+#     icon_file   This item is optional.  If specified, it should
+#                 be the name of a file whose icon is to be used
+#                 to identify this command for a Program Manager
+#                 Group item.  If not specified, it defaults to
+#                 the icon in the GIS launcher program itself.
+#
+#     icon_index  This item is optional.  If specified, it should
+#                 be the index of the icon to use in an icon_file
+#                 which contains more than one icon.  If not
+#                 specified, it defaults to 1.
+#
+#     product     This item is optional.  It is intended to be used
+#                 to assert that a command is associated with a
+#                 particular product (e.g. `base', `view' or `gis').
+#
+#     interactive This item is optional and only has an effect when 
+#                 a log file has been specified. 
+#                 If its value is TRUE or T (case insensitive) then
+#                 the program runs interactively i.e. standard input
+#                 and standard output are connected to a console.
+#                 Any other value is taken as false. The wait_line and
+#                 timeout items are specified as well as this option,
+#                 they will be ignored.
+#
+#     <other>     Any unrecognised item is taken to be the name of
+#                 an environment variable which is to be set to
+#                 <value> prior to running the command.
+#                 If := is used, then the environment variable is set
+#                 to value only if it is currently unset.
+
+config:
+	title		= Smallworld Configuration
+	image		= %SMALLWORLD_GIS%\images\config.msf
+	log_file	= %TEMP%\smallworld_config.log
+	args		= -Mextdir %TEMP%
+	icon_file	= %SMALLWORLD_GIS%\config.exe
+	product		= base
+	PATH		= %SMALLWORLD_GIS%\etc\%PROCESSOR_ARCHITECTURE%;%SMALLWORLD_GIS%\etc\x86;%PATH%
+
+swaf:
+	title		= Smallworld Core Application Framework
+	image		= %SMALLWORLD_GIS%\images\swaf.msf
+	args		= -Mextdir %TEMP%
+	product		= gis
+
+cambridge_db_closed:
+	title	 =	Run Cambridge closed SWAF
+	product	 =	gis
+	image	 =	%SMALLWORLD_GIS%\..\cambridge_db\images\cam_db_closed_swaf.msf
+	args	 =	-Mextdir %TEMP%
+
+cambridge_db_open:
+	title	 =	Run Cambridge Open Smallworld Application Framework
+	product	 =	gis
+	image	 =	%SMALLWORLD_GIS%\..\cambridge_db\images\cam_db_open_swaf.msf
+	args	 =	-Mextdir %TEMP%
+    
+cambridge_db_open_nested:
+	title		= Simulation Nested Alias calling another alias
+   	program		= %SMALLWORLD_GIS%\bin\x86\gis.exe
+	args		= cambridge_base43 -image %SMALLWORLD_GIS%\..\cambridge_db\images\cam_db_open_swaf.msf
+    
+cambridge_base43:
+	dir		= %SMALLWORLD_GIS%\..\cambridge_db
+    directory	= %dir%
+    ARGS	= -cli -Mnew 200M -Mold 16M -Mpage 32M -Mext 250M -Mextdir %temp%	

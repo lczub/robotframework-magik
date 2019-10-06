@@ -68,3 +68,8 @@ CLI_TIMEOUT = 10.0
 # ========================================================================
 # Name of the dataset, which should be used for tests
 CLI_DSVIEW_NAME = "gis"
+
+# ========================================================================
+# settings for other robot magik self tests
+# ========================================================================
+GIS_VERSION=43

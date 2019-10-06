@@ -64,7 +64,7 @@ class RobotMagikLauncher(object):
 
     def __init__(self, swproduct=None, gis_alias=None, cli_port=14001,
                  aliasfile=None, envfile=None, java_home=None, logdir=None, login=None,
-                 script=None, msf_startup=None, wait='30s', test_launch=None):
+                 script=None, msf_startup=None, wait='30s', nested_alias=None, test_launch=None):
 
         self._swproduct = swproduct
         self._gis_alias = gis_alias
@@ -77,6 +77,7 @@ class RobotMagikLauncher(object):
         self._script = script
         self._msf_startup = msf_startup
         self._wait = wait or '30s'
+        self._nested_alias = nested_alias
         self._test_launch = test_launch
 
         self._sessions = {}
@@ -145,7 +146,7 @@ class RobotMagikLauncher(object):
 
     def start_magik_session(self, swproduct=None, gis_alias=None, cli_port=None,
                             aliasfile=None, envfile=None, java_home=None, logdir=None, login=None, 
-                            script=None, msf_startup=None, wait=None, test_launch=None):
+                            script=None, msf_startup=None, wait=None, nested_alias=None, test_launch=None):
         """starts a new Magik session / image with the given SWPRODUCT and ALIAS
 
         The ``swproduct``, ``gis_alias``, ``cli_port``, ``aliasfile``, ``envfile``,
@@ -170,6 +171,7 @@ class RobotMagikLauncher(object):
         script = script or self._script
         msf_startup = msf_startup or self._msf_startup
         wait = wait or self._wait
+        nested_alias = nested_alias or self._nested_alias
         test_launch = test_launch or self._test_launch
 
         if swproduct is None:
@@ -184,7 +186,7 @@ class RobotMagikLauncher(object):
         a_session = RobotMagikSession(self._ProcessInstance(),
                                     swproduct, gis_alias, cli_port, aliasfile,
                                     envfile, java_home, logdir, login, script, 
-                                    msf_startup, timestr_to_secs(wait), test_launch)
+                                    msf_startup, timestr_to_secs(wait), nested_alias, test_launch)
         a_session.start_session()
         self._register_session(a_session)
         return a_session

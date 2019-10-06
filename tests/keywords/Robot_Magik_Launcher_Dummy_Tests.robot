@@ -16,7 +16,7 @@
 Force Tags        dummyLaunch
 Library           Process
 Library           ../../resources/RobotMagikLauncher.py    cli_port=${DUMMY_CLI_PORT}    wait=0.1s
-Library    OperatingSystem
+Library           OperatingSystem
 
 *** Variables ***
 ${DUMMY_LAUNCHER}    ${CURDIR}${/}..${/}scripts${/}dummy_gis_launcher.py
@@ -54,7 +54,8 @@ start and stop dummy magik session
     [Tags]    withTelnet
     ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_start_telnet    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
     Session Should Be Reachable
-    Stop Magik Session
+    ${result}=    Stop Magik Session
+    Should Contain    ${result.stdout}    session started with -l - LOGFILE is
     [Teardown]    Stop All Magik Sessions
 
 get session object - no active session
@@ -127,7 +128,7 @@ session should be reachable - open telnet connection
 
 start session with special environment
     [Documentation]    starting a session with a special environment file should set the environment varibale SW_GIS_ENVIRONMENT_FILE
-    [Tags]    noTelnet
+    [Tags]    withTelnet
     ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_envfile_start_telnet    envfile=${DUMMY_ENVFILE}    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
     Session Should Be Reachable
     ${result}=    Stop Magik Session
@@ -136,29 +137,38 @@ start session with special environment
 
 start session with special java
     [Documentation]    starting a session with a special jre / jdk should set the environment variable JAVA_HOME
-    [Tags]    noTelnet
-    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_envfile_start_telnet    java_home=${DUMMY_JRE}    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
+    [Tags]    withTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_special_java_start_telnet    java_home=${DUMMY_JRE}    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
     Session Should Be Reachable
     ${result}=    Stop Magik Session
     Should Contain    ${result.stdout}    JAVA_HOME=${DUMMY_JRE}
     [Teardown]    Stop All Magik Sessions
 
-start session with diferent java
-    [Documentation]    starting a session with a jre diffferent from current JAVA_HOME
-    [Tags]    noTelnet
+start session with different java
+    [Documentation]    starting a session with a jre different from current JAVA_HOME
+    [Tags]    withTelnet
     Set Environment Variable    JAVA_HOME    NOT_WANTED_JRE
-    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_envfile_start_telnet    java_home=${DUMMY_JRE}    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_different_java_start_telnet    java_home=${DUMMY_JRE}    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
     Session Should Be Reachable
     ${result}=    Stop Magik Session
     Should Contain    ${result.stdout}    JAVA_HOME=${DUMMY_JRE}
     [Teardown]    Stop All Magik Sessions
-    
+
 start session with default java
     [Documentation]    starting a session using the system JAVA_HOME
-    [Tags]    noTelnet
+    [Tags]    withTelnet
     Set Environment Variable    JAVA_HOME    SYSTEM_JRE
-    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_envfile_start_telnet    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_default_java_start_telnet    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
     Session Should Be Reachable
     ${result}=    Stop Magik Session
     Should Contain    ${result.stdout}    JAVA_HOME=SYSTEM_JRE
+    [Teardown]    Stop All Magik Sessions
+
+start session with nested alias
+    [Documentation]    starting a session with a argument *nested_alias* - no log file should be written to avoid gus launcher problems
+    [Tags]    withTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_nested_start_telnet    nested_alias=${True}    cli_port=${DUMMY_CLI_PORT}    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
+    ${result}=    Stop Magik Session
+    Should Contain    ${result.stdout}    session started without -l - NO LOGFILE
     [Teardown]    Stop All Magik Sessions
