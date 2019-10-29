@@ -55,6 +55,31 @@ class RobotMagikLauncher(object):
         |  | Start Magik Session | aliasfile=${ALIASFILE} | gis_alias=${ALIASNAME} | java_home=${JAVA_HOME} |
         |  | Session Should Be Reachable |
 
+        == Arguments ==
+        | =Argument= | =Intention=                                      |
+        | swproduct  | Smallworld Core product path                     |
+        | gis_alias  | Magik image / session ALIAS                      |
+        | cli_port   | port, the remote_cli listens on (default: 14001) |
+        | aliasfile  | alias file which includes the ALIAS definition   |
+        | envfile    | file with session specific environment settings  |
+        | java_home  | special jre/jdk to use for acp or sw5x sessions  |
+        | logdir     | directory for the session logfile                |
+        | login      | Username/password for login                      |
+        | script     | Script adding remote_cli startup procedure via image command line argument -run_script. |
+        |            | Unfortunately only supported in 4.2 /4.3 startup images. |
+        |            | Has no effect in closed images and raise error on 5.x sessions. |
+        |            | Will be ignored, when *msf_startup* is defined. |        
+        |            | default: _robotframework-magik/resources/scripts/start_robot_remote_cli.script_ |     
+        | msf_startup | If set, environment variable SW_MSF_STARTUP_MAGIK will be defined with | 
+        |             | script _robotframework-magik/resources/scripts/start_robot_remote_cli.magik_ |
+        |             | for starting the remote_cli. Mandatory for none 4.2/4.3 sessions / images | 
+        |             | and useful for 4.2/4.3 closed images (missing or incomplete script engine support) |
+        | wait        | Time, how long the process should wait till checking, |
+        |             | if the image / session is reachable via telnet. (default: 30s) |
+        | nested_alias | If set, Magik image is started without setting the argument <-l logfile>. | 
+        |              | Useful when working with nested gis_alias definitions. | 
+        | test_launch  | Hook to start a test script instead the gis launcher. | 
+
         == Requirements ==
         Robot Framework Version >= 3.1.1 is required and Python 3.7 recommended.
 
@@ -149,10 +174,8 @@ class RobotMagikLauncher(object):
                             script=None, msf_startup=None, wait=None, nested_alias=None, test_launch=None):
         """starts a new Magik session / image with the given SWPRODUCT and ALIAS
 
-        The ``swproduct``, ``gis_alias``, ``cli_port``, ``aliasfile``, ``envfile``,
-        ``java_home``, ``logdir``, ``login`` arguments get default values when the library is
-        [#Importing|imported].
-        Setting them here overrides those values for the opened connection.
+        The [#Arguments|arguments] get default values when the library is [#Importing|imported].
+        Setting them here overrides those values for the new connection.
 
         This keyword just starts the session and does not check, if its reachable.
         Use keyword `Session Should Be Reachable` to wait till the session response.

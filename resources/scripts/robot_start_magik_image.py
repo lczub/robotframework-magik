@@ -297,8 +297,10 @@ class CmdMagikSession(MagikSession):
         'parser for start command line arguments'
 
         defaultargs = self._defaults
-        a_parser = ArgumentParser(
-                    description='starts a Magik 4.x image (or 5.x session) and activates the remote cli.')
+        description = 'starts a Magik 4.x image or 5.x session and activates the remote cli.'
+        description += '\nCaches the image / session process id in a pid file. '
+        description += 'This is used by script robot_stop_magik_image to stop the image / session.'
+        a_parser = ArgumentParser(description=description)
 
         # required command line parameters
         a_parser.add_argument('swproduct',
@@ -321,25 +323,28 @@ class CmdMagikSession(MagikSession):
                               help='directory for the session logfile (default: %(default)s) ')
         a_parser.add_argument('--login',
                               help='Username/password for login')
-        help_info = 'script to add remote_cli startup procedure via image command line argument -run_script. '
-        help_info += 'Only useful for startup image. Has no effect in closed image. '
-        help_info += 'Argument --script will not used, when --msf_startup is defined. '
+        help_info = 'Script adding remote_cli startup procedure via image command line argument -run_script. '
+        help_info += '\nUnfortunately only supported in 4.2 /4.3 startup images. '
+        help_info += 'Has no effect in closed images and raise error on 5.x sessions. '
+        help_info += '\nArgument --script will be ignored, when --msf_startup is defined. '
         help_info += '(default: %(default)s)'
         a_parser.add_argument('--script', default=defaultargs['script'],
                               help=help_info)
-        help_info = 'If set, the  environment variable SW_MSF_STARTUP_MAGIK '
-        help_info += 'will be defined with the script %s' % defaultargs['magikfile']
-        help_info += ' to start the remote_cli. '
-        help_info += 'Useful for closed images, where startup actions not work .'
-        help_info += 'Mandatory for none 4.2/4.3 images (missing script engine support)'
+        help_info = 'If set, environment variable SW_MSF_STARTUP_MAGIK '
+        help_info += 'will be defined with script %s' % defaultargs['magikfile']
+        help_info += ' for starting the remote_cli. '
+        help_info += '\nMandatory for none 4.2/4.3 sessions / images '
+        help_info += 'and useful for 4.2/4.3 closed images (missing or incomplete script engine support).'
         a_parser.add_argument('--msf_startup', action='store_true', help=help_info)
-        help_info =  'seconds, how long the process should wait for the check, '
-        help_info += 'that the image is really reachable via telnet. '
+        help_info =  'Seconds, how long the process should wait till checking, '
+        help_info += 'that the image is reachable via telnet. '
         help_info += '(default: %(default)s)'
         a_parser.add_argument('--wait', type=float, default=30, help=help_info)
 
-        help_info = 'If set, Magik image is started without setting the argument <-l logfile>.'
-        help_info += 'Useful when working with nested gis_alias definitions'
+        help_info = 'If set, Magik image is started without setting the argument <-l logfile>. '
+        help_info += 'Useful when working with nested gis_alias definitions. '
+        help_info += '\nLimitation: It is not possible to detect the PID of the final started gis process. '
+        help_info += 'Script robot_stop_magik_image can not stop such images.'
         a_parser.add_argument('--nested_alias', action='store_true', help=help_info)
 
         help_info = 'Hook to start a test script instead the gis launcher.'

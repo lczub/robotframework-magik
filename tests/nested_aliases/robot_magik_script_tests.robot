@@ -49,7 +49,13 @@ ${ALIASFILE_CBG}    ${CURDIR}${/}gis_aliases_sw${GIS_VERSION}
 
 *** Test Cases ***
 Start and stop - cambridge with nested alias
-    [Tags]    withTelnet
+    [Documentation]    == known issue ==
+    ...
+    ...    Script *robot_start_magik_image* can onl ydetect the PID of the first gis process, started by nested alias.
+    ...    The PID of the final gis process, which starts the image / session, is not detected.
+    ...
+    ...    Effect is, that the PID file caches a wrong process id and the image / session can not be stopped with the script *robot_stop_magik_image*
+    [Tags]    withTelnet    knownIssue
     ${alias}=    Set Variable    ${ALIAS_CBG_NESTED}
     ${aliasfile}=    Set Variable    ${ALIASFILE_CBG}
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
@@ -57,10 +63,8 @@ Start and stop - cambridge with nested alias
     ${swproduct}    Set Variable    ${SWPRODUCT}
     ${logdir}=    Create Empty Test Directory    cbg_nested_log
     ${piddir}=    Create Empty Test Directory    cbg_nested_pid
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --nested_alias    --logdir    ${logdir}
-    ...    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port
-    ...    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}
-    ...    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --nested_alias    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login
+    ...    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
     Log Result    ${result_start}
     Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
@@ -80,14 +84,11 @@ Start and stop - cambridge none nested alias but start arg --nested_alias
     ${swproduct}    Set Variable    ${SWPRODUCT}
     ${logdir}=    Create Empty Test Directory    cbg_nested_log
     ${piddir}=    Create Empty Test Directory    cbg_nested_pid
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --nested_alias    --logdir    ${logdir}
-    ...    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port
-    ...    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}
-    ...    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --nested_alias    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login
+    ...    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
     Log Result    ${result_start}
     Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
-    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir
-    ...    ${piddir}
+    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
     Log Result    ${result_stop}
     Should Be Equal As Integers    ${result_start.rc}    0
     Should Be Equal As Integers    ${result_stop.rc}    0
@@ -104,14 +105,11 @@ Start and stop - cambridge default
     ${swproduct}    Set Variable    ${SWPRODUCT}
     ${logdir}=    Create Empty Test Directory    cbg_nested_log
     ${piddir}=    Create Empty Test Directory    cbg_nested_pid
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --logdir    ${logdir}    --piddir
-    ...    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}
-    ...    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}
-    ...    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}
+    ...    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
     Log Result    ${result_start}
     Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
-    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir
-    ...    ${piddir}
+    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
     Log Result    ${result_stop}
     Should Be Equal As Integers    ${result_start.rc}    0
     Should Be Equal As Integers    ${result_stop.rc}    0

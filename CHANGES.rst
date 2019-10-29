@@ -1,10 +1,15 @@
 Changes in Robot Framework Magik
 ================================
 
-Robot Framework Magik release notes v0.5.1 (under construction)
+Robot Framework Magik release notes v0.5.1 (Nov. 2019)
 ---------------------------------------------------------------
 
-- Enh #21: Support SW 4.1 (under construction)
+- Enh #21: Support nested aliases
+
+ - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are extend with new argument *nested_aliases*
+ - if defined, Magik image is started without setting the argument <-l logfile>
+
+- Documentation references now also SW41 as supported
 
 Robot Framework Magik release notes v0.5.0 (Sep. 2019)
 ----------------------------------------------------------

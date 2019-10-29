@@ -18,9 +18,9 @@ Some feature
 
 - each production image / session based on a *swaf* can be tested without loading additional modification code
 - `Robot Framework`_ keyword-driven testing approach allows to hide complex Magik requests in readable keywords
-- supports Smallworld 4.2/4.3 images and Smallworld 5.1/5.2 sessions
+- supports Smallworld 4.1/4.2/4.3 images and Smallworld 5.1/5.2 sessions
 - it is possible to handle several images / sessions during one test run, for example to test their interaction
-- in combination with RobotFramework `Standalone JAR distribution`_ test can run in a pure Java environment without a separate python installation.
+- in combination with RobotFramework `Standalone JAR distribution`_ tests can run in a pure Java environment without a separate python installation.
 - in combination with Robot Framework `Standard Test Libraries`_  like *XML /  OperatingSystem* or `External Test Libraries`_ like *Selenium2Library / Database Library / HTTP library* allows to test the interaction with external systems 
 - the communication via telnet allows to test images / sessions running in a different network
 

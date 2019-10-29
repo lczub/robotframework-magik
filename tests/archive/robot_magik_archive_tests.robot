@@ -66,6 +66,13 @@ Test robot magik self tests exist in tests directory
     ${ROBOT_MAGIK_DIR}/tests/scripts/dummy_gis_launcher.py
     ${ROBOT_MAGIK_DIR}/tests/scripts/dummy_remote_cli.py
 
+Test robot launcher nested aliases tests exist in tests directory
+    [Template]    File Should Exist
+    ${ROBOT_MAGIK_DIR}/tests/nested_aliases/Robot_Magik_Launcher_Nested_Alias_Tests.robot
+    ${ROBOT_MAGIK_DIR}/tests/nested_aliases/robot_magik_script_tests.robot
+    ${ROBOT_MAGIK_DIR}/tests/nested_aliases/gis_aliases_sw41
+    ${ROBOT_MAGIK_DIR}/tests/nested_aliases/gis_aliases_sw43
+
 Test robot magik examples exist in examples directory
     [Template]    File Should Exist
     ${ROBOT_MAGIK_DIR}/examples/__init__.robot
@@ -93,6 +100,7 @@ Test robot magik resources includes copyright info
     ${ROBOT_MAGIK_DIR}/tests/keywords    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
     ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
     ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.py
+    ${ROBOT_MAGIK_DIR}/tests/nested_aliases    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
     ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_COPYRIGHT}    *.robot    2
     ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
     ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_COPYRIGHT}    *.py
@@ -107,6 +115,7 @@ Test robot magik resources includes license info
     ${ROBOT_MAGIK_DIR}/tests/keywords    ${ROBOT_MAGIK_LICENSE}    *.robot
     ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_LICENSE}    *.robot
     ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_LICENSE}    *.py
+    ${ROBOT_MAGIK_DIR}/tests/nested_aliases    ${ROBOT_MAGIK_LICENSE}    *.robot
     ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_LICENSE}    *.robot    2
     ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_LICENSE}    *.robot
     ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_LICENSE}    *.py
@@ -117,6 +126,7 @@ Test robot magik resources includes license info
 Test no '*.pyc' should be included
     [Template]    File Should Not Exist
     ${ROBOT_MAGIK_DIR}/resources/scripts/*.pyc
+    ${ROBOT_MAGIK_DIR}/tests/scripts/*.pyc
 
 *** Keywords ***
 Check Header Info for file
@@ -130,5 +140,6 @@ Check Header Info for file
 Check Header Info for directory
     [Arguments]    ${directory}    ${header_info}    ${file_pattern}=${None}    ${expected_count_per_file}=1
     @{filenames}=    List Files In Directory    ${directory}    ${file_pattern}    True
-    : FOR    ${fname}    IN    @{filenames}
-    \    Check Header Info for file    ${fname}    ${header_info}    ${expected_count_per_file}
+    FOR    ${fname}    IN    @{filenames}
+        Check Header Info for file    ${fname}    ${header_info}    ${expected_count_per_file}
+    END
