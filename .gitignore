@@ -2,4 +2,7 @@
 .pydevproject
 *~
 *.pyc
+*py.class
 /libspecs/
+/.venv
+

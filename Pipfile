@@ -4,10 +4,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-robotframework-ride = "*"
+robotframework-ride = ">=1.7.4"
 
 [packages]
-robotframework = "*"
+robotframework = ">=3.1.2"
 
 [requires]
 python_version = "3.7"
