@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ======================================================================
+      ANT Build Script for robotframework-magik (RFM)
+     ====================================================================== -->
+<project name="rfm" default="make_archive">
+
+    <!-- Load env and properties-->
+	<dirname property="rfm.basedir" file="${ant.file.rfm}"/>
+	<property file="${rfm.basedir}/build.properties"/>
+
+	<target name="robot_libdoc">
+        <echo message="============================================="/>
+        <echo message="create robot keyword documentation ${library_or_resource} ..."/>
+ 
+			<exec executable="cmd" failonerror="true" dir="${rfm.basedir}">
+				<arg value="/c"/>
+				<arg value="start /wait ${PYTHON.ROBOT.LIBDOC.CALL} -f html -v ${RFM.VERSION} ${library_or_resource} ${keywords_file}"/>
+			</exec>
+	
+		<echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+
+    <target name="update_keywords_doc">
+        <echo message="============================================="/>
+        <echo message="Update robotframework keyword documentations ..."/>
+
+        <antcall target="rfm.robot_libdoc">
+			<param name="library_or_resource" value="${DIR.RFM.RESOURCES}/robot_magik_base.robot"/>
+			<param name="keywords_file" value="${DIR.RFM.KEYWORDS}/robot_magik_base.html"/>
+		</antcall>
+        <antcall target="rfm.robot_libdoc">
+			<param name="library_or_resource" value="${DIR.RFM.RESOURCES}/robot_magik_dsview.robot"/>
+			<param name="keywords_file" value="${DIR.RFM.KEYWORDS}/robot_magik_dsview.html"/>
+		</antcall>
+        <antcall target="rfm.robot_libdoc">
+			<param name="library_or_resource" value="${DIR.RFM.RESOURCES}/RobotMagikLauncher.py"/>
+			<param name="keywords_file" value="${DIR.RFM.KEYWORDS}/RobotMagikLauncher.html"/>
+		</antcall>
+
+        <echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+	
+    <target name="clean">
+        <echo message="============================================="/>
+        <echo message="Clean rfm from *.pyc, *$py.class ..."/>
+        <delete>
+            <fileset dir="${rfm.basedir}">
+				<include name="**/*.pyc"/>	
+				<include name="**/*$py.class"/>
+				<exclude name=".venv/**"/>
+            </fileset>
+        </delete>
+        <echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+
+
+    <target name="deploy" depends="clean">
+        <echo message="============================================="/>
+        <echo message="Deploy rfm ..."/>
+        <delete dir="${DIR.DEPLOY.RFM}"/>
+        <copy todir="${DIR.DEPLOY.RFM}" includeEmptyDirs="false">
+            <fileset dir="${rfm.basedir}">
+				<include name="resources/**.robot"/>	
+				<include name="resources/**.py"/>
+				<include name="doc/*.html"/>
+				<include name="tests/**"/>	
+				<include name="resources/scripts/**"/>	
+				<include name="resources/params/**"/>	
+                <include name="examples/**"/>
+                <include name="README.rst"/>
+                <include name="LICENSE-2.0.txt"/>
+                <include name="CHANGES.rst"/>
+                <include name="Pipfile"/>
+            </fileset>
+        </copy>
+        <echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+
+    <target name="make_archive" depends="deploy">
+        <echo message="============================================="/>
+        <echo message="make_archive rfm ..."/>
+        <delete file="${ARCHIVE.ZIP.RFM}"/>
+        <zip destfile="${ARCHIVE.ZIP.RFM}">
+            <zipfileset dir="${DIR.DEPLOY.RFM}" prefix="${ARCHIVE.PREFIX.RFM}"
+                        includes="**"
+                        excludes="nothing/**">
+            </zipfileset>
+        </zip>
+        <echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+	
+    <target name="make_release" depends="update_keywords_doc, make_archive">
+        <echo message="============================================="/>
+        <echo message="Make release robotframework-magik ${RFM.VERSION} ..."/>
+        <echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+
+
+    <target name="clean_test_logs">
+        <echo message="============================================="/>
+        <echo message="Clean rfm test logs ..."/>
+        <delete dir="${DIR.TEST.LOGS}" />
+		<echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+
+     <target name="extract_archive">
+        <echo message="============================================="/>
+        <echo message="extract archive rfm into test dir ..."/>
+		<delete dir="${DIR.TEST.RFM}/${ARCHIVE.PREFIX.RFM}"/>
+       <unzip src="${ARCHIVE.ZIP.RFM}" dest="${DIR.TEST.RFM}" failOnEmptyArchive="true">
+		</unzip>
+         <echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+
+	<target name="robot_run" >
+        <echo message="============================================="/>
+        <echo message="robot run  - ${tr_full_name} ..."/>
+ 
+			<exec executable="cmd" failonerror="true" dir="${DIR.TEST.RFM}/${ARCHIVE.PREFIX.RFM}">
+				<arg value="/c"/>
+				<arg value="start /wait ${PYTHON.ROBOT.CALL} ${tr_includes} --loglevel DEBUG --name &quot;${tr_full_name}&quot; --outputdir ${DIR.TEST.LOGS} -l log-${tr_lname}.html -r report-${tr_lname}.html -o output-${tr_lname}.xml ${tr_tests}"/>
+			</exec>
+		<echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+
+	<target name="robot_selftests" depends="clean_test_logs">
+        <echo message="============================================="/>
+        <echo message="Run robot selftsests ..."/>
+ 
+        <antcall target="rfm.robot_run">
+			<param name="tr_full_name" value="Test_Archive_Content"/>
+			<param name="tr_lname" value="archive"/>
+			<param name="tr_includes" value="--include Archive*"/>
+			<param name="tr_tests" value="tests/archive"/>
+		</antcall>
+
+        <antcall target="rfm.robot_run">
+			<param name="tr_full_name" value="DryRun_Keyword_SelfTest_and_Examples"/>
+			<param name="tr_lname" value="dryrun"/>
+			<param name="tr_includes" value="--dryrun --include Keyword* --include Example*"/>
+			<param name="tr_tests" value="tests examples"/>
+		</antcall>
+
+        <antcall target="rfm.robot_run">
+			<param name="tr_full_name" value="Test_Script_Content"/>
+			<param name="tr_lname" value="scripts"/>
+			<param name="tr_includes" value=""/>
+			<param name="tr_tests" value="tests/scripts"/>
+		</antcall>
+
+        <antcall target="rfm.robot_run">
+			<param name="tr_full_name" value="Test_Launcher_Content"/>
+			<param name="tr_lname" value="launcher"/>
+			<param name="tr_includes" value=""/>
+			<param name="tr_tests" value="tests/keywords/Robot_Magik_Launcher_Dummy_Tests.robot"/>
+		</antcall>
+
+		<echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+
+	<target name="robot_rebot" >
+        <echo message="============================================="/>
+        <echo message="robot rebot  - combine test reports ${tr_new_name} ..."/>
+ 
+			<exec executable="cmd" failonerror="true" dir="${DIR.TEST.RFM}/${ARCHIVE.PREFIX.RFM}">
+				<arg value="/c"/>
+				<arg value="start /wait ${PYTHON.ROBOT.REBOT.CALL} --loglevel INFO --name &quot;${tr_new_name}&quot; --outputdir ${tr_outputdir} -l log-${tr_lname}.html -r report-${tr_lname}.html -o output-${tr_lname}.xml ${tr_outputs_to_combine}"/> 
+			</exec>
+		<echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+
+	<target name="test_release" depends="extract_archive, robot_selftests">
+        <echo message="============================================="/>
+        <echo message="Test release robotframework-magik ${RFM.VERSION} ..."/>
+
+        <antcall target="rfm.robot_rebot">
+			<param name="tr_new_name" value="RFM Selftests ${RFM.VERSION}"/>
+			<param name="tr_lname" value="${RFM.VERSION}"/>
+			<param name="tr_outputdir" value="${DIR.TEST.RFM}"/>
+			<param name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}\output-*.xml"/>
+		</antcall>
+
+		<echo message="done."/>
+        <echo message="=============================================="/>
+    </target>
+	
+</project>

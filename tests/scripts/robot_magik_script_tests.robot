@@ -153,7 +153,7 @@ Start and stop with default settings
     [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
     ${cli_port}=    Set Variable    ${DUMMY_CLI_PORT+1}
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    0.1    --cli_port    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    0.1    --cli_port    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}
@@ -169,7 +169,7 @@ Start and stop - swaf
     ${swproduct}=    Set Variable    ${SWPRODUCT}
     ${logdir}=    Create Empty Test Directory    swaf_with_log
     ${piddir}=    Create Empty Test Directory    swaf_pid
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --logdir    ${logdir}    --piddir    ${piddir}    --wait    ${wait}    --cli_port    ${cli_port}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --logdir    ${logdir}    --piddir    ${piddir}    --wait    ${wait}    --cli_port    ${cli_port}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
     Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
@@ -188,7 +188,7 @@ Start and stop - cambridge with -run_script
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
     ${wait}=    Convert Time    ${START_WAIT}
     ${swproduct}    Set Variable    ${SWPRODUCT}
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}
@@ -203,7 +203,7 @@ Start and stop - cambridge with SW_MSF_STARTUP_MAGIK
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
     ${wait}=    Convert Time    ${START_WAIT}
     ${swproduct}    Set Variable    ${SWPRODUCT}
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}

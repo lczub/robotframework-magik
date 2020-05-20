@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 # ------------------------------------------------------------------------
-#  Copyright 2019 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2019-2020 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@
 # communication should be available
 START_WAIT = "30s"
 # path to smallworld core product
-SWPRODUCT = "E:\\Smallworld\\411_TSB120\\CST411\\product"
+SWPRODUCT = "S:\\411_TSB120\\CST411\\product"
 # file with gis alias definitions
 ALIASFILE = SWPRODUCT + "\\config\\gis_aliases"
 # gis alias name for cambridge image / session

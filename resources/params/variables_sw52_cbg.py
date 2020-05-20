@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 # ------------------------------------------------------------------------
-#  Copyright 2019 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2019-2020 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 #  limitations under the License.
 #
 # ------------------------------------------------------------------------
-# variables for robot magik example test agains smallworld 520 - cbg
+# variables for robot magik example test agains smallworld 523 - cbg
 # ------------------------------------------------------------------------
 
 # ========================================================================
@@ -28,7 +28,7 @@
 # communication should be available
 START_WAIT = "60s"
 # path to smallworld core product
-SWPRODUCT = "C:\\Smallworld\\520NRM\\core"
+SWPRODUCT = "S:\\nrm523\\core"
 # file with gis alias definitions
 ALIASFILE = SWPRODUCT + "\\..\\cambridge_db\\config\\gis_aliases"
 # gis alias name for cambridge image / session
@@ -46,9 +46,9 @@ LOGIN = "root/ "
 MSFSTARTUP = True
 
 # Starting Smallworld 5.x sessions must define jre / jdk to be used
-# - 5.2 can works with open jdk12, 5.1 requires an 1.8 ??
+# - 5.23 can works with open jdk14, 5.1 requires an 1.8 ??
 # Starting Smallworld 4.3 images doesn't requires this, except images works with java acp
-JAVA_HOME = "C:\\Smallworld\\Tools\\jdk\\jdk-12.0.2"
+JAVA_HOME = "C:\\Testing\\robot-magik\\devenv\\jdk-14-x64"
 
 # ========================================================================
 # settings for communicate with the magik session

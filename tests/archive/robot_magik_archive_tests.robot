@@ -19,114 +19,115 @@ Library           OperatingSystem
 Library           String
 
 *** Variables ***
-${ROBOT_MAGIK_DIR}    ${CURDIR}/../..
+${ROBOT_MAGIK_DIR}    ${CURDIR}${/}..${/}..
 ${ROBOT_MAGIK_COPYRIGHT}    Copyright*2019*Luiko Czub*Smallcases Software GmbH
 ${ROBOT_MAGIK_LICENSE}    Apache License*2.0
 
 *** Test Cases ***
 Test robot magik info files exist in main directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/README.rst
-    ${ROBOT_MAGIK_DIR}/LICENSE-2.0.txt
-    ${ROBOT_MAGIK_DIR}/CHANGES.rst
-    ${ROBOT_MAGIK_DIR}/Pipfile
+    ${ROBOT_MAGIK_DIR}${/}README.rst
+    ${ROBOT_MAGIK_DIR}${/}LICENSE-2.0.txt
+    ${ROBOT_MAGIK_DIR}${/}CHANGES.rst
+    ${ROBOT_MAGIK_DIR}${/}Pipfile
 
 Test robot magik documentation files exist in doc directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/doc/robot_magik_base.html
-    ${ROBOT_MAGIK_DIR}/doc/robot_magik_dsview.html
-    ${ROBOT_MAGIK_DIR}/doc/RobotMagikLauncher.html
+    ${ROBOT_MAGIK_DIR}${/}doc${/}robot_magik_base.html
+    ${ROBOT_MAGIK_DIR}${/}doc${/}robot_magik_dsview.html
+    ${ROBOT_MAGIK_DIR}${/}doc${/}RobotMagikLauncher.html
 
 Test robot magik keyword definitions exist in resources directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/resources/robot_magik_base.robot
-    ${ROBOT_MAGIK_DIR}/resources/robot_magik_dsview.robot
-    ${ROBOT_MAGIK_DIR}/resources/RobotMagikLauncher.py
+    ${ROBOT_MAGIK_DIR}${/}resources${/}robot_magik_base.robot
+    ${ROBOT_MAGIK_DIR}${/}resources${/}robot_magik_dsview.robot
+    ${ROBOT_MAGIK_DIR}${/}resources${/}RobotMagikLauncher.py
 
 Test robot magik start and stop scripts exist in scripts directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/resources/scripts/robot_remote_cli.magik
-    ${ROBOT_MAGIK_DIR}/resources/scripts/start_robot_remote_cli.magik
-    ${ROBOT_MAGIK_DIR}/resources/scripts/start_robot_remote_cli.script
-    ${ROBOT_MAGIK_DIR}/resources/scripts/robot_start_magik_image.py
-    ${ROBOT_MAGIK_DIR}/resources/scripts/robot_stop_magik_image.py
-    ${ROBOT_MAGIK_DIR}/resources/scripts/__init__.py
+    ${ROBOT_MAGIK_DIR}${/}resources${/}scripts${/}robot_remote_cli.magik
+    ${ROBOT_MAGIK_DIR}${/}resources${/}scripts${/}start_robot_remote_cli.magik
+    ${ROBOT_MAGIK_DIR}${/}resources${/}scripts${/}start_robot_remote_cli.script
+    ${ROBOT_MAGIK_DIR}${/}resources${/}scripts${/}robot_start_magik_image.py
+    ${ROBOT_MAGIK_DIR}${/}resources${/}scripts${/}robot_stop_magik_image.py
+    ${ROBOT_MAGIK_DIR}${/}resources${/}scripts${/}__init__.py
 
 Test robot magik self tests exist in tests directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/tests/keywords/noDB/__init__.robot
-    ${ROBOT_MAGIK_DIR}/tests/keywords/noDB/robot_magik_base_tests.robot
-    ${ROBOT_MAGIK_DIR}/tests/keywords/withDB/robot_magik_dsview_tests.robot
-    ${ROBOT_MAGIK_DIR}/tests/keywords/withDB/__init__.robot
-    ${ROBOT_MAGIK_DIR}/tests/keywords/Robot_Magik_Launcher_Dummy_Tests.robot
-    ${ROBOT_MAGIK_DIR}/tests/keywords/Robot_Magik_Launcher_Gis_Tests.robot
-    ${ROBOT_MAGIK_DIR}/tests/archive/robot_magik_archive_tests.robot
-    ${ROBOT_MAGIK_DIR}/tests/scripts/robot_magik_prompt_tests.robot
-    ${ROBOT_MAGIK_DIR}/tests/scripts/robot_magik_script_tests.robot
-    ${ROBOT_MAGIK_DIR}/tests/scripts/dummy_gis_launcher.py
-    ${ROBOT_MAGIK_DIR}/tests/scripts/dummy_remote_cli.py
+    ${ROBOT_MAGIK_DIR}${/}tests${/}keywords${/}noDB${/}__init__.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}keywords${/}noDB${/}robot_magik_base_tests.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}keywords${/}withDB${/}robot_magik_dsview_tests.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}keywords${/}withDB${/}__init__.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}keywords${/}Robot_Magik_Launcher_Dummy_Tests.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}keywords${/}Robot_Magik_Launcher_Gis_Tests.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}archive${/}robot_magik_archive_tests.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}scripts${/}robot_magik_prompt_tests.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}scripts${/}robot_magik_script_tests.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}scripts${/}dummy_gis_launcher.py
+    ${ROBOT_MAGIK_DIR}${/}tests${/}scripts${/}dummy_remote_cli.py
 
 Test robot launcher nested aliases tests exist in tests directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/tests/nested_aliases/Robot_Magik_Launcher_Nested_Alias_Tests.robot
-    ${ROBOT_MAGIK_DIR}/tests/nested_aliases/robot_magik_script_tests.robot
-    ${ROBOT_MAGIK_DIR}/tests/nested_aliases/gis_aliases_sw41
-    ${ROBOT_MAGIK_DIR}/tests/nested_aliases/gis_aliases_sw43
+    ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}Robot_Magik_Launcher_Nested_Alias_Tests.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}robot_magik_script_tests.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}gis_aliases_sw41
+    ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}gis_aliases_sw43
 
 Test robot magik examples exist in examples directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/examples/__init__.robot
-    ${ROBOT_MAGIK_DIR}/examples/coordinate_tests.robot
-    ${ROBOT_MAGIK_DIR}/examples/cs_collection_tests.robot
+    ${ROBOT_MAGIK_DIR}${/}examples${/}__init__.robot
+    ${ROBOT_MAGIK_DIR}${/}examples${/}coordinate_tests.robot
+    ${ROBOT_MAGIK_DIR}${/}examples${/}cs_collection_tests.robot
 
 Test robot magik default parameter exist in resources directory
     [Template]    File Should Exist
-    ${ROBOT_MAGIK_DIR}/resources/params/variables_sw43_cbg.py
-    ${ROBOT_MAGIK_DIR}/resources/params/variables_sw51_cbg.py
+    ${ROBOT_MAGIK_DIR}${/}resources${/}params${/}variables_sw43_cbg.py
+    ${ROBOT_MAGIK_DIR}${/}resources${/}params${/}variables_sw51_cbg.py
 
-Test file 'MANIFEST' not exist
-    File Should Not Exist    ${ROBOT_MAGIK_DIR}/MANIFEST
+Test ant build resources not exist
+    File Should Not Exist    ${ROBOT_MAGIK_DIR}${/}build.*
 
 Test directory '.git' not exist
-    Directory Should Not Exist    ${ROBOT_MAGIK_DIR}/.git
+    Directory Should Not Exist    ${ROBOT_MAGIK_DIR}${/}.git
 
-Test file 'VERSION.bat' not exist
-    File Should Not Exist    ${ROBOT_MAGIK_DIR}/VERSION.bat
+Test pipenv resource exist partly
+    File Should Not Exist    ${ROBOT_MAGIK_DIR}${/}Pipfile.lock
+    File Should Exist    ${ROBOT_MAGIK_DIR}${/}Pipfile
 
 Test robot magik resources includes copyright info
     [Template]    Check Header Info for directory
-    ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
-    ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_COPYRIGHT}    *.py
-    ${ROBOT_MAGIK_DIR}/tests/keywords    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
-    ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
-    ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.py
-    ${ROBOT_MAGIK_DIR}/tests/nested_aliases    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
-    ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_COPYRIGHT}    *.robot    2
-    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
-    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_COPYRIGHT}    *.py
+    ${ROBOT_MAGIK_DIR}${/}resources    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
+    ${ROBOT_MAGIK_DIR}${/}resources    ${ROBOT_MAGIK_COPYRIGHT}    *.py
+    ${ROBOT_MAGIK_DIR}${/}tests${/}keywords    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.py
+    ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}archive    ${ROBOT_MAGIK_COPYRIGHT}    *.robot    2
+    ${ROBOT_MAGIK_DIR}${/}examples    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
+    ${ROBOT_MAGIK_DIR}${/}examples    ${ROBOT_MAGIK_COPYRIGHT}    *.py
     ${ROBOT_MAGIK_DIR}    ${ROBOT_MAGIK_COPYRIGHT}    README.md
-    ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.py
-    ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.magik
+    ${ROBOT_MAGIK_DIR}${/}resources${/}scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.py
+    ${ROBOT_MAGIK_DIR}${/}resources${/}scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.magik
 
 Test robot magik resources includes license info
     [Template]    Check Header Info for directory
-    ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_LICENSE}    *.robot
-    ${ROBOT_MAGIK_DIR}/resources    ${ROBOT_MAGIK_LICENSE}    *.py
-    ${ROBOT_MAGIK_DIR}/tests/keywords    ${ROBOT_MAGIK_LICENSE}    *.robot
-    ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_LICENSE}    *.robot
-    ${ROBOT_MAGIK_DIR}/tests/scripts    ${ROBOT_MAGIK_LICENSE}    *.py
-    ${ROBOT_MAGIK_DIR}/tests/nested_aliases    ${ROBOT_MAGIK_LICENSE}    *.robot
-    ${ROBOT_MAGIK_DIR}/tests/archive    ${ROBOT_MAGIK_LICENSE}    *.robot    2
-    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_LICENSE}    *.robot
-    ${ROBOT_MAGIK_DIR}/examples    ${ROBOT_MAGIK_LICENSE}    *.py
+    ${ROBOT_MAGIK_DIR}${/}resources    ${ROBOT_MAGIK_LICENSE}    *.robot
+    ${ROBOT_MAGIK_DIR}${/}resources    ${ROBOT_MAGIK_LICENSE}    *.py
+    ${ROBOT_MAGIK_DIR}${/}tests${/}keywords    ${ROBOT_MAGIK_LICENSE}    *.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}scripts    ${ROBOT_MAGIK_LICENSE}    *.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}scripts    ${ROBOT_MAGIK_LICENSE}    *.py
+    ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases    ${ROBOT_MAGIK_LICENSE}    *.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}archive    ${ROBOT_MAGIK_LICENSE}    *.robot    2
+    ${ROBOT_MAGIK_DIR}${/}examples    ${ROBOT_MAGIK_LICENSE}    *.robot
+    ${ROBOT_MAGIK_DIR}${/}examples    ${ROBOT_MAGIK_LICENSE}    *.py
     ${ROBOT_MAGIK_DIR}    ${ROBOT_MAGIK_LICENSE}    README.md    2
-    ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_LICENSE}    *.robot
-    ${ROBOT_MAGIK_DIR}/resources/scripts    ${ROBOT_MAGIK_LICENSE}    *.py
+    ${ROBOT_MAGIK_DIR}${/}resources${/}scripts    ${ROBOT_MAGIK_LICENSE}    *.robot
+    ${ROBOT_MAGIK_DIR}${/}resources${/}scripts    ${ROBOT_MAGIK_LICENSE}    *.py
 
 Test no '*.pyc' should be included
     [Template]    File Should Not Exist
-    ${ROBOT_MAGIK_DIR}/resources/scripts/*.pyc
-    ${ROBOT_MAGIK_DIR}/tests/scripts/*.pyc
+    ${ROBOT_MAGIK_DIR}${/}resources${/}scripts${/}*.pyc
+    ${ROBOT_MAGIK_DIR}${/}tests${/}scripts${/}*.pyc
 
 *** Keywords ***
 Check Header Info for file
