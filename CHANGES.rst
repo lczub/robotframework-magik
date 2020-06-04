@@ -1,10 +1,20 @@
 Changes in Robot Framework Magik
 ================================
 
+Robot Framework Magik release notes v0.5.2 - UNDER CONSTRUCTION
+---------------------------------------------------------------
+
+- Enh #23: Support running OpenSmallworld MUnit tests
+
+ - new *robot_magik_base* keywords: *Load Magik File*, *Load Magik Module*
+ 
+- Ant Build configuration added
+
+
 Robot Framework Magik release notes v0.5.1 (Nov. 2019)
 ---------------------------------------------------------------
 
-- Enh #21: Support nested aliases
+- Enh #22: Support nested aliases
 
  - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are extend with new argument *nested_aliases*
  - if defined, Magik image is started without setting the argument <-l logfile>

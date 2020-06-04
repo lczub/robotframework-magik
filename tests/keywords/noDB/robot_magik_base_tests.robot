@@ -1,4 +1,4 @@
-#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2020 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -20,6 +20,12 @@ Suite Teardown    Close All Connections
 Force Tags        KeywordTest    BaseTest
 Resource          ../../../resources/robot_magik_base.robot
 Variables         ../../../resources/params/variables_sw43_cbg.py
+
+*** Variables ***
+${CUR_TEST_DATA_DIR}    ${CURDIR}${/}test_data
+${TEST_MAGIK_FILE_OK}    ${CUR_TEST_DATA_DIR}${/}hello_world_ok.magik
+${TEST_MAGIK_FILE_TB}    ${CUR_TEST_DATA_DIR}${/}hello_world_tb.magik
+${TEST_MAGIK_FILE_FAILURE}    ${CUR_TEST_DATA_DIR}${/}hello_world_failure.magik
 
 *** Test Cases ***
 Test keyword 'Open Magik Connection'
@@ -133,6 +139,41 @@ Test special characters
     Should Contain    ${out}    Änderung
     # ATTENTION : insert new test above this line
     #    the following tests handle the image cleanup and connection closure
+
+Test keyword 'Load Magik File' - File does not exist
+    ${not_existing_fname}=    Set Variable    ${CUR_TEST_DATA_DIR}${/}hello_world_does_not_exist.magik
+    Run Keyword And Expect Error    *file_does_not_exist*    Load Magik File    ${not_existing_fname}
+
+Test keyword 'Load Magik File' - Hello World OK
+    ${out}=    Execute Magik Command    sw:package[:robot_hello_world]
+    Should Be Equal As Strings    '${out}'    'unset'    before loading - unexpected value for global robot_hello_world
+    ${out}=    Load Magik File    ${TEST_MAGIK_FILE_OK}
+    Should Contain    ${out}    Hello World - all fine and very well    missing expected load file output
+    ${out}=    Execute Magik Command    sw:package[:robot_hello_world]
+    Should Be Equal As Strings    ${out}    "Hello World - all fine"    after loading - unexpected value for global robot_hello_world
+
+Test keyword 'Load Magik File' - Hello World with TB
+    ${out}=    Execute Magik Command    sw:package[:robot_hello_world_tb]
+    Should Be Equal As Strings    '${out}'    'unset'    before loading - unexpected value for global robot_hello_world_tb
+    Run Keyword And Expect Error    *Hello World - so sad we must raise an expected tb*    Load Magik File    ${TEST_MAGIK_FILE_TB}
+    ${out}=    Execute Magik Command    sw:package[:robot_hello_world_tb]
+    Should Be Equal As Strings    ${out}    "Hello World - so sad"    after loading - unexpected value for global robot_hello_world_tb
+
+Test keyword 'Load Magik File' - Hello World with Failure
+    ${out}=    Execute Magik Command    sw:package[:robot_hello_world_failure]
+    Should Be Equal As Strings    '${out}'    'unset'    before loading - unexpected value for global robot_hello_world_failure
+    Run Keyword And Expect Error    *Hello World - so sad we have wrong content*    Load Magik File    ${TEST_MAGIK_FILE_FAILURE}    wrong content
+    ${out}=    Execute Magik Command    sw:package[:robot_hello_world_failure]
+    Should Be Equal As Strings    ${out}    "Hello World - so sad"    after loading - unexpected value for global robot_hello_world_failure
+
+Test keyword 'Load Magik Module' - Module does not exist
+    ${not_existing_mname}=    Set Variable    my_not_existing_module
+    Run Keyword And Expect Error    *sw_module_no_such_module*    Load Magik Module    ${not_existing_mname}
+
+Test keyword 'Load Magik Module' - Module exist
+    ${existing_mname}=    Set Variable    tree_examples
+    ${out}=    Load Magik Module    ${existing_mname}
+    Should Match    ${out}    *${existing_mname}.*loaded*
 
 Test keyword 'Clean Magik Image'
     Clean Magik Image

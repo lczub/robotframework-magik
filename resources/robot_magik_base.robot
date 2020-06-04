@@ -1,4 +1,4 @@
-#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2020 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -72,7 +72,6 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...
 ...               == Requirements ==
 ...               Robot Framework Version >= 3.1.1 is required.
-...               
 Library           Telnet    3.0
 Library           String
 
@@ -97,8 +96,7 @@ Open Magik Connection
     ...    | ${CLI_TIMEOUT} | 3.0 | max. secs, tests should wait for a response from the Magik image |
     ...    | ${CLI_ENCODING} | ISO-8859-1 | used text encoding for communication with remote_cli |
     ${prompt}=    Set Variable    \\S+:\\d+:(MagikSF|Magik)>
-    Open Connection    host=${host}    alias=${alias}    port=${port}    timeout=${timeout}    newline=${newline}    prompt=${prompt}
-    ...    prompt_is_regexp=True    encoding=${encoding}
+    Open Connection    host=${host}    alias=${alias}    port=${port}    timeout=${timeout}    newline=${newline}    prompt=${prompt}    prompt_is_regexp=True    encoding=${encoding}
     ${out}=    Read until prompt
     # LC 04.07.12: the prompt must be extended with a leading newline, otherwise tracebacks
     # will not be read completly. Reason is, that the traceback itself includes lines with
@@ -211,4 +209,44 @@ Get Magik Environment Variable
     ...
     ...    It's the value, as it is known inside the Magik Image
     ${out}=    Execute Magik Command    system.getenv("${env_name}")
+    [Return]    ${out}
+
+Load Magik File
+    [Arguments]    ${magik_file}    ${error_regexp}=
+    [Documentation]    Load _magik_file_ into the Magik Image / Session
+    ...
+    ...    Fails, if output includes strings *traceback:* or *(parser_error)* or
+    ...    the optional regular expression _error_regexp_
+    Write Magik Command    load_file("${magik_file}")
+    ${out}=    Read Magik Output    ${error_regexp}
+    [Return]    ${out}
+
+Load Magik Module
+    [Arguments]    ${module_name}    ${module_version}=_unset    ${error_regexp}=
+    [Documentation]    Load Magik _module_name_ using _sw_module_manager_ \ into the Magik Image / Session
+    ...    - define _magik_module_ as string not as symbol, e.g. _method_checker_ instead _:method_checker_
+    ...
+    ...    Fails, if output during loading the module includes strings *traceback:* or *(parser_error)* or
+    ...    the optional regular expression _error_regexp_
+    ...
+    ...    === Used settings to avoid conflicts ===
+    ...
+    ...    :save_magikc - *_false* (SW4)
+    ...    - avoids conflicts loading shared test modules into sessions with different SW version
+    ...    - avoids failing the test with missing system write access of used test account, when storing _*.magikc_ files
+    ...
+    ...    === Used settings to minimize code infection ===
+    ...
+    ...    :force_reload - *_false*
+    ...    - avoids reloadings an already loaded module
+    ...
+    ...    :update_image? - *_false*
+    ...    - avoids loading additional patches, which may override current behaviour
+    ...    - might be a problem, when test code itself requires core patches which are not loaded
+    ...
+    ${opt_magikc}=    Set Variable    :save_magikc, _false
+    ${opt_reload}=    Set Variable    :force_reload, _false
+    ${opt_update}=    Set Variable    :update_image?, _false
+    Write Magik Command    sw_module_manager.load_module( :${module_name}, ${module_version}, ${opt_magikc}, ${opt_reload}, ${opt_update} )
+    ${out}=    Read Magik Output    ${error_regexp}
     [Return]    ${out}
