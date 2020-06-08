@@ -34,6 +34,10 @@
 			<param name="keywords_file" value="${DIR.RFM.KEYWORDS}/robot_magik_dsview.html"/>
 		</antcall>
         <antcall target="rfm.robot_libdoc">
+			<param name="library_or_resource" value="${DIR.RFM.RESOURCES}/robot_magik_munit.robot"/>
+			<param name="keywords_file" value="${DIR.RFM.KEYWORDS}/robot_magik_munit.html"/>
+		</antcall>
+        <antcall target="rfm.robot_libdoc">
 			<param name="library_or_resource" value="${DIR.RFM.RESOURCES}/RobotMagikLauncher.py"/>
 			<param name="keywords_file" value="${DIR.RFM.KEYWORDS}/RobotMagikLauncher.html"/>
 		</antcall>
@@ -69,6 +73,7 @@
 				<include name="tests/**"/>	
 				<include name="resources/scripts/**"/>	
 				<include name="resources/params/**"/>	
+				<include name="resources/magik/*.magik"/>	
                 <include name="examples/**"/>
                 <include name="README.rst"/>
                 <include name="LICENSE-2.0.txt"/>

@@ -212,19 +212,27 @@ Get Magik Environment Variable
     [Return]    ${out}
 
 Load Magik File
-    [Arguments]    ${magik_file}    ${error_regexp}=
-    [Documentation]    Load _magik_file_ into the Magik Image / Session
+    [Arguments]    ${magik_file}    ${max_load_time}=${CLI_TIMEOUT}    ${error_regexp}=
+    [Documentation]    Load ${magik_file} into the Magik Image / Session
+    ...    - define in ${max_load_time} \ expected during for loading the module (e.g. 10s)
     ...
     ...    Fails, if output includes strings *traceback:* or *(parser_error)* or
     ...    the optional regular expression _error_regexp_
+    ...
+    ...    == Site effect ==
+    ...
+    ...    extends connection timeout to ${max_load_time} and switch it back to default ${CLI_TIMEOUT} during the teardown.
+    Set Timeout    ${max_load_time}
     Write Magik Command    load_file("${magik_file}")
     ${out}=    Read Magik Output    ${error_regexp}
+    [Teardown]    Set Timeout    ${CLI_TIMEOUT}
     [Return]    ${out}
 
 Load Magik Module
-    [Arguments]    ${module_name}    ${module_version}=_unset    ${error_regexp}=
-    [Documentation]    Load Magik _module_name_ using _sw_module_manager_ \ into the Magik Image / Session
-    ...    - define _magik_module_ as string not as symbol, e.g. _method_checker_ instead _:method_checker_
+    [Arguments]    ${module_name}    ${module_version}=_unset    ${max_load_time}=${CLI_TIMEOUT}    ${error_regexp}=
+    [Documentation]    Load Magik ${module_name} using _sw_module_manager_ \ into the Magik Image / Session
+    ...    - define ${module_name} as string not as symbol, e.g. _method_checker_ instead _:method_checker_
+    ...    - define in ${max_load_time} \ expected during for loading the module (e.g. 10s)
     ...
     ...    Fails, if output during loading the module includes strings *traceback:* or *(parser_error)* or
     ...    the optional regular expression _error_regexp_
@@ -244,9 +252,14 @@ Load Magik Module
     ...    - avoids loading additional patches, which may override current behaviour
     ...    - might be a problem, when test code itself requires core patches which are not loaded
     ...
+    ...    == Site effect ==
+    ...
+    ...    extends connection timeout to ${max_load_time} and switch it back to default ${CLI_TIMEOUT} during the teardown.
+    Set Timeout    ${max_load_time}
     ${opt_magikc}=    Set Variable    :save_magikc, _false
     ${opt_reload}=    Set Variable    :force_reload, _false
     ${opt_update}=    Set Variable    :update_image?, _false
     Write Magik Command    sw_module_manager.load_module( :${module_name}, ${module_version}, ${opt_magikc}, ${opt_reload}, ${opt_update} )
     ${out}=    Read Magik Output    ${error_regexp}
+    [Teardown]    Set Timeout    ${CLI_TIMEOUT}
     [Return]    ${out}
