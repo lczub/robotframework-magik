@@ -70,6 +70,13 @@ CLI_TIMEOUT = 10.0
 CLI_DSVIEW_NAME = "gis"
 
 # ========================================================================
+# settings for munit test
+# ========================================================================
+# Defines magik file loading munit base modules and other required 
+# base test code - modules with tests should be loaded separately
+ROBOT_MUNIT_LOADFILE = "C:\\Testing\\robot-magik\\robotframework-magik\\resources\\magik\\load_opensmallworld_munit_43.magik"
+
+# ========================================================================
 # settings for other robot magik self tests
 # ========================================================================
 GIS_VERSION=43

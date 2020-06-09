@@ -1,0 +1,67 @@
+#% text_encoding = iso8859_1
+
+#----------------------------------------------------------------------
+#  Copyright 2020 Luiko Czub, Smallcases Software GmbH
+#
+#----------------------------------------------------------------------
+#
+# Project : Automated testing Magik Images with Robot Framework
+#           http://github.com/lczub/robotframework-magik
+# 
+# Scope:    Load base MUnit functionality (:munit_xml) into an
+#           43 image / session, remote controlled by robot
+#
+#           Adds :munit product like OpenSmallworld MUnit
+#           (https://github.com/OpenSmallworld/munit.git) using
+#           path defined in  
+#           - environment variable MUNIT_DIR
+#           - or environment variable ROBOT_MUNIT_DIR
+#           - or LAYERED_PRODUCTS
+#           If product is already loaded, it will not be reinitialised
+#
+#----------------------------------------------------------------------
+
+_package sw
+$
+
+_block
+	show("ROBOT_MUNIT_DIR", system.getenv("ROBOT_MUNIT_DIR") )
+	show("MUNIT_DIR", system.getenv("MUNIT_DIR") )
+	_local munit_dir << system.getenv("MUNIT_DIR").default(system.getenv("ROBOT_MUNIT_DIR"))
+	_if munit_dir _isnt _unset
+	_then
+		# add munit product with directory path
+		smallworld_product.add_product( munit_dir )
+	_else
+		# add munit product with LAYERED_PRODUCTS definition
+		smallworld_product.add_product( :munit )
+	_endif 
+		
+_endblock
+$
+
+_block
+	# WORKAROUND to avoid error condition_unknown(name=:implementer_warning)
+	# when loading munit_base in 43
+	#
+	# define conditions, used in implementer_test_mixin but not
+	# always defined, cause module datamodel_engine is loaded in general
+	# unclear, why implementer_test_mixin is part of munit_base
+	_if condition.sys!perform(:find_template|()|, :implementer_warning, _true) _is _unset
+	_then 
+		condition.define_condition(:implementer_warning, :warning,
+			   {:datamodel_name, :sub_datamodel_name, :version, :upgrade?, :description})
+	_endif 
+
+_endblock
+$
+
+
+# option :save_magikc? is disabled to avoid conflicts, when same
+# munit source is loaded with different sw versions
+# options :force_reload? and :update_image? are disabled to
+# minimize the infection with additional code
+sw_module_manager.load_module(:munit_xml, _unset, :save_magikc?, _false,
+		  :force_reload?, _false, :update_image? , _false )
+$
+

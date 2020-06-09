@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 # ------------------------------------------------------------------------
-#  Copyright 2019 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2019-2020 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -65,6 +65,13 @@ CLI_TIMEOUT = 10.0
 # ========================================================================
 # Name of the dataset, which should be used for tests
 #CLI_DSVIEW_NAME = "gis"
+
+# ========================================================================
+# settings for munit test
+# ========================================================================
+# Defines magik file loading munit base modules and other required 
+# base test code - modules with tests should be loaded separately
+ROBOT_MUNIT_LOADFILE = "C:\\Testing\\robot-magik\\robotframework-magik\\resources\\magik\\load_opensmallworld_munit_52.magik"
 
 # ========================================================================
 # settings for other robot magik self tests

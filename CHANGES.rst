@@ -6,18 +6,30 @@ Robot Framework Magik release notes v0.5.2 - UNDER CONSTRUCTION
 
 - Enh #23: Support running OpenSmallworld MUnit tests
 
- - new *robot_magik_base* keywords: *Load Magik File*, *Load Magik Module*
- 
+  - new *robot_magik_base* keywords: *Load Magik File*, *Load Magik Module*
+    - new variable ${MAGIK_MAX_LOAD_WAIT} to define max wait time for prompt, when loading magik code (file or module)
+    - new variable ${MAGIK_LOAD_ERROR_REGEXP} to define  regular expression to search for load errors like ``**** Fehler:`` or ``**** Error:``
+
+  - new *robot_magik_munit* keywords: *Prepare MUnit*, *Load Module and Run MUnit Tests*
+    - new variable ${ROBOT_MUNIT_LOADFILE} to define magik file loading munit base modules and other required base test code. modules with tests should be loaded separately
+    - new variable ${ROBOT_MUNIT_MAX_LOAD_WAIT} to define max wait time for prompt, when loading munit code (files or modules)
+  
 - Ant Build configuration added
 
+  - main targets *update_keywords_doc*, *make_release*, *test_release*
 
+- additional *robot_magik_base* changes
+
+  - new variable ${MAGIK_PROMPT_REGEXP} to customized Magik prompt search
+ 
+ 
 Robot Framework Magik release notes v0.5.1 (Nov. 2019)
 ---------------------------------------------------------------
 
 - Enh #22: Support nested aliases
 
- - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are extend with new argument *nested_aliases*
- - if defined, Magik image is started without setting the argument <-l logfile>
+  - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are extend with new argument *nested_aliases*
+  - if defined, Magik image is started without setting the argument <-l logfile>
 
 - Documentation references now also SW41 as supported
 

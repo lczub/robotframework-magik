@@ -68,7 +68,8 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...
 ...               == Additional keyword definitions ==
 ...
-...               - keywords for testing Smallworld ds_views, ds_collections and rwo records see [./robot_magik_dsview.html|robot_magik_dsview]
+...               - keywords loading and executing MUnit tests like [https://github.com/OpenSmallworld/munit|OpenSmallworld MUnit] see [./robot_magik_munit.html|robot_magik_munit]
+...               - keywords testing Smallworld ds_views, ds_collections and rwo records see [./robot_magik_dsview.html|robot_magik_dsview]
 ...
 ...               == Requirements ==
 ...               Robot Framework Version >= 3.1.1 is required.
@@ -78,10 +79,13 @@ Library           String
 *** Variables ***
 ${CLI_HOST}       localhost
 ${CLI_PORT}       14001
-${CLI_TIMEOUT}    3.0
+${CLI_TIMEOUT}    3.0    # Defines default wait time for prompt, when executing simple command. Extend it when telent connection between Robot and Magik prompt is slow.
 ${CLI_NEWLINE}    \n
 ${CLI_OBJ_HASH}    robot_objhash
 ${CLI_ENCODING}    ISO-8859-1
+${MAGIK_LOAD_ERROR_REGEXP}    \\*\\*\\*\\*.(Error|Fehler):    # Defines default regular expression to search for load errors like ``**** Fehler:`` or ``**** Error:``
+${MAGIK_PROMPT_REGEXP}    (?s)\\s(.*)\\s\\S+:\\d+:(?:MagikSF|Magik)>    # Defines default regular expression to search for Magik prompt \ like ``MagikSF>`` or `Magik>``
+${MAGIK_MAX_LOAD_WAIT}    10.0    # Defines default max wait time for prompt, when loading magik code (file or module)
 
 *** Keywords ***
 Open Magik Connection
@@ -117,14 +121,18 @@ Write Magik Command
 
 Read Magik Output
     [Arguments]    ${error_regexp}=
-    [Documentation]    Returns all output lines between the last Magik command and next prompt
+    [Documentation]    Returns all output lines between the last Magik command and next prompt.
     ...
     ...    Fails, if these lines include the strings *traceback:* or *(parser_error)* or
     ...    the optional regular expression _error_regexp_
+    ...
+    ...    === Hint - how to customize prompt search ===
+    ...
+    ...    adjust variable ${MAGIK_PROMPT_REGEXP}
     ${out_orig}=    Read until prompt
     Should Not Match Regexp    ${out_orig}    .*traceback:|.*\\(parser_error\\)
     Run Keyword If    '${error_regexp}'!=''    Should Not Match Regexp    ${out_orig}    ${error_regexp}
-    ${match}    ${out}=    Should Match Regexp    ${out_orig}    (?s)\\s(.*)\\s\\S+:\\d+:(?:MagikSF|Magik)>
+    ${match}    ${out}=    Should Match Regexp    ${out_orig}    ${MAGIK_PROMPT_REGEXP}
     [Return]    ${out}
 
 Prepare Magik Image
@@ -212,30 +220,32 @@ Get Magik Environment Variable
     [Return]    ${out}
 
 Load Magik File
-    [Arguments]    ${magik_file}    ${max_load_time}=${CLI_TIMEOUT}    ${error_regexp}=
+    [Arguments]    ${magik_file}    ${max_load_wait}=${MAGIK_MAX_LOAD_WAIT}    ${error_regexp}=${MAGIK_LOAD_ERROR_REGEXP}
     [Documentation]    Load ${magik_file} into the Magik Image / Session
-    ...    - define in ${max_load_time} \ expected during for loading the module (e.g. 10s)
     ...
     ...    Fails, if output includes strings *traceback:* or *(parser_error)* or
-    ...    the optional regular expression _error_regexp_
+    ...    the optional regular expression ${error_regexp}
+    ...
+    ...    Waits ${max_load_wait} (e.g. 10s) till loading file must be finished.
     ...
     ...    == Site effect ==
     ...
     ...    extends connection timeout to ${max_load_time} and switch it back to default ${CLI_TIMEOUT} during the teardown.
-    Set Timeout    ${max_load_time}
+    Set Timeout    ${max_load_wait}
     Write Magik Command    load_file("${magik_file}")
     ${out}=    Read Magik Output    ${error_regexp}
     [Teardown]    Set Timeout    ${CLI_TIMEOUT}
     [Return]    ${out}
 
 Load Magik Module
-    [Arguments]    ${module_name}    ${module_version}=_unset    ${max_load_time}=${CLI_TIMEOUT}    ${error_regexp}=
+    [Arguments]    ${module_name}    ${module_version}=_unset    ${max_load_wait}=${MAGIK_MAX_LOAD_WAIT}    ${error_regexp}=${MAGIK_LOAD_ERROR_REGEXP}
     [Documentation]    Load Magik ${module_name} using _sw_module_manager_ \ into the Magik Image / Session
     ...    - define ${module_name} as string not as symbol, e.g. _method_checker_ instead _:method_checker_
-    ...    - define in ${max_load_time} \ expected during for loading the module (e.g. 10s)
     ...
     ...    Fails, if output during loading the module includes strings *traceback:* or *(parser_error)* or
-    ...    the optional regular expression _error_regexp_
+    ...    the optional regular expression ${error_regexp}
+    ...
+    ...    Waits ${max_load_wait} (e.g. 10s) till loading module must be finished. 
     ...
     ...    === Used settings to avoid conflicts ===
     ...
@@ -255,7 +265,7 @@ Load Magik Module
     ...    == Site effect ==
     ...
     ...    extends connection timeout to ${max_load_time} and switch it back to default ${CLI_TIMEOUT} during the teardown.
-    Set Timeout    ${max_load_time}
+    Set Timeout    ${max_load_wait}
     ${opt_magikc}=    Set Variable    :save_magikc, _false
     ${opt_reload}=    Set Variable    :force_reload, _false
     ${opt_update}=    Set Variable    :update_image?, _false

@@ -20,18 +20,19 @@ Resource          robot_magik_base.robot
 Library           OperatingSystem
 
 *** Variables ***
-${ROBOT_MUNIT_LOADFILE}    ${CURDIR}${/}magik${/}load_opensmallworld_munit.magik
+${ROBOT_MUNIT_LOADFILE}    ${CURDIR}${/}magik${/}load_opensmallworld_munit_43.magik    # Defines default magik file loading munit base modules and other required base test code - modules with tests should be loaded separately
 ${ROBOT_MUNIT_LOG_DIR}    ${OUTPUT_DIR}
-${ROBOT_MUNIT_MAX_LOAD_TIME}    20s
+${ROBOT_MUNIT_MAX_LOAD_WAIT}    20s    # Defines default max wait time for prompt, when loading munit code (files or modules)
 
 *** Keywords ***
 Prepare MUnit
     [Arguments]    ${munit_load_file}=${ROBOT_MUNIT_LOADFILE}    ${munit_dir}=
     [Documentation]    Setup for MUnit tests. Loads file ${munit_load_file} to import required MUnit functions and additional required magik functions
     ...
-    ...    if ${munit_dir} is defined, environment variable ROBOT_MUNIT_DIR is set, before loading ${munit_load_file}
+    ...    if ${munit_dir} is defined, environment variable ``ROBOT_MUNIT_DIR`` is set, before loading ${munit_load_file}
+
     Run Keyword If    '${munit_dir}' != ''    Execute Magik Command    system.putenv("ROBOT_MUNIT_DIR", "${munit_dir}")
-    ${out}=    Load Magik File    ${munit_load_file}    max_load_time=${ROBOT_MUNIT_MAX_LOAD_TIME}
+    ${out}=    Load Magik File    ${munit_load_file}    max_load_wait=${ROBOT_MUNIT_MAX_LOAD_WAIT}
     [Return]    ${out}
 
 Load Module and Run MUnit Tests
@@ -44,7 +45,7 @@ Load Module and Run MUnit Tests
     ${log_extension}=    Set Variable    log
     ${logfile_pattern}=    Set Variable    ${munit_log_dir}${/}*${tid}*.${log_extension}
     Remove File    ${logfile_pattern}
-    ${out}=    Load Magik Module    ${module_with_tests}    max_load_time=${ROBOT_MUNIT_MAX_LOAD_TIME}
+    ${out}=    Load Magik Module    ${module_with_tests}    max_load_wait=${ROBOT_MUNIT_MAX_LOAD_WAIT}
     ${tsm_exp}=    Store Magik Object    tsm    test_suite.new_from_module(:${module_with_tests} )
     ${tr_exp}=    Store Magik Object    tr    test_runner.new(_unset, :output_dir, "${munit_log_dir}", :output_format, "${log_extension}", :output_identifier, "${tid}" )
     ${out}=    Execute Magik Command    ${tr_exp}.run_in_new_stream(${tsm_exp})

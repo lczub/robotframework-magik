@@ -3,24 +3,13 @@
 #----------------------------------------------------------------------
 #  Copyright 2020 Luiko Czub, Smallcases Software GmbH
 #
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
 #----------------------------------------------------------------------
 #
 # Project : Automated testing Magik Images with Robot Framework
 #           http://github.com/lczub/robotframework-magik
 # 
 # Scope:    Load base MUnit functionality (:munit_xml) into an
-#           image / session, remote controlled by robot
+#           411 image / session, remote controlled by robot
 #
 #           Adds :munit product like OpenSmallworld MUnit
 #           (https://github.com/OpenSmallworld/munit.git) using
@@ -52,7 +41,9 @@ _endblock
 $
 
 _block
-	# WORKAROUND to avoid error condition_unknown(name=:implementer_warning)
+	# WORKAROUND to avoid errors
+	#             condition_unknown(name=:implementer_warning)
+	#             condition_unknown(name=:datamodel_test_failed)
 	# when loading munit_base in 411
 	#
 	# define conditions, used in implementer_test_mixin but not
