@@ -42,11 +42,10 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...
 ...               These connection parameters could be set for each test run separatly via variables (see `Open Magik Connection`).
 ...
-...               Example, how to start the [../examples/coordinate_tests.txt|coordinate tests] with special connection settings:
+...               Example, how to start the [../examples/coordinate_tests.robot|coordinate tests] with special connection settings:
 ...               | robot --variable CLI_PORT:14099 --variable CLI_HOST:111.222.333.44 --variable CLI_TIMEOUT:15 coordinate_tests.txt
 ...
-...               To minimise the number of global variables, tests should use the keywords `Store Magik Object`
-...               and `Get Magik Object`.
+...               To minimise the number of global variables, tests should use the keywords `Store Magik Object`, `Build Magik Object Expression` and `Get Magik Object`.
 ...               They store the result of a Magik expression in a hash_table and returns another Magik expression,
 ...               which will return this result. So it is possible to share Magik objects between keywords (and tests)
 ...               and clean the image during the teardown from all created global variables. Only this hash_table must be set to *_unset*.
@@ -186,9 +185,11 @@ Execute Magik Command
 
 Build Magik Object Expression
     [Arguments]    ${obj_name}
-    [Documentation]    Returns a Magik expression, which will return a Magik object from the global hash_table
+    [Documentation]    Returns a Magik expression, which will return a Magik object from the global hash_table stored with key ${obj_name}.
     ...
-    ...    This is an internal keyword, used by `Store Magik Object` and `Get Magik Object`
+    ...    Use this, when methods should be called on the stored object.
+    ...
+    ...    see although `Store Magik Object` and `Get Magik Object`
     ${obj_expression}=    Convert To String    ${CLI_OBJ_HASH}\[:${obj_name}]
     [Return]    ${obj_expression}
 
@@ -197,16 +198,20 @@ Store Magik Object
     [Documentation]    Stores the result of a Magik expression in a global hash_table as an object.
     ...
     ...    Returns another Magik expression, which will return this object.
-    ...    see although `Prepare Magik Image` and `Get Magik Object`
+    ...
+    ...    see although `Build Magik Object Expression`, \ `Get Magik Object` and `Prepare Magik Image`
     ${obj_expression}=    Build Magik Object Expression    ${obj_name}
     Execute Magik Command    ${obj_expression} << ${magik_expression}
     [Return]    ${obj_expression}
 
 Get Magik Object
     [Arguments]    ${obj_name}
-    [Documentation]    Returns a Magik object, stored in the global hash_table.
+    [Documentation]    It is more a call as a get of a Magik object, stored in the global hash_table with key ${obj_name}.
+    ...    - will create output like ``a sw:test_suite`` at the prompt
     ...
-    ...    see although `Prepare Magik Image` and `Store Magik Object`
+    ...    Use `Build Magik Object Expression` instead , when methods should be called on it.
+    ...
+    ...    see although `Store Magik Object` and \ `Prepare Magik Image`
     ${obj_expression}=    Build Magik Object Expression    ${obj_name}
     ${out}=    Execute Magik Command    ${obj_expression}
     [Return]    ${out}
@@ -230,7 +235,7 @@ Load Magik File
     ...
     ...    == Site effect ==
     ...
-    ...    extends connection timeout to ${max_load_time} and switch it back to default ${CLI_TIMEOUT} during the teardown.
+    ...    extends connection timeout to ${max_load_wait} and switch it back to default ${CLI_TIMEOUT} during the teardown.
     Set Timeout    ${max_load_wait}
     Write Magik Command    load_file("${magik_file}")
     ${out}=    Read Magik Output    ${error_regexp}
@@ -245,7 +250,7 @@ Load Magik Module
     ...    Fails, if output during loading the module includes strings *traceback:* or *(parser_error)* or
     ...    the optional regular expression ${error_regexp}
     ...
-    ...    Waits ${max_load_wait} (e.g. 10s) till loading module must be finished. 
+    ...    Waits ${max_load_wait} (e.g. 10s) till loading module must be finished.
     ...
     ...    === Used settings to avoid conflicts ===
     ...
@@ -264,7 +269,7 @@ Load Magik Module
     ...
     ...    == Site effect ==
     ...
-    ...    extends connection timeout to ${max_load_time} and switch it back to default ${CLI_TIMEOUT} during the teardown.
+    ...    extends connection timeout to ${max_load_wait} and switch it back to default ${CLI_TIMEOUT} during the teardown.
     Set Timeout    ${max_load_wait}
     ${opt_magikc}=    Set Variable    :save_magikc, _false
     ${opt_reload}=    Set Variable    :force_reload, _false
@@ -273,3 +278,11 @@ Load Magik Module
     ${out}=    Read Magik Output    ${error_regexp}
     [Teardown]    Set Timeout    ${CLI_TIMEOUT}
     [Return]    ${out}
+
+Get Smallworld Version
+    [Documentation]    Returns Magik Image Smallworld Version as string
+    ...    - sw43 and sw52 returns xxxx
+    ...    - sw41 returns xxx
+    ${out}=    Execute Magik Command    write(smallworld_product.sw!version.write_string)
+    ${swv}=    Remove String    ${out}    .
+    [Return]    ${swv}

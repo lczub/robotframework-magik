@@ -175,6 +175,10 @@ Test keyword 'Load Magik Module' - Module exist
     ${out}=    Load Magik Module    ${existing_mname}
     Should Match    ${out}    *${existing_mname}.*loaded*
 
+Test keyword 'Get Smallworld Version'
+    ${swv}=    Get Smallworld Version
+    Should Match Regexp    ${swv}    \\d\\d\\d(\\d)?
+
 Test keyword 'Clean Magik Image'
     Clean Magik Image
     Write Magik Command    ${CLI_OBJ_HASH}

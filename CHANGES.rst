@@ -6,13 +6,19 @@ Robot Framework Magik release notes v0.5.2 - UNDER CONSTRUCTION
 
 - Enh #23: Support running OpenSmallworld MUnit tests
 
-  - new *robot_magik_base* keywords: *Load Magik File*, *Load Magik Module*
+  - adds in *robot_magik_base*:
+    - new keywords: *Load Magik File*, *Load Magik Module*
     - new variable ${MAGIK_MAX_LOAD_WAIT} to define max wait time for prompt, when loading magik code (file or module)
     - new variable ${MAGIK_LOAD_ERROR_REGEXP} to define  regular expression to search for load errors like ``**** Fehler:`` or ``**** Error:``
 
-  - new *robot_magik_munit* keywords: *Prepare MUnit*, *Load Module and Run MUnit Tests*
-    - new variable ${ROBOT_MUNIT_LOADFILE} to define magik file loading munit base modules and other required base test code. modules with tests should be loaded separately
-    - new variable ${ROBOT_MUNIT_MAX_LOAD_WAIT} to define max wait time for prompt, when loading munit code (files or modules)
+  - new *robot_magik_munit* keyword resource file:
+    - main keywords:
+	  - *Prepare MUnit*, *Run MUnit Testsuite Logging to File*, *Load Module with MUnit Tests and Start Test Runner*
+	  - *Evaluate MUnit Text Log*
+    - main variables
+	  - ${ROBOT_MUNIT_LOADFILE} to define magik file loading munit base modules and other required base test code. modules with tests should be loaded separately
+      - ${ROBOT_MUNIT_MAX_LOAD_WAIT} to define max wait time for prompt, when loading munit code (files or modules)
+      - ${ROBOT_MUNIT_MAX_RUN_WAIT} to define max wait time for prompt, when running a munit test suite
   
 - Ant Build configuration added
 
@@ -21,6 +27,8 @@ Robot Framework Magik release notes v0.5.2 - UNDER CONSTRUCTION
 - additional *robot_magik_base* changes
 
   - new variable ${MAGIK_PROMPT_REGEXP} to customized Magik prompt search
+  - new keyword *Get Smallworld Version*
+  - documenation updated for keywords *Build Magik Object Expresssion*, *Store Magik Object* and *Get Magik Object*
  
  
 Robot Framework Magik release notes v0.5.1 (Nov. 2019)

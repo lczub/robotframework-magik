@@ -1,4 +1,4 @@
-#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2020 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -15,13 +15,10 @@
 *** Settings ***
 Documentation     Robot Framework Magik keywords for testing Smallworld ds_views, ds_collections and rwo records.
 ...
-...               These keywords uses the [http://robotframework.org/robotframework/libraries/Telnet.html|TelnetLibrary] to send commands to Magik images and read there response.
+...               Sample see [../examples/cs_collection_tests.robot|cs_collection_tests]
 ...
-...               Details see [./robot_magik_base.html|robot_magik_base] documentation
+...               These keywords are an extension of [./robot_magik_base.html|robot_magik_base]
 ...
-...               == Requirements ==
-...               Robot Framework Version >= 3.1.1 is required.
-...               
 Resource          robot_magik_base.robot
 
 *** Variables ***
