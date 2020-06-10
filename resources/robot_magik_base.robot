@@ -15,11 +15,11 @@
 *** Settings ***
 Documentation     [http://robotframework.org|Robot Framework] high level keywords for automated testing [https://en.wikipedia.org/wiki/Magik_%28programming_language%29|Smallworld Magik] images.
 ...
-...               These keywords uses the [http://robotframework.org/robotframework/latest/libraries/Telnet.html|TelnetLibrary] to send commands to Magik images and read there response.
+...               These keywords uses the [http://robotframework.org/robotframework/latest/libraries/Telnet.html|TelnetLibrary] sending commands to Magik images / sessions and read their response.
 ...
-...               The Magik image must have started a remote_cli:
+...               The Magik image / session must have started a remote_cli:
 ...               - remote_cli.new(_optional port auth_proc)
-...               When Robot Framework runs on the same machine as the image, the remote_cli could be started with default settings.
+...               When Robot Framework runs on same machine as the image, remote_cli could be started with default settings.
 ...               | remote_cli.new()
 ...               | $
 ...               When Robot Framework and Magik image runs on different machines, remote_cli must be started with special port and auth proc to accept connections from other machine.
@@ -45,8 +45,8 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...               Example, how to start the [../examples/coordinate_tests.robot|coordinate tests] with special connection settings:
 ...               | robot --variable CLI_PORT:14099 --variable CLI_HOST:111.222.333.44 --variable CLI_TIMEOUT:15 coordinate_tests.txt
 ...
-...               To minimise the number of global variables, tests should use the keywords `Store Magik Object`, `Build Magik Object Expression` and `Get Magik Object`.
-...               They store the result of a Magik expression in a hash_table and returns another Magik expression,
+...               To minimise the number of global Magik variables, tests should use the keywords `Store Magik Object`, `Build Magik Object Expression` and `Get Magik Object`.
+...               They store the result of a Magik command in a hash_table and returns Magik expression,
 ...               which will return this result. So it is possible to share Magik objects between keywords (and tests)
 ...               and clean the image during the teardown from all created global variables. Only this hash_table must be set to *_unset*.
 ...
@@ -72,6 +72,30 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...
 ...               == Requirements ==
 ...               Robot Framework Version >= 3.1.1 is required.
+...
+...
+...               == Customisations ==
+...
+...               Use [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#variable-files|variable files] to define different gis configurations under test. Sample compare [../resources/params/variables_sw43_cbg.py|resources/params/variables_sw43_cbg.py] vs. [../resources/params/variables_sw43_cbg.py|resources/params/variables_sw52_cbg.py]
+...
+...               *Timeout, when `Load Magik File` or `Load Magik Module`*
+...               - if several files / modules affected, define / extend \ ``${MAGIK_MAX_LOAD_WAIT}`` in variable file
+...               - if just one file / module affected, assign specific ${max_load_wait} argument, when test calls the keyword
+...
+...               *Errors are ignored, \ when `Load Magik File` or `Load Magik Module`*
+...               - if several files / modules affected (e.g. localisation issue), define / extend \ ``${MAGIK_LOAD_ERROR_REGEXP}`` in variable file
+...               - if just one specific file / module affected, assign specific ${error_regexp} argument, when test calls the keyword
+...
+...               *Magik Image / Session uses None Standard Magik Prompt*
+...               - define / extend ``${MAGIK_PROMT_REGEXP}`` in variable file
+...
+...               *Timeout, when calling a Magik function - `Read Magik Output`*
+...               - if all Magik calls effected, maybe network connection or gis machine is slow - extend variable ``${CLI_TIMEOUT}`` in variable file
+...               - if just one test is effected, magik function itself might be a longrunner.
+...                 - test should extend timeout temporary with keyword ``Set Timeout``
+...                 - test *MUST* switch timeout back to default ``${CLI_TIMEOUT}`` in teardown
+...                 - sample see `Load Magik File` or `Load Magik Module`
+...
 Library           Telnet    3.0
 Library           String
 
@@ -127,7 +151,7 @@ Read Magik Output
     ...
     ...    === Hint - how to customize prompt search ===
     ...
-    ...    adjust variable ${MAGIK_PROMPT_REGEXP}
+    ...    adjust variable ``${MAGIK_PROMPT_REGEXP}``
     ${out_orig}=    Read until prompt
     Should Not Match Regexp    ${out_orig}    .*traceback:|.*\\(parser_error\\)
     Run Keyword If    '${error_regexp}'!=''    Should Not Match Regexp    ${out_orig}    ${error_regexp}
@@ -235,7 +259,7 @@ Load Magik File
     ...
     ...    == Site effect ==
     ...
-    ...    extends connection timeout to ${max_load_wait} and switch it back to default ${CLI_TIMEOUT} during the teardown.
+    ...    extends connection timeout to ${max_load_wait} and switch it back to default ``${CLI_TIMEOUT}`` during the teardown.
     Set Timeout    ${max_load_wait}
     Write Magik Command    load_file("${magik_file}")
     ${out}=    Read Magik Output    ${error_regexp}
@@ -269,7 +293,7 @@ Load Magik Module
     ...
     ...    == Site effect ==
     ...
-    ...    extends connection timeout to ${max_load_wait} and switch it back to default ${CLI_TIMEOUT} during the teardown.
+    ...    extends connection timeout to ${max_load_wait} and switch it back to default ``${CLI_TIMEOUT}`` during the teardown.
     Set Timeout    ${max_load_wait}
     ${opt_magikc}=    Set Variable    :save_magikc, _false
     ${opt_reload}=    Set Variable    :force_reload, _false

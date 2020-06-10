@@ -14,7 +14,7 @@ Robot Framework Magik release notes v0.5.2 - UNDER CONSTRUCTION
   - new *robot_magik_munit* keyword resource file:
     - main keywords:
 	  - *Prepare MUnit*, *Run MUnit Testsuite Logging to File*, *Load Module with MUnit Tests and Start Test Runner*
-	  - *Evaluate MUnit Text Log*
+	  - *Evaluate MUnit Text Log*, *Evaluate MUnit XML Log*
     - main variables
 	  - ${ROBOT_MUNIT_LOADFILE} to define magik file loading munit base modules and other required base test code. modules with tests should be loaded separately
       - ${ROBOT_MUNIT_MAX_LOAD_WAIT} to define max wait time for prompt, when loading munit code (files or modules)

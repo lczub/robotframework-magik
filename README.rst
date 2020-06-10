@@ -8,9 +8,9 @@ Introduction
 ------------
 
 Provides `Robot Framework`_ keywords for automated testing `Smallworld Magik`_
-images (4.x) and sessions (5.x). 
+images (4.x) and sessions (5.x).
 It includes also a Robot library and Python scripts to start and stop Magik 
-images (4.x) / sessions (5.x) with a remote_cli.
+images (4.x) / sessions (5.x) with a remote_cli. 
 
 
 Some feature
@@ -19,6 +19,7 @@ Some feature
 - each production image / session based on a *swaf* can be tested without loading additional modification code
 - `Robot Framework`_ keyword-driven testing approach allows to hide complex Magik requests in readable keywords
 - supports Smallworld 4.1/4.2/4.3 images and Smallworld 5.1/5.2 sessions
+- supports loading, running and evaluating `OpenSmallworld MUnit`_ tests
 - it is possible to handle several images / sessions during one test run, for example to test their interaction
 - in combination with RobotFramework `Standalone JAR distribution`_ tests can run in a pure Java environment without a separate python installation.
 - in combination with Robot Framework `Standard Test Libraries`_  like *XML /  OperatingSystem* or `External Test Libraries`_ like *Selenium2Library / Database Library / HTTP library* allows to test the interaction with external systems 
@@ -40,6 +41,11 @@ remote_cli to allow a telnet communication.
   inside the robot tests (for example as suite setup )
 - or use the Python script robot_start_magik_image.py_ to 
   start an image / session with a remote_cli from outside the robot test
+  
+The Robot Magik keywords robot_magik_munit.robot_ defines additional keywords 
+for loading, running and evaluating `OpenSmallworld MUnit`_ tests.
+
+- see `Keyword Documentation robot_magik_munit`_.
 
 The Robot Magik keywords robot_magik_dsview.robot_ defines additional keywords 
 for testing Smallworld ds_views, ds_collections and rwo_records.
@@ -252,6 +258,7 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _Smallworld Magik: https://en.wikipedia.org/wiki/Magik_%28programming_language%29
 .. _TelnetLibrary: http://robotframework.org/robotframework/latest/libraries/Telnet.html
 .. _Keyword Documentation robot_magik_base: http://lczub.github.com/robotframework-magik/doc/robot_magik_base.html
+.. _Keyword Documentation robot_magik_munit: http://lczub.github.com/robotframework-magik/doc/robot_magik_munit.html
 .. _Keyword Documentation robot_magik_dsview: http://lczub.github.com/robotframework-magik/doc/robot_magik_dsview.html
 .. _Keyword Documentation RobotMagikLauncher: http://lczub.github.com/robotframework-magik/doc/RobotMagikLauncher.html
 .. _releases: https://github.com/lczub/robotframework-magik/releases
@@ -259,6 +266,7 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _RobotMagikLauncher.py: resources/RobotMagikLauncher.py
 .. _robot_start_magik_image.py: resources/scripts/robot_start_magik_image.py
 .. _robot_magik_base.robot: resources/robot_magik_base.robot
+.. _robot_magik_munit.robot: resources/robot_magik_munit.robot
 .. _robot_magik_dsview.robot: resources/robot_magik_dsview.robot
 .. _robot_stop_magik_image.py: resources/scripts/robot_stop_magik_image.py
 .. _start_robot_remote_cli.magik: resources/scripts/start_robot_remote_cli.magik
@@ -274,3 +282,4 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _variables_sw52_cbg.py: resources/params/variables_sw52_cbg.py
 .. _Pipenv: https://docs.pipenv.org/en/latest/
 .. _Pipfile: Pipfile
+.. _OpenSmallworld MUnit: https://github.com/OpenSmallworld/munit
