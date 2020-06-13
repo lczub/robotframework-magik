@@ -15,7 +15,7 @@
 *** Settings ***
 Documentation     === Robot Framework Magik keywords running and evaluating MUnit tests ===
 ...
-...               MUnit results are logged to separated files. Robot report includes for failed MUnit test runs a file link to open the log file.
+...               MUnit results are logged to separated files. Robot report includes for failed MUnit test runs \ link to open the log file.
 ...
 ...               These keywords are tested against [https://github.com/OpenSmallworld/munit|OpenSmallworld MUnit], but other MUnit versions should be usable in same way.
 ...
@@ -34,6 +34,9 @@ Documentation     === Robot Framework Magik keywords running and evaluating MUni
 ...               - *test_runner* - simple text output, documents failed test and error with full tracebacks, good for error analysis
 ...               - \ *xml_test_runner* - creates [https://llg.cubic.org/docs/junit/|JUnit XML reporting file format] - documents each munit testcase with its status
 ...
+...               Unsupported (future task):
+...               - filter tests to run by MUnit aspects
+...
 ...               == Customisations ==
 ...
 ...               Use [http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#variable-files|variable files] to customize the MUnit keywords. Sample see [../resources/params/variables_sw43_cbg.py|resources/params/variables_sw43_cbg.py]
@@ -47,9 +50,6 @@ Documentation     === Robot Framework Magik keywords running and evaluating MUni
 ...               *Timeout, when Running MUnit Tests - `Run MUnit Testsuite Logging to File`*
 ...               - if several tests affected, define / extend \ ``${ROBOT_MUNIT_MAX_RUN_WAIT}`` in variable file
 ...               - if just one test affected, assign specific ``${max_run_wait}`` argument, when test calls the keyword
-...
-...               *MUnit Logs should be written to different directory as Robot Logs*
-...               - define / extend ``${ROBOT_MUNIT_LOG_DIR}`` in variable file
 Resource          robot_magik_base.robot
 Library           OperatingSystem
 Library           XML
@@ -145,6 +145,10 @@ Get MUnit Log File Name from Test Runner Output
     ${munit_log_fname}=    Remove String    ${first_matching_line}    "
     File Should Exist    ${munit_log_fname}
     Set Test Variable    ${CURRENT_MUNIT_LOG_FNAME}    ${munit_log_fname}
+    ${log_path_parts}=    Split Path    ${munit_log_fname}
+    ${log_fname_parts}=    Split Extension    ${log_path_parts}[1]
+    ${log_ex_name}=    Set Variable If    'xml' in '${log_fname_parts}[1]'    MUnit xml log    MUnit text log
+    Set Test Variable    ${CURRENT_MUNIT_LOG_LINK}    <a href="./${log_path_parts}[1]">${log_ex_name}</a>
     [Return]    ${munit_log_fname}
 
 Evaluate MUnit Text Log
@@ -156,7 +160,7 @@ Evaluate MUnit Text Log
     ${result_line_failures}=    Get Lines Matching Regexp    ${munit_text_log}    ${ROBOT_MUNIT_LOG_KO_REGEXP}
     ${results_count_ok}=    Get Regexp Matches    ${result_line_ok}    (\\d+)
     ${results_count_failures}=    Get Regexp Matches    ${result_line_failures}    (\\d+)
-    Run Keyword If    ${results_count_failures}    Should Be True    ${results_count_failures}[2] == ${expected_failures} and ${results_count_failures}[3] == ${expected_errors}    *HTML* ${test_suite_name} unexpected number of errors / failures in <a href="file:///${CURRENT_MUNIT_LOG_FNAME}">MUnit log </a> - ${result_line_failures}
+    Run Keyword If    ${results_count_failures}    Should Be True    ${results_count_failures}[2] == ${expected_failures} and ${results_count_failures}[3] == ${expected_errors}    *HTML* ${test_suite_name} unexpected number of errors / failures in ${CURRENT_MUNIT_LOG_LINK} - ${result_line_failures}
     Run Keyword If    ${results_count_failures}    Set Test Message    *HTML* MUnit reports expected failures ${testsuite_name} - ${result_line_failures}<br>    append=${TRUE}
     Run Keyword If    ${results_count_ok}    Set Test Message    *HTML* MUnit results OK ${testsuite_name} - ${result_line_ok}<br>    append=${TRUE}
 
@@ -169,10 +173,10 @@ Evaluate MUnit XML Log
     ${count_testcases}=    Get Element Count    ${munit_xml_log}    */testcase
     ${count_passed}=    Get Element Count    ${munit_xml_log}    */testcase[@status="Passed"]
     Should Be True    ${count_testcases} > 0    ${test_suite_name} no testcases found in MUnit xml log
-    Should Be True    ${count_passed} > 0    *HTML* ${test_suite_name} no passed testcases found in <a href="file:///${CURRENT_MUNIT_LOG_FNAME}">MUnit xml log </a>
+    Should Be True    ${count_passed} > 0    *HTML* ${test_suite_name} no passed testcases found in ${CURRENT_MUNIT_LOG_LINK}
     ${count_errors}=    Get Element Count    ${munit_xml_log}    */testcase/error
     ${count_failures}=    Get Element Count    ${munit_xml_log}    */testcase/failure
-    Should Be True    ${expected_failures} == ${count_failures} and ${expected_errors} == ${count_errors}    *HTML* ${test_suite_name} unexpected number of \ ${count_errors} errors and ${count_failures} failures \ in <a href="file:///${CURRENT_MUNIT_LOG_FNAME}">MUnit xml log </a>
+    Should Be True    ${expected_failures} == ${count_failures} and ${expected_errors} == ${count_errors}    *HTML* ${test_suite_name} unexpected number of \ ${count_errors} errors and ${count_failures} failures \ in ${CURRENT_MUNIT_LOG_LINK}
     Set Test Message    *HTML* \ MUnit results OK \ ${test_suite_name} - \ ${count_testcases} testcases - ${count_errors} errors - \ ${count_failures} failures<br>    append=${TRUE}
 
 Delete Current MUnit Log
@@ -182,4 +186,5 @@ Delete Current MUnit Log
     ...
     ...    see also `Get MUnit Log File Name from Test Runner Output`
     Run Keyword And Ignore Error    Remove File    ${CURRENT_MUNIT_LOG_FNAME}
+    Set Test Variable    ${CURRENT_MUNIT_LOG_LINK}    ${EMPTY}
     [Teardown]    Set Test Variable    ${CURRENT_MUNIT_LOG_FNAME}    ${EMPTY}
