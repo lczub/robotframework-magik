@@ -1,8 +1,8 @@
 Changes in Robot Framework Magik
 ================================
 
-Robot Framework Magik release notes v0.5.2 - UNDER CONSTRUCTION
----------------------------------------------------------------
+Robot Framework Magik release notes v0.5.2 (Jun. 2020)
+------------------------------------------------------
 
 - Enh #23: Support running OpenSmallworld MUnit tests
 
@@ -28,7 +28,7 @@ Robot Framework Magik release notes v0.5.2 - UNDER CONSTRUCTION
 
   - new variable ${MAGIK_PROMPT_REGEXP} to customized Magik prompt search
   - new keyword *Get Smallworld Version*
-  - documenation updated for keywords *Build Magik Object Expresssion*, *Store Magik Object* and *Get Magik Object*
+  - documenation updated for keywords *Build Magik Object Expresssion*, *Store Magik Object* and *Get Magik Object* and customisation
  
  
 Robot Framework Magik release notes v0.5.1 (Nov. 2019)

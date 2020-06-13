@@ -131,7 +131,7 @@
  
 			<exec executable="cmd" failonerror="true" dir="${DIR.TEST.RFM}/${ARCHIVE.PREFIX.RFM}">
 				<arg value="/c"/>
-				<arg value="start /wait ${PYTHON.ROBOT.CALL} ${tr_includes} --loglevel DEBUG --name &quot;${tr_full_name}&quot; --outputdir ${DIR.TEST.LOGS} -l log-${tr_lname}.html -r report-${tr_lname}.html -o output-${tr_lname}.xml ${tr_tests}"/>
+				<arg value="start /wait ${PYTHON.ROBOT.CALL} ${tr_includes} ${tr_critical} --loglevel DEBUG --name &quot;${tr_full_name}&quot; --outputdir ${DIR.TEST.LOGS} -l log-${tr_lname}.html -r report-${tr_lname}.html -o output-${tr_lname}.xml ${tr_tests}"/>
 			</exec>
 		<echo message="done."/>
         <echo message="=============================================="/>
@@ -145,6 +145,7 @@
 			<param name="tr_full_name" value="Test_Archive_Content"/>
 			<param name="tr_lname" value="archive"/>
 			<param name="tr_includes" value="--include Archive*"/>
+			<param name="tr_critical" value="--noncritical HeaderTest"></param>
 			<param name="tr_tests" value="tests/archive"/>
 		</antcall>
 
@@ -152,6 +153,7 @@
 			<param name="tr_full_name" value="DryRun_Keyword_SelfTest_and_Examples"/>
 			<param name="tr_lname" value="dryrun"/>
 			<param name="tr_includes" value="--dryrun --include Keyword* --include Example*"/>
+			<param name="tr_critical" value=""/>
 			<param name="tr_tests" value="tests examples"/>
 		</antcall>
 
@@ -159,6 +161,7 @@
 			<param name="tr_full_name" value="Test_Script_Content"/>
 			<param name="tr_lname" value="scripts"/>
 			<param name="tr_includes" value=""/>
+			<param name="tr_critical" value=""/>
 			<param name="tr_tests" value="tests/scripts"/>
 		</antcall>
 
@@ -166,6 +169,7 @@
 			<param name="tr_full_name" value="Test_Launcher_Content"/>
 			<param name="tr_lname" value="launcher"/>
 			<param name="tr_includes" value=""/>
+			<param name="tr_critical" value=""/>
 			<param name="tr_tests" value="tests/keywords/Robot_Magik_Launcher_Dummy_Tests.robot"/>
 		</antcall>
 
@@ -179,7 +183,7 @@
  
 			<exec executable="cmd" failonerror="true" dir="${DIR.TEST.RFM}/${ARCHIVE.PREFIX.RFM}">
 				<arg value="/c"/>
-				<arg value="start /wait ${PYTHON.ROBOT.REBOT.CALL} --loglevel INFO --name &quot;${tr_new_name}&quot; --outputdir ${tr_outputdir} -l log-${tr_lname}.html -r report-${tr_lname}.html -o output-${tr_lname}.xml ${tr_outputs_to_combine}"/> 
+				<arg value="start /wait ${PYTHON.ROBOT.REBOT.CALL} ${tr_critical} --loglevel INFO --name &quot;${tr_new_name}&quot; --outputdir ${tr_outputdir} -l log-${tr_lname}.html -r report-${tr_lname}.html -o output-${tr_lname}.xml ${tr_outputs_to_combine}"/> 
 			</exec>
 		<echo message="done."/>
         <echo message="=============================================="/>
@@ -194,6 +198,7 @@
 			<param name="tr_lname" value="${RFM.VERSION}"/>
 			<param name="tr_outputdir" value="${DIR.TEST.RFM}"/>
 			<param name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}\output-*.xml"/>
+			<param name="tr_critical" value="--noncritical HeaderTest"></param>
 		</antcall>
 
 		<echo message="done."/>

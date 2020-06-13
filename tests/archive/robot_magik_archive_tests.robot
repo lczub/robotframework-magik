@@ -1,4 +1,4 @@
-#  Copyright 2012-2019 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2020 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ Library           String
 
 *** Variables ***
 ${ROBOT_MAGIK_DIR}    ${CURDIR}${/}..${/}..
-${ROBOT_MAGIK_COPYRIGHT}    Copyright*2019*Luiko Czub*Smallcases Software GmbH
+${ROBOT_MAGIK_COPYRIGHT}    Copyright*2020*Luiko Czub*Smallcases Software GmbH
 ${ROBOT_MAGIK_LICENSE}    Apache License*2.0
 
 *** Test Cases ***
@@ -81,8 +81,18 @@ Test robot magik examples exist in examples directory
 
 Test robot magik default parameter exist in resources directory
     [Template]    File Should Exist
+    ${ROBOT_MAGIK_DIR}${/}resources${/}params${/}variables_sw41_cbg.py
     ${ROBOT_MAGIK_DIR}${/}resources${/}params${/}variables_sw43_cbg.py
     ${ROBOT_MAGIK_DIR}${/}resources${/}params${/}variables_sw51_cbg.py
+    ${ROBOT_MAGIK_DIR}${/}resources${/}params${/}variables_sw51_swaf.py
+    ${ROBOT_MAGIK_DIR}${/}resources${/}params${/}variables_sw52_cbg.py
+    ${ROBOT_MAGIK_DIR}${/}resources${/}params${/}variables_sw52_swaf.py
+
+Test robot magik munit load scripts exist in resources directory
+    [Template]    File Should Exist
+    ${ROBOT_MAGIK_DIR}${/}resources${/}magik${/}load_opensmallworld_munit_41.magik
+    ${ROBOT_MAGIK_DIR}${/}resources${/}magik${/}load_opensmallworld_munit_43.magik
+    ${ROBOT_MAGIK_DIR}${/}resources${/}magik${/}load_opensmallworld_munit_52.magik
 
 Test ant build resources not exist
     File Should Not Exist    ${ROBOT_MAGIK_DIR}${/}build.*
@@ -95,6 +105,7 @@ Test pipenv resource exist partly
     File Should Exist    ${ROBOT_MAGIK_DIR}${/}Pipfile
 
 Test robot magik resources includes copyright info
+    [Tags]    HeaderTest
     [Template]    Check Header Info for directory
     ${ROBOT_MAGIK_DIR}${/}resources    ${ROBOT_MAGIK_COPYRIGHT}    *.robot
     ${ROBOT_MAGIK_DIR}${/}resources    ${ROBOT_MAGIK_COPYRIGHT}    *.py
@@ -110,6 +121,7 @@ Test robot magik resources includes copyright info
     ${ROBOT_MAGIK_DIR}${/}resources${/}scripts    ${ROBOT_MAGIK_COPYRIGHT}    *.magik
 
 Test robot magik resources includes license info
+    [Tags]    HeaderTest
     [Template]    Check Header Info for directory
     ${ROBOT_MAGIK_DIR}${/}resources    ${ROBOT_MAGIK_LICENSE}    *.robot
     ${ROBOT_MAGIK_DIR}${/}resources    ${ROBOT_MAGIK_LICENSE}    *.py
