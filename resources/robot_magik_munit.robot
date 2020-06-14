@@ -142,7 +142,7 @@ Get MUnit Log File Name from Test Runner Output
     ${matching_lines}=    Get Lines Containing String    ${trunner_output}    ${testsuite_name}
     Should Not Be Empty    ${matching_lines}    MUnit Log file name can not be extracted from ${trunner_output}
     ${first_matching_line}=    Get Line    ${matching_lines}    0
-    ${munit_log_fname}=    Remove String    ${first_matching_line}    "
+    ${munit_log_fname}=    Remove String Using Regexp    ${first_matching_line}    (^")|("\\s*$)
     File Should Exist    ${munit_log_fname}
     Set Test Variable    ${CURRENT_MUNIT_LOG_FNAME}    ${munit_log_fname}
     ${log_path_parts}=    Split Path    ${munit_log_fname}
