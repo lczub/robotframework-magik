@@ -72,7 +72,8 @@ CLI_TIMEOUT = 10.0
 # Defines magik file loading munit base modules and other required 
 # base test code - modules with tests should be loaded separately
 ROBOT_MUNIT_LOADFILE = "C:\\Testing\\robot-magik\\robotframework-magik\\resources\\magik\\load_opensmallworld_munit_52.magik"
-
+# Define which MUnit product should be used by above file
+ROBOT_MUNIT_DIR = "C:\\Testing\\robot-magik\\OpenSmallworld_munit"
 # ========================================================================
 # settings for other robot magik self tests
 # ========================================================================

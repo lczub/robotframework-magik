@@ -31,12 +31,17 @@ Load and Run Single Module Test - Text Logging
     [Documentation]    Sample loading and running munit tests defined in module *munit_base_tests* with the *text_runner*
     ...    - the munit output will be stoed in a separated log file \*munit_base_tests_SWVERSION_*.log
     ...
-    ...    Expected results - MUnit will report errors and failures. Test should pass with SW43 and fail reporting unexpected numbers of errors / failures.
+    ...    Expected results - MUnit will report errors and failures. Test should pass with SW43.
+    ...
+    ...    === Known Issue ===
+    ...
+    ...    Test fails with SW41 and SW52, reporting unexpected numbers of errors / failures.
     ...
     ...    | =Gis Version= | =Failures= | =Errors= |
     ...    | 523 | 0 | 18 |
     ...    | 43 | 4 | 16 |
     ...    | 41 | 0 | 199 |
+    [Tags]    knownIssue
     ${munit_log_content}=    Load Module with MUnit Tests and Start Test Runner    munit_base_tests
     File Should Exist    ${ROBOT_MUNIT_LOG_DIR}${/}*munit_base_tests*.log
     Evaluate MUnit Text Log    ${munit_log_content}    expected_failures=4    expected_errors=16    testsuite_name=munit_base_tests
@@ -45,12 +50,17 @@ Load and Run Single Module Test - XML Logging
     [Documentation]    Sample loading and running munit tests defined in module *munit_base_tests* with the *xml_text_runner*
     ...    - the munit output will be stored in a separated log file \*munit_base_tests_SWVERSION_*.xml
     ...
-    ...    Expected results - MUnit will report errors and failures. Test should pass with SW43 and fail reporting unexpected numbers of errors / failures.
+    ...    Expected results - MUnit will report errors and failures. Test should pass with SW43.
+    ...
+    ...    === Known Issue ===
+    ...
+    ...    Test fails with SW41 and SW52, reporting unexpected numbers of errors / failures.
     ...
     ...    | =Gis Version= | =Failures= | =Errors= |
     ...    | 523 | 0 | 18 |
     ...    | 43 | 4 | 16 |
     ...    | 41 | 0 | 199 |
+    [Tags]    knownIssue
     ${munit_log_content}=    Load Module with MUnit Tests and Start Test Runner    munit_base_tests    log_extension=xml
     File Should Exist    ${ROBOT_MUNIT_LOG_DIR}${/}*munit_base_tests*.xml
     Evaluate MUnit XML Log    ${munit_log_content}    4    16    munit_base_tests
@@ -63,13 +73,16 @@ Load and Run Multiple Module Tests
     ...    Expected behaviour running in SW523 and SW43
     ...    - all module tests passed - munit log files should be deleted
     ...
+    ...    === Known Issue ===
+    ...
     ...    Expected behaviour running in SW41 - it failed
     ...    - magik_mock_test reports 0 failures and 56 errors
     ...    - simple_dataset_test reports 9 failures and 2 errors
     ...    - munit logs should not be deleted
+    [Tags]    knownIssue
     [Template]    Run Modul Tests and Evaluate Log
-    magik_mock_test    0    0
-    magik_mock_test    0    0    xml
+    magik_mock_test
+    magik_mock_test    log_type=xml
     simple_dataset_test    0    0
     simple_dataset_test    0    0    xml
 
@@ -80,7 +93,7 @@ Setup MUnit Session
     Prepare MUnit    ${ROBOT_MUNIT_LOAD_FILE}    ${ROBOT_MUNIT_DIR}
 
 Run Modul Tests and Evaluate Log
-    [Arguments]    ${module_name}    ${failures_expected}    ${errors_expected}    ${log_type}=log
+    [Arguments]    ${module_name}    ${failures_expected}=0    ${errors_expected}=0    ${log_type}=log
     [Documentation]    Wrapper defining MUnit workflow _Load Module - Run Tests - Evaluate Log - Delete Log If Passed_ .
     ...
     ...    Used as \ template \ `Load and Run Multiple Module Tests´
