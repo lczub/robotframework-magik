@@ -22,7 +22,7 @@ Robot Framework Magik release notes v0.5.2 (Jun. 2020)
   
 - Ant Build configuration added
 
-  - main targets *update_keywords_doc*, *make_release*, *test_release*
+  - main targets *robot_run*, *update_keywords_doc*, *make_release*, *test_release*, *test_examples*
 
 - additional *robot_magik_base* changes
 
