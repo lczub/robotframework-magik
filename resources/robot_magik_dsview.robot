@@ -18,8 +18,8 @@ Documentation     Robot Framework Magik keywords for testing Smallworld ds_views
 ...               Sample see [../examples/cs_collection_tests.robot|cs_collection_tests]
 ...
 ...               These keywords are an extension of [./robot_magik_base.html|robot_magik_base]
-...
 Resource          robot_magik_base.robot
+Library           OperatingSystem
 
 *** Variables ***
 ${CLI_DSVIEW_NAME}    gis
@@ -117,3 +117,17 @@ Get Record With Predicate
     ${coll_expr}=    Get SelectCollection    ${coll_name}    ${predicate}
     ${rec_expr}=    Store Magik Object    ${objkey}    ${coll_expr}.an_element()
     [Return]    ${rec_expr}
+
+Report Datamodel History
+    [Arguments]    ${dsview_name}=${CLI_DSVIEW_NAME}    ${fname}=datamodel_history_${dsview_name}.txt    ${report_dir}=${OUTPUT DIR}
+    [Documentation]    Writes list with existing :sw_gis!datamodel_history of dataset ${dsview_name} to file
+    ${view}=    Get DsView    ${dsview_name}
+    ${histo_coll}=    Get DsCollection    sw_gis!datamodel_history
+    ${report_fname_full}=    Set Variable    ${report_dir}${/}${fname}
+    ${view_search_path}=    Execute Magik Command    ${view}.searchpath[1]
+    ${header_info}=    Set Variable    View: ${dsview_name} - :sw_gis!datamodel_history entries\nSearchpath: ${view_search_path}\n\n
+    Write Magik Command    _for dh _over ${histo_coll}.fast_elements() _loop write(dh.product_name, %tab, dh.mod_name, %tab, dh.datamodel_name, %tab, dh.version, %tab, dh.sub_datamodel_name) _endloop
+    ${out1}=    Read Magik Output
+    ${checkpoint_list}=    Remove String Using Regexp    ${out1}    \\S+:\\d+:(MagikSF|Magik)>
+    Create File    ${report_fname_full}    ${header_info}${checkpoint_list}
+    [Return]    ${report_fname_full}

@@ -110,3 +110,8 @@ Test keyword 'Get Record With Predicate' with non default objkey
 
 Test keyword 'Rollback DsView'
     Rollback DsView    gis
+
+Test keyword 'Report Datamodel History'
+    ${report_fname_gis}=    Report Datamodel History    gis
+    Should Match    ${report_fname_gis}    *_gis.txt
+    File Should Exist    ${report_fname_gis}
