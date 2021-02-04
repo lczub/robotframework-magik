@@ -115,3 +115,25 @@ Test keyword 'Report Datamodel History'
     ${report_fname_gis}=    Report Datamodel History    gis
     Should Match    ${report_fname_gis}    *_gis.txt
     File Should Exist    ${report_fname_gis}
+    ${report_fname_ace}=    Report Datamodel History    ace
+    Should Match    ${report_fname_ace}    *_ace.txt
+    File Should Exist    ${report_fname_ace}
+    ${history_gis}=    Get File    ${report_fname_gis}
+    ${history_ace}=    Get File    ${report_fname_ace}
+    ${history_gis_install}=    Get Lines Containing String    ${history_gis}    Install
+    ${history_ace_install}=    Get Lines Containing String    ${history_ace}    Install
+    Should Not Be Equal As Strings    ${history_gis_install}    ${history_ace_install}
+
+Test keyword 'Get DsView' for auth view
+    ${a_view}=    Get DsView    authorisation
+    ${vname}=    Execute Magik Command    ${a_view}.name
+    Should Be Equal    ${vname}    :|Auth|
+
+Test keyword 'Get Datamodel History Entry' for datamodel_history
+    ${histo_rec_expr}=    Get Datamodel History Entry    sw_kernel    datamodel_history    Install    gis
+    ${histo_rec_mod_name}=    Execute Magik Command    write(${histo_rec_expr}.mod_name)
+    Should Be Equal    ${histo_rec_mod_name}    ds_src
+
+Test keyword 'Datamodel History Entry Should Exist'
+    Datamodel History Entry Should Exist    sw_kernel    datamodel_history    Install    gis
+    Run Keyword And Expect Error    History record*sw_KEMAL*Install    Datamodel History Entry Should Exist    sw_KEMAL    datamodel_history    Install    gis

@@ -29,7 +29,7 @@ Get DsView
     [Arguments]    ${dsview_name}=${CLI_DSVIEW_NAME}    ${objkey}=default
     [Documentation]    Returns expression for the ds_view _dsview_name_
     ...
-    ...    - _dsview_name_ == *ace* or *style* will return the ace|style view
+    ...    - _dsview_name_ == *ace*, *style* or *authorisation* will return the ace|style|auth view
     ...    - other _dsview_name_ will return the named dataset view
     ...    - Default _dsview_name_ is ${CLI_DSVIEW_NAME}
     ...
@@ -37,7 +37,7 @@ Get DsView
     ...    ds_view _dsview_name_ is stored inside the global ${CLI_OBJ_HASH}
     ...    under the key _objkey_. (Default = _dsview_name_)
     ${objkey}    Set Variable If    '${objkey}'=='default'    ${dsview_name}    ${objkey}
-    ${command}    Set Variable If    '${dsview_name}'=='ace' or '${dsview_name}'=='style'    ${dsview_name}_view    cached_dataset(:${dsview_name})
+    ${command}    Set Variable If    '${dsview_name}' in ('ace', 'style', 'authorisation')     ${dsview_name}_view    cached_dataset(:${dsview_name})
     ${dsview_expr}=    Store Magik Object    ${objkey}    gis_program_manager.${command}
     [Return]    ${dsview_expr}
 
@@ -122,7 +122,7 @@ Report Datamodel History
     [Arguments]    ${dsview_name}=${CLI_DSVIEW_NAME}    ${fname}=datamodel_history_${dsview_name}.txt    ${report_dir}=${OUTPUT DIR}
     [Documentation]    Writes list with existing :sw_gis!datamodel_history of dataset ${dsview_name} to file
     ${view}=    Get DsView    ${dsview_name}
-    ${histo_coll}=    Get DsCollection    sw_gis!datamodel_history
+    ${histo_coll}=    Get DsCollection    sw_gis!datamodel_history    ${dsview_name}    histo_${dsview_name}
     ${report_fname_full}=    Set Variable    ${report_dir}${/}${fname}
     ${view_search_path}=    Execute Magik Command    ${view}.searchpath[1]
     ${header_info}=    Set Variable    View: ${dsview_name} - :sw_gis!datamodel_history entries\nSearchpath: ${view_search_path}\n\n
@@ -131,3 +131,35 @@ Report Datamodel History
     ${checkpoint_list}=    Remove String Using Regexp    ${out1}    \\S+:\\d+:(MagikSF|Magik)>
     Create File    ${report_fname_full}    ${header_info}${checkpoint_list}
     [Return]    ${report_fname_full}
+
+Get Datamodel History Entry
+    [Arguments]    ${product}    ${model}    ${sub_model}    ${dsview_name}=${CLI_DSVIEW_NAME}
+    [Documentation]    Returns expression for \ Datamodel History record, matching criteria ${product} & \ ${model} \ & ${sub_model}
+    ...
+    ...    Search criteria
+    ...    | param | histo attribut |
+    ...    | ${product} | .product_name |
+    ...    | ${model} \ | \ .datamodel_name |
+    ...    | ${sub_model} \ | \ .sub_datamodel_name |
+    ...
+    ${histo_key}=    Set Variable    histo_${dsview_name}
+    ${histo_pred}=    Set Variable    predicate.eq(:product_name, "${product}") _and predicate.eq(:datamodel_name, "${model}" ) _and predicate.eq(:sub_datamodel_name, "${sub_model}")
+    Get DsView    ${dsview_name}
+    Get DsCollection    sw_gis!datamodel_history    ${dsview_name}    ${histo_key}
+    ${rec_expr}=    Get Record With Predicate    ${histo_key}    ${histo_pred}    ${histo_key}_rec
+    [Return]    ${rec_expr}
+
+Datamodel History Entry Should Exist
+    [Arguments]    ${product}    ${model}    ${sub_model}    ${dsview_name}=${CLI_DSVIEW_NAME}
+    [Documentation]    Checks \ Datamodel History record exist, matching criteria ${product} & \ ${model} \ & ${sub_model}
+    ...
+    ...    Search criteria
+    ...    | param | histo attribut |
+    ...    | ${product} | .product_name |
+    ...    | ${model} \ | \ .datamodel_name |
+    ...    | ${sub_model} \ | \ .sub_datamodel_name |
+    ...
+    ${histo_rec_expr}=    Get Datamodel History Entry    ${product}     ${model}    ${sub_model}     ${dsview_name}
+    ${output}=    Execute Magik Command    ${histo_rec_expr}
+    Should Match    ${output}    sw_gis!datamodel_history*${model}*${sub_model})    History record not found in <${dsview_name}>: ${product} - ${model} - ${sub_model}    values=${False}
+    [Return]    ${output}
