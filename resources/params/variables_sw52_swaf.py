@@ -50,6 +50,10 @@ MSFSTARTUP = True
 # Starting Smallworld 4.3 images doesn't requires this, except images works with java acp
 JAVA_HOME = "C:\\Smallworld\\Tools\\jdk\\jdk-12.0.2"
 
+# Hook for debugging  / analysing
+# Set AUTO_START_MAGIK SESSION to False, when test run should use a manual 
+# started session instead starting an own one
+AUTO_START_MAGIK_SESSION=True
 
 # ========================================================================
 # settings for communicate with the magik session

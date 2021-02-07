@@ -14,13 +14,10 @@
 
 *** Settings ***
 Documentation     Example - Initialization file starting a Magik Session as Suite Setup and closing this Magik Session as Teardown
-Suite Setup       Start And Wait For Magik Session
-Suite Teardown    Stop Magik Session
+Suite Setup       Auto Start Magik Session    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}    java_home=${JAVA_HOME}    aliasfile=${ALIASFILE}    gis_alias=${ALIASNAME}    msf_startup=${MSFSTARTUP}    login=${LOGIN}
+Suite Teardown    Auto Stop Magik Session
 Library           Process
 Variables         ../resources/params/variables_sw43_cbg.py
-Library           ../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}    java_home=${JAVA_HOME}
+Resource          ../resources/robot_magik_session.robot
 
 *** Keywords ***
-Start And Wait For Magik Session
-    Start Magik Session     aliasfile=${ALIASFILE}    gis_alias=${ALIASNAME}    msf_startup=${MSFSTARTUP}    login=${LOGIN}
-    Session Should Be Reachable

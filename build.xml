@@ -55,6 +55,10 @@
 			<param name="library_or_resource" value="${DIR.RFM.RESOURCES}/RobotMagikLauncher.py"/>
 			<param name="keywords_file" value="${DIR.RFM.KEYWORDS}/RobotMagikLauncher.html"/>
 		</antcall>
+        <antcall target="rfm.robot_libdoc">
+			<param name="library_or_resource" value="${DIR.RFM.RESOURCES}/robot_magik_session.robot"/>
+			<param name="keywords_file" value="${DIR.RFM.KEYWORDS}/robot_magik_session.html"/>
+		</antcall>
 
         <echo message="done."/>
         <echo message="=============================================="/>
