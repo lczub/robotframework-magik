@@ -52,7 +52,7 @@ class MagikSession(object):
 
     def __init__(self, swproduct, gis_alias, cli_port=14001, aliasfile=None,
                  envfile=None, java_home=None, logdir=None, login=None, script=None,
-                 msf_startup=False, wait=30, nested_alias=None, test_launch=None):
+                 msf_startup=False, wait=30, nested_alias=None, gis_args=None, test_launch=None):
         self._defaults = self._defaults_for_start()
         self._swproduct = swproduct
         self._gis_alias = gis_alias
@@ -66,6 +66,7 @@ class MagikSession(object):
         self._msf_startup = msf_startup or False
         self._wait = wait or 30
         self._nested_alias = nested_alias or False
+        self._other_gis_args = gis_args or False
         self._test_launch = test_launch
 
         self._log_fname = None
@@ -186,6 +187,11 @@ class MagikSession(object):
         # login
         if self._login:
             self.gis_args.extend(["-login", self._login])
+
+        # other additional gis args
+        if self._other_gis_args:
+            oargs = self._other_gis_args.split(' ')
+            self.gis_args.extend(oargs)
 
         # start the gis (or test) launcher
         test_launch = self._test_launch
@@ -347,6 +353,11 @@ class CmdMagikSession(MagikSession):
         help_info += 'Script robot_stop_magik_image can not stop such images.'
         a_parser.add_argument('--nested_alias', action='store_true', help=help_info)
 
+        help_info = 'additional gis args, extending args defined in alias. '
+        help_info += 'Must be enclosed with quotes. '
+        help_info += 'Sample "-cli -login uname/pw"'
+        a_parser.add_argument('--gis_args', help=help_info)
+
         help_info = 'Hook to start a test script instead the gis launcher.'
         a_parser.add_argument('--test_launch', help=help_info)
 
@@ -371,6 +382,11 @@ class CmdMagikSession(MagikSession):
         self._msf_startup = start_args.msf_startup
         self._wait = start_args.wait
         self._nested_alias = start_args.nested_alias
+        if start_args.gis_args:
+            # remove quotes surrounding other gis args
+            ogis_args = start_args.gis_args.strip('\"').strip("\'")
+            self._other_gis_args = ogis_args
+        
         self._test_launch = start_args.test_launch or self._test_launch
 
         self._piddir = start_args.piddir

@@ -64,6 +64,7 @@ Start Image Script with -h
     Should Contain    ${result.stdout}    --msf_startup
     Should Contain    ${result.stdout}    --wait WAIT
     Should Contain    ${result.stdout}    --nested_alias
+    Should Contain    ${result.stdout}    --gis_args
     Should Contain    ${result.stdout}    --test_launch TEST_LAUNCH
     Should Be Equal As Integers    ${result.rc}    0
 
@@ -117,6 +118,46 @@ Start Image Script with -msf_startup
     ${alias}=    Set Variable    ALIAS_start_telnet
     ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    0.1    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}
     Log Result    ${result}
+    ${robot_magik_dir}=    Normalize Path    ${CURDIR}${/}..${/}..
+    Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
+    Should Contain    ${result.stdout}    ROBOT_CLI_PORT=${DEFAULT_CLI_PORT}
+    ${robot_magik_script}=    Normalize Path    ${robot_magik_dir}${/}resources${/}scripts${/}start_robot_remote_cli.magik
+    Should Contain    ${result.stdout}    SW_MSF_STARTUP_MAGIK=${robot_magik_script}
+    Should Not Contain    ${result.stdout}    -run_script
+    Should Contain    ${result.stdout}    -i ${alias} ${TEMPDIR}
+    ${robot_temp_dir}=    Normalize Path    ${TEMPDIR}${/}robot_magik
+    Directory Should Exist    ${robot_temp_dir}
+    Should Contain    ${result.stdout}    -l ${robot_temp_dir}${/}${alias}
+    ${pid}=    Check PID File    ${robot_temp_dir}${/}${DEFAULT_CLI_PORT}.pid
+    Should Contain    ${result.stdout}    PID=${pid}
+    Should Be Equal As Integers    ${result.rc}    0
+
+Start Image Script with additional gis args -cli
+    [Tags]    dummyLaunch    withTelnet
+    ${alias}=    Set Variable    ALIAS_start_telnet
+    ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    0.1    --test_launch    ${DUMMY_LAUNCHER}    --gis_args    '-cli'    A_SWPRODUCT    ${alias}
+    Log Result    ${result}
+    Should Match    ${result.stdout}    *start_gis : Start gis session with: * -cli*
+    ${robot_magik_dir}=    Normalize Path    ${CURDIR}${/}..${/}..
+    Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
+    Should Contain    ${result.stdout}    ROBOT_CLI_PORT=${DEFAULT_CLI_PORT}
+    ${robot_magik_script}=    Normalize Path    ${robot_magik_dir}${/}resources${/}scripts${/}start_robot_remote_cli.magik
+    Should Contain    ${result.stdout}    SW_MSF_STARTUP_MAGIK=${robot_magik_script}
+    Should Not Contain    ${result.stdout}    -run_script
+    Should Contain    ${result.stdout}    -i ${alias} ${TEMPDIR}
+    ${robot_temp_dir}=    Normalize Path    ${TEMPDIR}${/}robot_magik
+    Directory Should Exist    ${robot_temp_dir}
+    Should Contain    ${result.stdout}    -l ${robot_temp_dir}${/}${alias}
+    ${pid}=    Check PID File    ${robot_temp_dir}${/}${DEFAULT_CLI_PORT}.pid
+    Should Contain    ${result.stdout}    PID=${pid}
+    Should Be Equal As Integers    ${result.rc}    0
+
+Start Image Script with additional gis args multiple
+    [Tags]    dummyLaunch    withTelnet
+    ${alias}=    Set Variable    ALIAS_start_telnet
+    ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    0.1    --test_launch    ${DUMMY_LAUNCHER}    --gis_args    "-cli -login root/huhu"    A_SWPRODUCT    ${alias}
+    Log Result    ${result}
+    Should Match    ${result.stdout}    *start_gis : Start gis session with: * -cli -login root/huhu*
     ${robot_magik_dir}=    Normalize Path    ${CURDIR}${/}..${/}..
     Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
     Should Contain    ${result.stdout}    ROBOT_CLI_PORT=${DEFAULT_CLI_PORT}
