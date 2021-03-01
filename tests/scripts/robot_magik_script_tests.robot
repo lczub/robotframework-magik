@@ -138,6 +138,7 @@ Start Image Script with additional gis args -cli
     ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    0.1    --test_launch    ${DUMMY_LAUNCHER}    --gis_args    '-cli'    A_SWPRODUCT    ${alias}
     Log Result    ${result}
     Should Match    ${result.stdout}    *start_gis : Start gis session with: * -cli*
+    Should Match    ${result.stdout}    *dummy_gis : start args= * -cli*
     ${robot_magik_dir}=    Normalize Path    ${CURDIR}${/}..${/}..
     Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
     Should Contain    ${result.stdout}    ROBOT_CLI_PORT=${DEFAULT_CLI_PORT}
@@ -158,6 +159,7 @@ Start Image Script with additional gis args multiple
     ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    0.1    --test_launch    ${DUMMY_LAUNCHER}    --gis_args    "-cli -login root/huhu"    A_SWPRODUCT    ${alias}
     Log Result    ${result}
     Should Match    ${result.stdout}    *start_gis : Start gis session with: * -cli -login root/huhu*
+    Should Match    ${result.stdout}    *dummy_gis : start args= * -cli -login root/huhu*
     ${robot_magik_dir}=    Normalize Path    ${CURDIR}${/}..${/}..
     Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
     Should Contain    ${result.stdout}    ROBOT_CLI_PORT=${DEFAULT_CLI_PORT}

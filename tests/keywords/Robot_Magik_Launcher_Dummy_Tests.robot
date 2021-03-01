@@ -172,3 +172,21 @@ start session with nested alias
     ${result}=    Stop Magik Session
     Should Contain    ${result.stdout}    session started without -l - NO LOGFILE
     [Teardown]    Stop All Magik Sessions
+
+start session with additional gis args -cli
+    [Documentation]    starting a session with a argument *nested_alias* - no log file should be written to avoid gus launcher problems
+    [Tags]    withTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_nested_start_telnet    cli_port=${DUMMY_CLI_PORT}    gis_args=-cli    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
+    ${result}=    Stop Magik Session
+    Should Match    ${result.stdout}    *dummy_gis : start args= * -cli*
+    [Teardown]    Stop All Magik Sessions
+
+start session with additional gis args multiple
+    [Documentation]    starting a session with a argument *nested_alias* - no log file should be written to avoid gus launcher problems
+    [Tags]    withTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_nested_start_telnet    cli_port=${DUMMY_CLI_PORT}    gis_args=-cli -login root/huhu    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
+    ${result}=    Stop Magik Session
+    Should Match    ${result.stdout}    *dummy_gis : start args= * -cli -login root/huhu*
+    [Teardown]    Stop All Magik Sessions
