@@ -69,6 +69,7 @@ Test robot magik self tests exist in tests directory
 Test robot launcher nested aliases tests exist in tests directory
     [Template]    File Should Exist
     ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}Robot_Magik_Launcher_Nested_Alias_Tests.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}Robot_Magik_Launcher_Nested_Alias_Cli_Tests.robot
     ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}robot_magik_script_tests.robot
     ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}gis_aliases_sw41
     ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}gis_aliases_sw43
