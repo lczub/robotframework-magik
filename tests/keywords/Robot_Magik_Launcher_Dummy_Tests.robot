@@ -174,18 +174,18 @@ start session with nested alias
     [Teardown]    Stop All Magik Sessions
 
 start session with additional gis args -cli
-    [Documentation]    starting a session with a argument *nested_alias* - no log file should be written to avoid gus launcher problems
+    [Documentation]    starting a session with one additional gis arg *-cli*
     [Tags]    withTelnet
-    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_nested_start_telnet    cli_port=${DUMMY_CLI_PORT}    gis_args=-cli    test_launch=${DUMMY_LAUNCHER}
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_gisarg1_start_telnet    cli_port=${DUMMY_CLI_PORT}    gis_args=-cli    test_launch=${DUMMY_LAUNCHER}
     Session Should Be Reachable
     ${result}=    Stop Magik Session
     Should Match    ${result.stdout}    *dummy_gis : start args= * -cli*
     [Teardown]    Stop All Magik Sessions
 
 start session with additional gis args multiple
-    [Documentation]    starting a session with a argument *nested_alias* - no log file should be written to avoid gus launcher problems
+    [Documentation]    starting a session with two additional gis arg *-cli* and *-login user/pw*
     [Tags]    withTelnet
-    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_nested_start_telnet    cli_port=${DUMMY_CLI_PORT}    gis_args=-cli -login root/huhu    test_launch=${DUMMY_LAUNCHER}
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_gisarg2_start_telnet    cli_port=${DUMMY_CLI_PORT}    gis_args=-cli -login root/huhu    test_launch=${DUMMY_LAUNCHER}
     Session Should Be Reachable
     ${result}=    Stop Magik Session
     Should Match    ${result.stdout}    *dummy_gis : start args= * -cli -login root/huhu*
