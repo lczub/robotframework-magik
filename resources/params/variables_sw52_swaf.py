@@ -28,9 +28,9 @@
 # communication should be available
 START_WAIT = "30s"
 # path to smallworld core product
-SWPRODUCT = "C:\\Smallworld\\520NRM\\core"
+SWPRODUCT = r"S:\nrm525\core"
 # file with gis alias definitions
-ALIASFILE = SWPRODUCT + "\\config\\gis_aliases"
+ALIASFILE = SWPRODUCT + r"\config\gis_aliases"
 # gis alias name for cambridge image / session
 ALIASNAME = "swaf"
 # Login for authorisation - user/password
@@ -48,7 +48,8 @@ MSFSTARTUP = True
 # Starting Smallworld 5.x sessions must define jre / jdk to be used
 # - 5.2 can works with open jdk12, 5.1 requires an 1.8 ??
 # Starting Smallworld 4.3 images doesn't requires this, except images works with java acp
-JAVA_HOME = "C:\\Smallworld\\Tools\\jdk\\jdk-12.0.2"
+JAVA_HOME = r"C:\Testing\robot-magik\devenv\jdk-14-x64"
+
 
 # Hook for debugging  / analysing
 # Set AUTO_START_MAGIK SESSION to False, when test run should use a manual 
@@ -75,9 +76,9 @@ CLI_TIMEOUT = 10.0
 # ========================================================================
 # Defines magik file loading munit base modules and other required 
 # base test code - modules with tests should be loaded separately
-ROBOT_MUNIT_LOADFILE = "C:\\Testing\\robot-magik\\robotframework-magik\\resources\\magik\\load_opensmallworld_munit_52.magik"
+ROBOT_MUNIT_LOADFILE = r"C:\Testing\robot-magik\robotframework-magik\resources\magik\load_opensmallworld_munit_52.magik"
 # Define which MUnit product should be used by above file
-ROBOT_MUNIT_DIR = "C:\\Testing\\robot-magik\\OpenSmallworld_munit"
+ROBOT_MUNIT_DIR = r"C:\Testing\robot-magik\OpenSmallworld_munit"
 # ========================================================================
 # settings for other robot magik self tests
 # ========================================================================
