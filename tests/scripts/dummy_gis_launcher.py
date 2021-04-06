@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2012-2020 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2012-2021 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -49,6 +49,7 @@ class dummy_gis_launcher(object):
 
     def run_dummy_gis(self):
         self.logger.info('Hello GIS World!')
+        self.logger.info('start args= {}'.format(' '.join(self.args)))
         env_list = ['ROBOT_MAGIK_DIR', 'ROBOT_CLI_PORT', 'SW_MSF_STARTUP_MAGIK',
                     'SW_GIS_ENVIRONMENT_FILE', 'JAVA_HOME']
         for env_name in env_list:

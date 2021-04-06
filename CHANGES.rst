@@ -4,6 +4,12 @@ Changes in Robot Framework Magik
 Robot Framework Magik release notes v0.5.2 (Jun. 2020)
 ------------------------------------------------------
 
+
+- Enh #29: Support additional gis args
+  
+  - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are extend with new argument *gis_args*
+  - allows to define additional args like ``-cli -login uname/pw`` beside the ones defined in ALIAS 
+
 - Enh #23: Support running OpenSmallworld MUnit tests
 
   - adds in *robot_magik_base*:
@@ -36,8 +42,8 @@ Robot Framework Magik release notes v0.5.1 (Nov. 2019)
 
 - Enh #22: Support nested aliases
 
-  - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are extend with new argument *nested_aliases*
-  - if defined, Magik image is started without setting the argument <-l logfile>
+ - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are extend with new argument *nested_aliases*
+ - if defined, Magik image is started without setting the argument ``-l logfile``
 
 - Documentation references now also SW41 as supported
 

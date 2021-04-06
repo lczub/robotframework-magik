@@ -1,3 +1,17 @@
+#  Copyright 2012-2021 Luiko Czub, Smallcases Software GmbH
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 *** Settings ***
 Documentation     Test content of extracted Robot Framework Magik archive
 Force Tags        ArchiveTest
@@ -6,7 +20,7 @@ Library           String
 
 *** Variables ***
 ${ROBOT_MAGIK_DIR}    ${CURDIR}${/}..${/}..
-${ROBOT_MAGIK_COPYRIGHT}    Copyright*2020*Luiko Czub*Smallcases Software GmbH
+${ROBOT_MAGIK_COPYRIGHT}    Copyright*2021*Luiko Czub*Smallcases Software GmbH
 ${ROBOT_MAGIK_LICENSE}    Apache License*2.0
 
 *** Test Cases ***
@@ -57,6 +71,7 @@ Test robot magik self tests exist in tests directory
 Test robot launcher nested aliases tests exist in tests directory
     [Template]    File Should Exist
     ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}Robot_Magik_Launcher_Nested_Alias_Tests.robot
+    ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}Robot_Magik_Launcher_Nested_Alias_Cli_Tests.robot
     ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}robot_magik_script_tests.robot
     ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}gis_aliases_sw41
     ${ROBOT_MAGIK_DIR}${/}tests${/}nested_aliases${/}gis_aliases_sw43

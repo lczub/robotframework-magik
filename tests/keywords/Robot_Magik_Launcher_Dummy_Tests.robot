@@ -1,4 +1,4 @@
-#  Copyright 2016-2020 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2016-2021 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -171,4 +171,22 @@ start session with nested alias
     Session Should Be Reachable
     ${result}=    Stop Magik Session
     Should Contain    ${result.stdout}    session started without -l - NO LOGFILE
+    [Teardown]    Stop All Magik Sessions
+
+start session with additional gis args -cli
+    [Documentation]    starting a session with one additional gis arg *-cli*
+    [Tags]    withTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_gisarg1_start_telnet    cli_port=${DUMMY_CLI_PORT}    gis_args=-cli    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
+    ${result}=    Stop Magik Session
+    Should Match    ${result.stdout}    *dummy_gis : start args= * -cli*
+    [Teardown]    Stop All Magik Sessions
+
+start session with additional gis args multiple
+    [Documentation]    starting a session with two additional gis arg *-cli* and *-login user/pw*
+    [Tags]    withTelnet
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_gisarg2_start_telnet    cli_port=${DUMMY_CLI_PORT}    gis_args=-cli -login root/huhu    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
+    ${result}=    Stop Magik Session
+    Should Match    ${result.stdout}    *dummy_gis : start args= * -cli -login root/huhu*
     [Teardown]    Stop All Magik Sessions

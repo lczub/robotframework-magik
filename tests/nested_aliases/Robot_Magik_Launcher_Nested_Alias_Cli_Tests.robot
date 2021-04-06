@@ -1,4 +1,4 @@
-#  Copyright 2019-2021 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2021 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 *** Settings ***
 Documentation     minimal test workflow - start session, calculate something , close the session
 ...
-...               gis session is started using a nested alias
+...               gis session is started using a nested alias and additional gis arg *-cli* and *-login USER/PW* are added
 Force Tags        gisLaunch
 Library           Process
 Variables         ../../resources/params/variables_sw41_cbg.py
@@ -32,7 +32,7 @@ ${ALIASFILE_NESTED}    ${CURDIR}${/}gis_aliases_sw${GIS_VERSION}
 start magik session
     [Documentation]    start magik session, prepare telnet connection and check that the telnet connection
     [Tags]    withTelnet
-    ${msession}=    Start Magik Session    aliasfile=${ALIASFILE_NESTED}    gis_alias=${ALIAS_NESTED}    nested_alias=${True}    msf_startup=${MSFSTARTUP}    login=${LOGIN}
+    ${msession}=    Start Magik Session    aliasfile=${ALIASFILE_NESTED}    gis_alias=${ALIAS_NESTED}    nested_alias=${True}    msf_startup=${MSFSTARTUP}    gis_args=-cli -login ${LOGIN_CBG}
     Session Should Be Reachable
     #    Stop Magik Session
 
