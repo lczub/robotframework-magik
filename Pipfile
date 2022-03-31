@@ -7,7 +7,7 @@ verify_ssl = true
 robotframework-ride = ">=1.7.4"
 
 [packages]
-robotframework = ">=3.1.2"
+robotframework = "==3.2.2"
 
 [requires]
 python_version = "3.7"
