@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 # ------------------------------------------------------------------------
-#  Copyright 2019-2021 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2019-2022 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -28,13 +28,14 @@
 # communication should be available
 START_WAIT = "60s"
 # path to smallworld core product
-SWPRODUCT = r"S:\nrm527\core"
+SWPRODUCT = r"S:\nrm52103\core"
 # file with gis alias definitions
 ALIASFILE = SWPRODUCT + r"\..\cambridge_db\config\gis_aliases"
 # gis alias name for cambridge image / session
 ALIASNAME = "cambridge_db_open"
 # Login for authorisation - user/password
 LOGIN = "root/ "
+
 
 # starting Smallworld 4.3 images should set MSFSTARTUP = None or False
 # - the startup script to init the required telnet communication will be
@@ -46,9 +47,9 @@ LOGIN = "root/ "
 MSFSTARTUP = True
 
 # Starting Smallworld 5.x sessions must define jre / jdk to be used
-# - 5.27 can works with open jdk15, 5.1 requires an 1.8 ??
+# - 5.2.10 works with open jdk17, 5.1 requires 1.8 
 # Starting Smallworld 4.3 images doesn't requires this, except images works with java acp
-JAVA_HOME = r"C:\Testing\robot-magik\devenv\jre-15.0.2-x64"
+JAVA_HOME = r"C:\Testing\robot-magik\devenv\jre-17.0.6-x64"
 
 # Hook for debugging  / analysing
 # Set AUTO_START_MAGIK SESSION to False, when test run should use a manual 

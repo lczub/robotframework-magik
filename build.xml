@@ -148,7 +148,7 @@
 		<property name="tr_lname" value="examples"/>
 		<property name="tr_includes" value=""/>
 		<property name="tr_excludes" value="${ROBOT.OPTION.DEFAULT.EXCLUDE}"/>
-		<property name="tr_noncritical" value="${ROBOT.OPTION.DEFAULT.NONCRITICAL}"/>
+		<property name="tr_skip" value="${ROBOT.OPTION.DEFAULT.SKIP}"/>
 		<property name="tr_variablefile" value="--variablefile &quot;${VARIABLEFILE.TEST.DEFAULT}&quot;"/>
 		<property name="tr_tests" value="examples"/>
 		
@@ -158,7 +158,7 @@
 			<exec executable="${PYTHON.ROBOT.CALL}" failonerror="true" dir="${DIR.TEST.RFM}/${ARCHIVE.PREFIX.RFM}">
 				<arg line="${PYTHON.ROBOT.CALL.ARGS}"/>
 				<arg line="--loglevel DEBUG --name &quot;${tr_full_name}&quot;"/>
-				<arg line="${tr_includes} ${tr_excludes} ${tr_noncritical} ${tr_variablefile}"/>
+				<arg line="${tr_includes} ${tr_excludes} ${tr_skip} ${tr_variablefile}"/>
 				<arg line="--outputdir ${DIR.TEST.LOGS} -l log-${tr_lname}.html -r report-${tr_lname}.html -o output-${tr_lname}.xml"/>
 				<arg line="${tr_tests}"/>
 			</exec>
@@ -174,7 +174,7 @@
 			<param name="tr_full_name" value="Test_Archive_Content"/>
 			<param name="tr_lname" value="archive"/>
 			<param name="tr_includes" value="--include Archive*"/>
-			<param name="tr_noncritical" value="--noncritical HeaderTest ${ROBOT.OPTION.DEFAULT.NONCRITICAL}"></param>
+			<param name="tr_skip" value="--skiponfailure HeaderTest ${ROBOT.OPTION.DEFAULT.SKIP}"></param>
 			<param name="tr_tests" value="tests/archive"/>
 		</antcall>
 
@@ -200,7 +200,7 @@
         <antcall target="rfm.robot_run">
 			<param name="tr_full_name" value="Test_Nested_Aliases_Content"/>
 			<param name="tr_lname" value="nested_aliases"/>
-			<param name="tr_includes" value="--exclude notReady"/>
+			<param name="tr_includes" value="--skip notReady"/>
 			<param name="tr_tests" value="tests/nested_aliases"/>
 		</antcall>
 
@@ -214,7 +214,7 @@
 		<property name="tr_lname" value="examples_${RFM.VERSION}"/>
 		<property name="tr_includes" value=""/>
 		<property name="tr_excludes" value=""/>
-		<property name="tr_noncritical" value="${ROBOT.OPTION.DEFAULT.NONCRITICAL}"/>
+		<property name="tr_skip" value="${ROBOT.OPTION.DEFAULT.SKIP}"/>
 		<property name="tr_outputdir" value="${DIR.TEST.RFM}"/>
 		<property name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}\output-examples*.xml"/>
 
@@ -223,7 +223,7 @@
  
 			<exec executable="${PYTHON.ROBOT.CALL}" failonerror="true" dir="${DIR.TEST.RFM}/${ARCHIVE.PREFIX.RFM}">
 				<arg line="${PYTHON.ROBOT.REBOT.CALL.ARGS}"/>
-				<arg line="${tr_includes} ${tr_excludes} ${tr_noncritical}"/>
+				<arg line="${tr_includes} ${tr_excludes} ${tr_skip}"/>
 				<arg line="--loglevel INFO --name &quot;${tr_new_name}&quot;"/>
 				<arg line="--outputdir ${tr_outputdir} -l log-${tr_lname}.html -r report-${tr_lname}.html -o output-${tr_lname}.xml"/>
 				<arg line="${tr_outputs_to_combine}"/> 
@@ -241,7 +241,7 @@
 			<param name="tr_lname" value="${RFM.VERSION}"/>
 			<param name="tr_outputdir" value="${DIR.TEST.RFM}"/>
 			<param name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}\output-*.xml"/>
-			<param name="tr_noncritical" value="--noncritical HeaderTest ${ROBOT.OPTION.DEFAULT.NONCRITICAL}"></param>
+			<param name="tr_skip" value="--skiponfailure HeaderTest ${ROBOT.OPTION.DEFAULT.SKIP}"></param>
 		</antcall>
 
 		<echo message="done."/>
