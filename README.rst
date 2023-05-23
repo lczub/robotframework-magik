@@ -92,7 +92,12 @@ With the `Standalone JAR distribution`_ , just one java call is requried::
  java -jar robotframework-3.1.2.jar  --critical DsView* --variablefile resources\params\variables_sw43_cbg.py examples
  
 Alternative installations see `RobotFramework UserGuide Installation`_ .
-Or use `Pipenv`_ to create and manages a virtualenv for your robot magik project. The download includes a sample Pipfile_ . 
+Or use `venv`_ to create a virtualenv for your robot magik project and install required packages using pip. The download includes a sample `requirements.txt`_ . 
+
+  py -3.8 -m venv my_robot_venv
+  my_robot_venv\scripts\activate
+  python -m pip scripts\activate pip
+  python -m pip scripts\activate -r requirements.txt
 
 History
 ^^^^^^^^^^^^
@@ -280,6 +285,6 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _variables_sw43_cbg.py: resources/params/variables_sw43_cbg.py
 .. _variables_sw51_cbg.py: resources/params/variables_sw51_cbg.py
 .. _variables_sw52_cbg.py: resources/params/variables_sw52_cbg.py
-.. _Pipenv: https://docs.pipenv.org/en/latest/
-.. _Pipfile: Pipfile
+.. _venv: https://docs.python.org/3/library/venv.html
+.. _requirements.txt: https://pip.pypa.io/en/stable/reference/requirements-file-format/
 .. _OpenSmallworld MUnit: https://github.com/OpenSmallworld/munit
