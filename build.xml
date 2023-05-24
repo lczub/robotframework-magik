@@ -96,7 +96,7 @@
                 <include name="README.rst"/>
                 <include name="LICENSE-2.0.txt"/>
                 <include name="CHANGES.rst"/>
-                <include name="Pipfile"/>
+                <include name="requirements.txt"/>
             </fileset>
         </copy>
         <echo message="done."/>
