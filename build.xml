@@ -21,7 +21,7 @@
     <!-- Load env and properties-->
 	<dirname property="rfm.basedir" file="${ant.file.rfm}"/>
 	<property file="${rfm.basedir}/build.properties"/>
-
+    
 	<target name="robot_libdoc">
         <echo message="============================================="/>
         <echo message="create robot keyword documentation ${library_or_resource} ..."/>
@@ -143,6 +143,14 @@
         <echo message="=============================================="/>
     </target>
 
+	<target name="robot_version">
+        <exec executable="${PYTHON.ROBOT.CALL}" outputproperty="rfm.robot.version" failonerror="false" dir="${rfm.basedir}">
+            <arg line="${PYTHON.ROBOT.CALL.ARGS}"/>
+            <arg line="--version"/>
+        </exec>
+        <echo message="Robot Version: ${rfm.robot.version}" />        
+    </target>  
+
 	<target name="robot_run" >
 		<property name="tr_full_name" value="Examples_Default_SW"/>
 		<property name="tr_lname" value="examples"/>
@@ -153,6 +161,7 @@
 		<property name="tr_tests" value="examples"/>
 		
         <echo message="============================================="/>
+        <echo message="${rfm.robot.version}"/>
         <echo message="robot run  - ${tr_full_name} ..."/>
  
 			<exec executable="${PYTHON.ROBOT.CALL}" failonerror="true" dir="${DIR.TEST.RFM}/${ARCHIVE.PREFIX.RFM}">
@@ -166,8 +175,9 @@
         <echo message="=============================================="/>
     </target>
 
-	<target name="selftests" depends="clean_test_logs">
+	<target name="selftests" depends="clean_test_logs, robot_version">
         <echo message="============================================="/>
+        <echo message="${rfm.robot.version} "/>
         <echo message="Run robotframework-magik selftsests ..."/>
  
         <antcall target="rfm.robot_run">
@@ -214,16 +224,18 @@
 		<property name="tr_lname" value="examples_${RFM.VERSION}"/>
 		<property name="tr_includes" value=""/>
 		<property name="tr_excludes" value=""/>
-		<property name="tr_skip" value="${ROBOT.OPTION.DEFAULT.SKIP}"/>
+		<!-- <property name="tr_skip" value="${ROBOT.OPTION.DEFAULT.SKIP}"/> -->
 		<property name="tr_outputdir" value="${DIR.TEST.RFM}"/>
 		<property name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}\output-examples*.xml"/>
 
         <echo message="============================================="/>
+        <echo message="${rfm.robot.version}"/>
         <echo message="robot rebot  - combine test reports ${tr_new_name} ..."/>
  
 			<exec executable="${PYTHON.ROBOT.CALL}" failonerror="true" dir="${DIR.TEST.RFM}/${ARCHIVE.PREFIX.RFM}">
 				<arg line="${PYTHON.ROBOT.REBOT.CALL.ARGS}"/>
-				<arg line="${tr_includes} ${tr_excludes} ${tr_skip}"/>
+				<arg line="${tr_includes} ${tr_excludes}"/>
+                <!-- <arg line="${tr_skip}"/> -->
 				<arg line="--loglevel INFO --name &quot;${tr_new_name}&quot;"/>
 				<arg line="--outputdir ${tr_outputdir} -l log-${tr_lname}.html -r report-${tr_lname}.html -o output-${tr_lname}.xml"/>
 				<arg line="${tr_outputs_to_combine}"/> 
@@ -234,6 +246,7 @@
 
 	<target name="test_release" depends="extract_archive, selftests">
         <echo message="============================================="/>
+        <echo message="${rfm.robot.version}"/>
         <echo message="Test release robotframework-magik ${RFM.VERSION} ..."/>
 
         <antcall target="rfm.robot_rebot">
@@ -241,15 +254,16 @@
 			<param name="tr_lname" value="${RFM.VERSION}"/>
 			<param name="tr_outputdir" value="${DIR.TEST.RFM}"/>
 			<param name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}\output-*.xml"/>
-			<param name="tr_skip" value="--skiponfailure HeaderTest ${ROBOT.OPTION.DEFAULT.SKIP}"></param>
+			<!-- <param name="tr_skip" value="- -skiponfailure HeaderTest ${ROBOT.OPTION.DEFAULT.SKIP}"></param> -->
 		</antcall>
 
 		<echo message="done."/>
         <echo message="=============================================="/>
     </target>
 
-	<target name="test_examples" depends="extract_archive">
+	<target name="test_examples" depends="extract_archive, robot_version">
         <echo message="============================================="/>
+        <echo message="${rfm.robot.version}"/>
         <echo message="Run RFM examples against several SW versions ..."/>
  
         <delete failonerror="false">
