@@ -168,7 +168,7 @@
 				<arg line="${PYTHON.ROBOT.CALL.ARGS}"/>
 				<arg line="--loglevel DEBUG --name &quot;${tr_full_name}&quot;"/>
 				<arg line="${tr_includes} ${tr_excludes} ${tr_skip} ${tr_variablefile}"/>
-				<arg line="--outputdir ${DIR.TEST.LOGS} -l log-${tr_lname}.html -r report-${tr_lname}.html -o output-${tr_lname}.xml"/>
+				<arg line="--outputdir ${DIR.TEST.LOGS}/${tr_lname}"/>
 				<arg line="${tr_tests}"/>
 			</exec>
 		<echo message="done."/>
@@ -226,7 +226,7 @@
 		<property name="tr_excludes" value=""/>
 		<!-- <property name="tr_skip" value="${ROBOT.OPTION.DEFAULT.SKIP}"/> -->
 		<property name="tr_outputdir" value="${DIR.TEST.RFM}"/>
-		<property name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}\output-examples*.xml"/>
+		<property name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}/examples*/output.xml"/>
 
         <echo message="============================================="/>
         <echo message="${rfm.robot.version}"/>
@@ -253,7 +253,7 @@
 			<param name="tr_new_name" value="RFM Selftests ${RFM.VERSION}"/>
 			<param name="tr_lname" value="${RFM.VERSION}"/>
 			<param name="tr_outputdir" value="${DIR.TEST.RFM}"/>
-			<param name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}\output-*.xml"/>
+			<param name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}/*/output.xml"/>
 			<!-- <param name="tr_skip" value="- -skiponfailure HeaderTest ${ROBOT.OPTION.DEFAULT.SKIP}"></param> -->
 		</antcall>
 
@@ -294,7 +294,7 @@
 			<param name="tr_new_name" value="RFM Examples ${RFM.VERSION}"/>
 			<param name="tr_lname" value="examples_${RFM.VERSION}"/>
 			<param name="tr_outputdir" value="${DIR.TEST.RFM}"/>
-			<param name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}\output-examples*.xml"/>
+			<param name="tr_outputs_to_combine" value="${DIR.TEST.LOGS}/examples*/output.xml"/>
 		</antcall>
 
 		<echo message="done."/>

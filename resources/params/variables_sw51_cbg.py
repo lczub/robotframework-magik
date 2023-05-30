@@ -20,6 +20,13 @@
 # variables for robot magik example test agains smallworld 519 - cbg
 # ------------------------------------------------------------------------
 
+import os.path
+
+# detect RFM root dir relative to this variable file  
+__this_file_dir = os.path.dirname( os.path.realpath(__file__) )
+__rfm_root_dir  = os.path.join( __this_file_dir, '..', '..')
+__devenv_dir    = os.getenv("DEVENV_DIR", os.path.join( __rfm_root_dir, "..", "devenv"))
+
 # ========================================================================
 # settings for starting the magik session
 # ========================================================================
@@ -30,7 +37,8 @@ START_WAIT = "60s"
 # path to smallworld core product
 SWPRODUCT = r"S:\gis5195\core"
 # file with gis alias definitions
-ALIASFILE = SWPRODUCT + r"\..\cambridge_db\config\gis_aliases"
+ALIASFILE = os.path.join( SWPRODUCT, "..", "cambridge_db", "config", "gis_aliases")
+
 # gis alias name for cambridge image / session
 ALIASNAME = "cambridge_db_open"
 # Login for authorisation - user/password
@@ -48,7 +56,7 @@ MSFSTARTUP = True
 # Starting Smallworld 5.x sessions must define jre / jdk to be used
 # - 5.2.10 works with open jdk17, 5.1 requires 1.8 
 # Starting Smallworld 4.3 images doesn't requires this, except images works with java acp
-JAVA_HOME = r"C:\Testing\robot-magik\devenv\jre-8u362-x64"
+JAVA_HOME = os.path.join( __devenv_dir, "jre-8u362-x64")
 
 # Hook for debugging  / analysing
 # Set AUTO_START_MAGIK SESSION to False, when test run should use a manual 
@@ -75,9 +83,9 @@ CLI_DSVIEW_NAME = "gis"
 # ========================================================================
 # Defines magik file loading munit base modules and other required 
 # base test code - modules with tests should be loaded separately
-ROBOT_MUNIT_LOADFILE = r"C:\Testing\robot-magik\robotframework-magik\resources\magik\load_opensmallworld_munit_52.magik"
+ROBOT_MUNIT_LOADFILE = os.path.join( __rfm_root_dir, "resources", "magik", "load_opensmallworld_munit_52.magik" )
 # Define which MUnit product should be used by above file
-ROBOT_MUNIT_DIR = r"C:\Testing\robot-magik\OpenSmallworld_munit"
+ROBOT_MUNIT_DIR = os.path.join( __devenv_dir, "..", "OpenSmallworld_munit")
 # ========================================================================
 # settings for other robot magik self tests
 # ========================================================================

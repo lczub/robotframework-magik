@@ -22,6 +22,12 @@
 # variables for robot magik example test agains smallworld 411 - cbg
 # ------------------------------------------------------------------------
 
+import os.path
+
+# detect RFM root dir relative to this variable file  
+__this_file_dir = os.path.dirname( os.path.realpath(__file__) )
+__rfm_root_dir  = os.path.join( __this_file_dir, '..', '..')
+__devenv_dir    = os.getenv("DEVENV_DIR", os.path.join( __rfm_root_dir, "..", "devenv"))
 
 # ========================================================================
 # settings for starting the magik image / session
@@ -31,9 +37,9 @@
 # communication should be available
 START_WAIT = "30s"
 # path to smallworld core product
-SWPRODUCT = "S:\\411_TSB120\\CST411\\product"
+SWPRODUCT = r"S:\411_TSB120\CST411\product"
 # file with gis alias definitions
-ALIASFILE = SWPRODUCT + "\\config\\gis_aliases"
+ALIASFILE = os.path.join( SWPRODUCT, "config", "gis_aliases")
 # gis alias name for cambridge image / session
 ALIASNAME = "cambridge"
 # Login for authorisation - user/password
@@ -79,9 +85,9 @@ CLI_DSVIEW_NAME = "gis"
 # ========================================================================
 # Define magik file loading munit base modules and other required 
 # base test code - modules with tests should be loaded separately
-ROBOT_MUNIT_LOADFILE = "C:\\Testing\\robot-magik\\robotframework-magik\\resources\\magik\\load_opensmallworld_munit_41.magik"
+ROBOT_MUNIT_LOADFILE = os.path.join( __rfm_root_dir, "resources", "magik", "load_opensmallworld_munit_41.magik" )
 # Define which MUnit product should be used by above file
-ROBOT_MUNIT_DIR = "C:\\Testing\\robot-magik\\OpenSmallworld_munit"
+ROBOT_MUNIT_DIR = os.path.join( __devenv_dir, "..", "OpenSmallworld_munit")
 # ========================================================================
 # settings for other robot magik self tests
 # ========================================================================
