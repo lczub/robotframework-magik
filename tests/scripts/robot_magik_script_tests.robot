@@ -1,17 +1,3 @@
-#  Copyright 2016-2021 Luiko Czub, Smallcases Software GmbH
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-
 *** Settings ***
 Documentation     Test Python Scripts for starting and stopping Smallworld Magik images, delivered with robotframework magik
 ...
@@ -19,6 +5,20 @@ Documentation     Test Python Scripts for starting and stopping Smallworld Magik
 ...
 ...               - issue discussion [https://github.com/robotframework/robotframework/issues/2085| robotframework #2085: Process library Wait For Process keyword does not return when used with some adb commands] \ and
 ...               - examples [https://gist.github.com/lczub/22b0f2a12a27c30d0a14#file-wait_process_tests-txt|Gist - robot framework samples - Wait For Process]
+...               == Licence info ==
+...               | Copyright 2016-2023 Luiko Czub, Smallcases Software GmbH
+...               |
+...               | Licensed under the Apache License, Version 2.0 (the "License");
+...               | you may not use this file except in compliance with the License.
+...               | You may obtain a copy of the License at
+...               |
+...               | http://www.apache.org/licenses/LICENSE-2.0
+...               |
+...               | Unless required by applicable law or agreed to in writing, software
+...               | distributed under the License is distributed on an "AS IS" BASIS,
+...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+...               | See the License for the specific language governing permissions and
+...               | limitations under the License.
 Force Tags        ScriptTest
 Library           OperatingSystem
 Library           Process

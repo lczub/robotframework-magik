@@ -1,17 +1,3 @@
-#  Copyright 2012-2021 Luiko Czub, Smallcases Software GmbH
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-
 *** Settings ***
 Documentation     [http://robotframework.org|Robot Framework] high level keywords for automated testing [https://en.wikipedia.org/wiki/Magik_%28programming_language%29|Smallworld Magik] images.
 ...
@@ -92,10 +78,24 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...               *Timeout, when calling a Magik function - `Read Magik Output`*
 ...               - if all Magik calls effected, maybe network connection or gis machine is slow - extend variable ``${CLI_TIMEOUT}`` in variable file
 ...               - if just one test is effected, magik function itself might be a longrunner.
-...                 - test should extend timeout temporary with keyword ``Set Timeout``
-...                 - test *MUST* switch timeout back to default ``${CLI_TIMEOUT}`` in teardown
-...                 - sample see `Load Magik File` or `Load Magik Module`
+...               - test should extend timeout temporary with keyword ``Set Timeout``
+...               - test *MUST* switch timeout back to default ``${CLI_TIMEOUT}`` in teardown
+...               - sample see `Load Magik File` or `Load Magik Module`
 ...
+...               == Licence info ==
+...               | Copyright 2012-2023 Luiko Czub, Smallcases Software GmbH
+...               |
+...               | Licensed under the Apache License, Version 2.0 (the "License");
+...               | you may not use this file except in compliance with the License.
+...               | You may obtain a copy of the License at
+...               |
+...               | http://www.apache.org/licenses/LICENSE-2.0
+...               |
+...               | Unless required by applicable law or agreed to in writing, software
+...               | distributed under the License is distributed on an "AS IS" BASIS,
+...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+...               | See the License for the specific language governing permissions and
+...               | limitations under the License.
 Library           Telnet    3.0
 Library           String
 

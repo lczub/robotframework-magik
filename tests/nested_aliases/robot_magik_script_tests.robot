@@ -1,17 +1,3 @@
-#  Copyright 2019-2021 Luiko Czub, Smallcases Software GmbH
-#
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
-#
-#       http://www.apache.org/licenses/LICENSE-2.0
-#
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
-
 *** Settings ***
 Documentation     Test Python Scripts , delivered with robotframework magik, for starting and stopping Smallworld Magik images with nested aliases
 ...
@@ -27,6 +13,20 @@ Documentation     Test Python Scripts , delivered with robotframework magik, for
 ...               == Background information ==
 ...
 ...               see issue discussion [https://github.com/lczub/robotframework-magik/issues/22| robotframework-magik #22: Support Starting Magik Images with Nested Aliases]
+...               == Licence info ==
+...               | Copyright 2019-2023 Luiko Czub, Smallcases Software GmbH
+...               |
+...               | Licensed under the Apache License, Version 2.0 (the "License");
+...               | you may not use this file except in compliance with the License.
+...               | You may obtain a copy of the License at
+...               |
+...               | http://www.apache.org/licenses/LICENSE-2.0
+...               |
+...               | Unless required by applicable law or agreed to in writing, software
+...               | distributed under the License is distributed on an "AS IS" BASIS,
+...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+...               | See the License for the specific language governing permissions and
+...               | limitations under the License.
 Force Tags        ScriptTest    notReady    nestedAlias
 Library           OperatingSystem
 Library           Process
