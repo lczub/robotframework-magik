@@ -203,8 +203,8 @@ Execute Magik Command
     Write Magik Command    ${magik_expression}
     ${out}=    Read Magik Output    ${error_regexp}
     ${count}=    Get Length    ${out}
-    ${last_line}=    Run Keyword Unless    ${count}==0    Get Line    ${out}    -1
-    ${result}=    Run Keyword Unless    ${count}==0    Remove String Using Regexp    ${last_line}    \\s*$
+    ${last_line}=    Run Keyword If    ${count}!=0    Get Line    ${out}    -1
+    ${result}=    Run Keyword If    ${count}!=0    Remove String Using Regexp    ${last_line}    \\s*$
     [Return]    ${result}
 
 Build Magik Object Expression

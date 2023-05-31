@@ -1,5 +1,16 @@
-Changes in Robot Framework Magik
-================================
+Changes in Robot Framework Magik (RFM)
+======================================
+
+Robot Framework Magik release notes v0.6.0 (under construction)
+---------------------------------------------------------------
+
+- Enh #26: Support RF 6.0
+
+  - Running RFM using `RF Standalone JAR distribution  <http://robotframework.org/robotframework/4.1.2/RobotFrameworkUserGuide.html#standalone-jar-distribution>`_ is not possible anymore, cause since `RF 5.x Jython is not supported <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#python-2-is-not-supported-anymore>`_
+
+- Enh #36: Cleanup Pipfile dependencies
+
+  - pipenv pipfile installation sample replaced with venv pip requirements file
 
 Robot Framework Magik release notes v0.5.2 (Jun. 2020)
 ------------------------------------------------------
@@ -13,11 +24,13 @@ Robot Framework Magik release notes v0.5.2 (Jun. 2020)
 - Enh #23: Support running OpenSmallworld MUnit tests
 
   - adds in *robot_magik_base*:
+  
     - new keywords: *Load Magik File*, *Load Magik Module*
     - new variable ${MAGIK_MAX_LOAD_WAIT} to define max wait time for prompt, when loading magik code (file or module)
     - new variable ${MAGIK_LOAD_ERROR_REGEXP} to define  regular expression to search for load errors like ``**** Fehler:`` or ``**** Error:``
 
   - new *robot_magik_munit* keyword resource file:
+  
     - main keywords:
 	  - *Prepare MUnit*, *Run MUnit Testsuite Logging to File*, *Load Module with MUnit Tests and Start Test Runner*
 	  - *Evaluate MUnit Text Log*, *Evaluate MUnit XML Log*
@@ -42,8 +55,8 @@ Robot Framework Magik release notes v0.5.1 (Nov. 2019)
 
 - Enh #22: Support nested aliases
 
- - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are extend with new argument *nested_aliases*
- - if defined, Magik image is started without setting the argument ``-l logfile``
+  - Library *RobotMagikLaunch* and Python script *robot_start_magik_image.py* are extend with new argument *nested_aliases*
+  - if defined, Magik image is started without setting the argument ``-l logfile``
 
 - Documentation references now also SW41 as supported
 

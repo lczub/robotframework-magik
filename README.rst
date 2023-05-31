@@ -1,5 +1,5 @@
-Robot Framework Magik
-=====================
+Robot Framework Magik (RFM)
+===========================
 
 Copyright 2012-2023 Luiko Czub, `Smallcases Software GmbH`_
 License `Apache License 2.0`_
@@ -21,7 +21,6 @@ Some feature
 - supports Smallworld 4.1/4.2/4.3 images and Smallworld 5.1/5.2 sessions
 - supports loading, running and evaluating `OpenSmallworld MUnit`_ tests
 - it is possible to handle several images / sessions during one test run, for example to test their interaction
-- in combination with RobotFramework `Standalone JAR distribution`_ tests can run in a pure Java environment without a separate python installation.
 - in combination with Robot Framework `Standard Test Libraries`_  like *XML /  OperatingSystem* or `External Test Libraries`_ like *Selenium2Library / Database Library / HTTP library* allows to test the interaction with external systems 
 - the communication via telnet allows to test images / sessions running in a different network
 
@@ -72,32 +71,28 @@ The Python script robot_stop_magik_image.py_
 
 Installation
 ^^^^^^^^^^^^
-A Python 3.7 environment is recommended with Robot Framework Version >= 3.1.1 or the `Standalone JAR distribution`_ .
+A Python 3.8 environment is recommended with Robot Framework Version 6.0.2 .
 
 good practice is to use a separate virtualenv::
 
- C:\Python37\Scripts\virtualenv.exe D:\pyenv\robot
+ py -3.8 -m venv D:\pyenv\robot
  D:\pyenv\robot\scripts\activate
- pip install --no-cache-dir robotframework
+ pip install --no-cache-dir robotframework~=6.0
  
 download current `master as zip`_ or latest `releases`_ and extract it (for example
 to *D:\\robotframework-magik*). Now you are able to start the example test via::
 
  D:\pyenv\robot\scripts\activate
  cd D:\robotframework-magik
- robot --critical DsView* --variablefile resources\params\variables_sw43_cbg.py examples
- 
-With the `Standalone JAR distribution`_ , just one java call is requried::
-
- java -jar robotframework-3.1.2.jar  --critical DsView* --variablefile resources\params\variables_sw43_cbg.py examples
+ robot --variablefile resources\params\variables_sw43_cbg.py examples
  
 Alternative installations see `RobotFramework UserGuide Installation`_ .
-Or use `venv`_ to create a virtualenv for your robot magik project and install required packages using pip. The download includes a sample `requirements.txt`_ . 
+Or install required packages using sample `requirements.txt`_ included in RFM download:: 
 
-  py -3.8 -m venv my_robot_venv
-  my_robot_venv\scripts\activate
-  python -m pip scripts\activate pip
-  python -m pip scripts\activate -r requirements.txt
+ py -3.8 -m venv my_robot_venv
+ my_robot_venv\scripts\activate
+ python -m pip install --upgrade pip
+ python -m pip install --upgrade -r requirements.txt
 
 History
 ^^^^^^^^^^^^
@@ -159,13 +154,13 @@ run example test under Smallworld 4.x
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- robot --critical DsView* --variablefile resources/params/variables_sw43_cbg.py examples
+ robot --variablefile resources/params/variables_sw43_cbg.py examples
 
 run example test under Smallworld 5.x
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- robot --critical DsView* --variablefile resources/params/variables_sw51_cbg.py examples
+ robot --variablefile resources/params/variables_sw51_cbg.py examples
 
 Example B - run tests in a closed image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -237,7 +232,7 @@ run example and self tests on the startup image
 ::
 
  robot --include Keyword* --include Example* --variable CLI_PORT:14003
-       --outputdir e:\tmp\robot\logs --xunitfile cbg_tests.xml 
+       --outputdir e:\tmp\robot\logs --xunit cbg_tests.xml 
 	   .\tests .\examples\c*
 
 - The `Robot Framework`_ test reports are written into *e:\\tmp\\robot\\logs*
@@ -280,7 +275,6 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _External Test Libraries: http://robotframework.org/#libraries
 .. _ProcessLibrary: http://robotframework.org/robotframework/latest/libraries/Process.html
 .. _RobotFramework UserGuide Installation: http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions
-.. _Standalone JAR distribution: http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#standalone-jar-distribution
 .. _Jython: http://jython.org/
 .. _variables_sw43_cbg.py: resources/params/variables_sw43_cbg.py
 .. _variables_sw51_cbg.py: resources/params/variables_sw51_cbg.py

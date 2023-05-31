@@ -21,7 +21,7 @@ Documentation     Sample loading , running and evaluating MUnit tests
 ...               | limitations under the License.
 Suite Setup       Setup MUnit Session
 Suite Teardown    Run Keywords    Clean Magik Image    Close Magik Connection
-Force Tags        ExampleTest    MUnitTest
+Test Tags        ExampleTest    MUnitTest
 Resource          ../resources/robot_magik_munit.robot
 
 *** Variables ***
@@ -99,6 +99,6 @@ Run Modul Tests and Evaluate Log
     ...
     ...    Used as \ template \ `Load and Run Multiple Module Tests´
     ${munit_log_content}=    Load Module with MUnit Tests and Start Test Runner    ${module_name}    ${log_type}
-    Run Keyword Unless    '${log_type}' == 'xml'    Evaluate MUnit Text Log    ${munit_log_content}    ${failures_expected}    ${errors_expected}    ${module_name}
+    Run Keyword If    '${log_type}' == 'xml'    Evaluate MUnit Text Log    ${munit_log_content}    ${failures_expected}    ${errors_expected}    ${module_name}
     Run Keyword If    '${log_type}' == 'xml'    Evaluate MUnit XML Log    ${munit_log_content}    ${failures_expected}    ${errors_expected}    ${module_name}
     Delete Current MUnit Log

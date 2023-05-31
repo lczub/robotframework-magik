@@ -20,7 +20,7 @@ Documentation     Test Parsing different Magik Prompt Variations.
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Force Tags        PromptTest
+Test Tags        PromptTest
 Library           Process
 Resource          ../../resources/robot_magik_base.robot
 

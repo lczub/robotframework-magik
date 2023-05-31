@@ -6,7 +6,7 @@
 # https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-4.1.rst
 # https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-4.0.rst
 # -----------------
-robotframework~=5.0
+robotframework~=6.0
 
 
 

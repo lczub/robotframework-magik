@@ -17,7 +17,7 @@ Documentation     Example - Test Smallworld Magik coordinates with RobotFramewor
 ...               | limitations under the License.
 Suite Setup       Run Keywords    Open Magik Connection    Prepare Magik Image
 Suite Teardown    Run Keywords    Clean Magik Image    Close Magik Connection
-Force Tags        ExampleTest    CoordinateTest
+Test Tags        ExampleTest    CoordinateTest
 Resource          ../resources/robot_magik_base.robot
 
 *** Test Cases ***
