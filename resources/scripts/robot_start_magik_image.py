@@ -40,7 +40,6 @@ from subprocess import Popen
 from tempfile import gettempdir
 from time import strftime, sleep
 from telnetlib import Telnet
-from symbol import try_stmt
 
 logging.basicConfig(level=logging.INFO,
                     format='%(name)-10s: %(message)s',
