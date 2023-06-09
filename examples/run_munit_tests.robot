@@ -39,7 +39,7 @@ Load and Run Single Module Test - Text Logging
     ...    Test fails with SW41 and SW52, reporting unexpected numbers of errors / failures.
     ...
     ...    | =Gis Version= | =Failures= | =Errors= |
-    ...    | 52x | 0 | 18 |
+    ...    | 52x 53x | 0 | 18 |
     ...    | 43 | 4 | 16 |
     ...    | 41 | 0 | 199 |
     [Tags]    knownIssue
@@ -58,7 +58,7 @@ Load and Run Single Module Test - XML Logging
     ...    Test fails with SW41 and SW52, reporting unexpected numbers of errors / failures.
     ...
     ...    | =Gis Version= | =Failures= | =Errors= |
-    ...    | 52x | 0 | 18 |
+    ...    | 52x 53x| 0 | 18 |
     ...    | 43 | 4 | 16 |
     ...    | 41 | 0 | 199 |
     [Tags]    knownIssue

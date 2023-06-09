@@ -1,8 +1,12 @@
 Changes in Robot Framework Magik (RFM)
 ======================================
 
-Robot Framework Magik release notes v0.6.0 (under construction)
+Robot Framework Magik release notes v0.6.0 (RC1)
 ---------------------------------------------------------------
+
+- Enh #24: Support SW531 and still with SW411
+
+  - tested with SW releases NRM 5.3.1, NRM 5.2.10.3, CST 5.1.9.5, NRM 4.3.0.8, CST 411 TSB120
 
 - Enh #26: Support RF 6.0 and PY 3.11
 

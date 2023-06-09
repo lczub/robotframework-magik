@@ -276,7 +276,6 @@
 			<param name="tr_variablefile" value="--variablefile ${VARIABLEFILE.TEST.SW41}"></param>
 			<param name="tr_tests" value="examples"/>
 		</antcall>
-
         <antcall target="rfm.robot_run">
 			<param name="tr_full_name" value="Examples_SW43"/>
 			<param name="tr_lname" value="examples_sw43"/>
@@ -284,9 +283,21 @@
 			<param name="tr_tests" value="examples"/>
 		</antcall>
         <antcall target="rfm.robot_run">
+			<param name="tr_full_name" value="Examples_SW51"/>
+			<param name="tr_lname" value="examples_sw51"/>
+			<param name="tr_variablefile" value="--variablefile ${VARIABLEFILE.TEST.SW51}"></param>
+			<param name="tr_tests" value="examples"/>
+		</antcall>
+        <antcall target="rfm.robot_run">
 			<param name="tr_full_name" value="Examples_SW52"/>
 			<param name="tr_lname" value="examples_sw52"/>
 			<param name="tr_variablefile" value="--variablefile ${VARIABLEFILE.TEST.SW52}"></param>
+			<param name="tr_tests" value="examples"/>
+		</antcall>
+        <antcall target="rfm.robot_run">
+			<param name="tr_full_name" value="Examples_SW53"/>
+			<param name="tr_lname" value="examples_sw53"/>
+			<param name="tr_variablefile" value="--variablefile ${VARIABLEFILE.TEST.SW53}"></param>
 			<param name="tr_tests" value="examples"/>
 		</antcall>
 

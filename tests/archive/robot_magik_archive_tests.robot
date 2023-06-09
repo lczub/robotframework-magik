@@ -127,7 +127,7 @@ Test robot magik resources includes license info
     [Tags]    HeaderTest
     [Template]    Check Header Info for directory
     ${ROBOT_MAGIK_DIR}${/}resources    ${ROBOT_MAGIK_LICENSE}    *.robot
-    ${ROBOT_MAGIK_DIR}${/}resources    ${ROBOT_MAGIK_LICENSE}    *.py
+    ${ROBOT_MAGIK_DIR}${/}resources    ${ROBOT_MAGIK_LICENSE}    *.py    2
     ${ROBOT_MAGIK_DIR}${/}tests${/}keywords    ${ROBOT_MAGIK_LICENSE}    *.robot
     ${ROBOT_MAGIK_DIR}${/}tests${/}scripts    ${ROBOT_MAGIK_LICENSE}    *.robot
     ${ROBOT_MAGIK_DIR}${/}tests${/}scripts    ${ROBOT_MAGIK_LICENSE}    *.py

@@ -18,10 +18,10 @@ Some feature
 
 - each production image / session based on a *swaf* can be tested without loading additional modification code
 - `Robot Framework`_ keyword-driven testing approach allows to hide complex Magik requests in readable keywords
-- supports Smallworld 4.1/4.2/4.3 images and Smallworld 5.1/5.2 sessions
+- supports Smallworld 4.1/4.3 images and Smallworld 5.1/5.2/5.3 sessions
 - supports loading, running and evaluating `OpenSmallworld MUnit`_ tests
 - it is possible to handle several images / sessions during one test run, for example to test their interaction
-- in combination with RobotFramework `Standalone JAR distribution`_ tests can run in a pure Java environment without a separate python installation. (DEPRECATED)
+- in combination with `deprecated Standalone JAR distribution`_ tests can run in a pure Java environment without a separate python installation. (DEPRECATED)
 - in combination with Robot Framework `Standard Test Libraries`_  like *XML /  OperatingSystem* or `External Test Libraries`_ like *Selenium2Library / Database Library / HTTP library* allows to test the interaction with external systems 
 - the communication via telnet allows to test images / sessions running in a different network
 
@@ -95,11 +95,6 @@ Or install required packages using sample `requirements.txt`_ included in RFM do
  python -m pip install --upgrade pip
  python -m pip install --upgrade -r requirements.txt
  
-With `deprecated Standalone JAR distribution`_ , just one java call is requried::
-
- java -jar robotframework-4.1.2.jar  --critical DsView* --variablefile resources\params\variables_sw43_cbg.py examples
- 
-
 History
 ^^^^^^^^^^^^
 see `<CHANGES.rst>`_
@@ -112,6 +107,9 @@ resources/
 
 resources/scripts/
     Python and Magik scripts to start and stop an image / session with a remote_cli
+
+resources/params/
+    sample RF variable files defining different SW environment configs
 
 doc/
     Documentation for Robot Framework Magik keywords
@@ -150,7 +148,7 @@ Example A - start gis and run example test completly inside robot
 Precondition
 
 - Adjust variable file variables_sw43_cbg.py_ for your SW4.x image to test
-- Adjust variable file variables_sw51_cbg.py_ or variables_sw52_cbg.py_ for your SW5.x session to test
+- Adjust variable file variables_sw5x_cbg.py_ for your SW5.x session to test
 
 Expectation:
 
@@ -166,7 +164,7 @@ run example test under Smallworld 5.x
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- robot --variablefile resources/params/variables_sw51_cbg.py examples
+ robot --variablefile resources/params/variables_sw53_cbg.py examples
 
 Example B - run tests in a closed image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -180,7 +178,7 @@ start the closed image with remote_cli
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
- python resources\scripts\robot_start_magik_image.py --msf_startup e:\Smallworld\CST42\product swaf
+ python resources\scripts\robot_start_magik_image.py --msf_startup e:\Smallworld\CST43\product swaf
 
 - The *swaf* image is running with a remote_cli, listening on port 14001.
 - The gis buffer log-file *swaf-mmdd-hhmm-PID.log* and pid-file 
@@ -257,6 +255,14 @@ stop the startup image
 The image is closed and the pid-file *14003.pid* is deleted.
 
 
+Example D - start gis and run example using RD standalone JAR
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+With `last RF 4.1.2 Standalone JAR distribution`_ no robot installation is required, just one java call and `robotframework-4.1.2.jar <https://search.maven.org/remotecontent?filepath=org/robotframework/robotframework/4.1.2/robotframework-4.1.2.jar>`_::
+
+ java -jar robotframework-4.1.2.jar  --critical DsView* --variablefile resources\params\variables_sw43_cbg.py examples
+
+
 
 .. _Smallcases Software GmbH: http://www.smallcases.de
 .. _Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0
@@ -282,7 +288,8 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _ProcessLibrary: http://robotframework.org/robotframework/latest/libraries/Process.html
 .. _RobotFramework UserGuide Installation: http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions
 .. _deprecated Standalone JAR distribution: http://robotframework.org/robotframework/4.1.2/RobotFrameworkUserGuide.html#standalone-jar-distribution
-.. _Jython: http://jython.org/
+.. _last RF 4.1.2 Standalone JAR distribution: https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-4.1.2.rst#java-integration-fixes
+.. _robotframework-4.1.2.jar: https://search.maven.org/remotecontent?filepath=org/robotframework/robotframework/4.1.2/robotframework-4.1.2.jar
 .. _variables_sw43_cbg.py: resources/params/variables_sw43_cbg.py
 .. _variables_sw51_cbg.py: resources/params/variables_sw51_cbg.py
 .. _variables_sw52_cbg.py: resources/params/variables_sw52_cbg.py
