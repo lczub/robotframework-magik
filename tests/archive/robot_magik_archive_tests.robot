@@ -15,7 +15,7 @@ Documentation     Test content of extracted Robot Framework Magik archive
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Test Tags        ArchiveTest
+Force Tags        ArchiveTest
 Library           OperatingSystem
 Library           String
 

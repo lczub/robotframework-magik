@@ -21,7 +21,7 @@ Documentation     Sample loading , running and evaluating MUnit tests
 ...               | limitations under the License.
 Suite Setup       Setup MUnit Session
 Suite Teardown    Run Keywords    Clean Magik Image    Close Magik Connection
-Test Tags        ExampleTest    MUnitTest
+Force Tags        ExampleTest    MUnitTest
 Resource          ../resources/robot_magik_munit.robot
 
 *** Variables ***

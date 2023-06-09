@@ -19,7 +19,7 @@ Documentation     Example - Test Smallworld coordinate system collection with Ro
 ...               | limitations under the License.
 Suite Setup       Run Keywords    Open Magik Connection    Prepare Magik Image    Get DsView
 Suite Teardown    Run Keywords    Rollback DsView    Clean Magik Image    Close Magik Connection
-Test Tags        ExampleTest    CoordinateTest    DsViewTest
+Force Tags        ExampleTest    CoordinateTest    DsViewTest
 Resource          ../resources/robot_magik_dsview.robot
 
 *** Test Cases ***

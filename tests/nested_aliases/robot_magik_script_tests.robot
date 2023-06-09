@@ -27,7 +27,7 @@ Documentation     Test Python Scripts , delivered with robotframework magik, for
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Test Tags        ScriptTest    notReady    nestedAlias
+Force Tags        ScriptTest    notReady    nestedAlias
 Library           OperatingSystem
 Library           Process
 Library           String

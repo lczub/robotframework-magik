@@ -19,7 +19,7 @@ Documentation     Test Python Scripts for starting and stopping Smallworld Magik
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Test Tags        ScriptTest
+Force Tags        ScriptTest
 Library           OperatingSystem
 Library           Process
 Library           String

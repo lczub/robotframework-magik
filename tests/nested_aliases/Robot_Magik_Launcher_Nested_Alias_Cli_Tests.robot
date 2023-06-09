@@ -16,7 +16,7 @@ Documentation     minimal test workflow - start session, calculate something , c
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Test Tags        gisLaunch
+Force Tags        gisLaunch
 Library           Process
 Variables         ../../resources/params/variables_sw41_cbg.py
 Library           ../../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}

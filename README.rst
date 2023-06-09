@@ -21,6 +21,7 @@ Some feature
 - supports Smallworld 4.1/4.2/4.3 images and Smallworld 5.1/5.2 sessions
 - supports loading, running and evaluating `OpenSmallworld MUnit`_ tests
 - it is possible to handle several images / sessions during one test run, for example to test their interaction
+- in combination with RobotFramework `Standalone JAR distribution`_ tests can run in a pure Java environment without a separate python installation. (DEPRECATED)
 - in combination with Robot Framework `Standard Test Libraries`_  like *XML /  OperatingSystem* or `External Test Libraries`_ like *Selenium2Library / Database Library / HTTP library* allows to test the interaction with external systems 
 - the communication via telnet allows to test images / sessions running in a different network
 
@@ -93,6 +94,11 @@ Or install required packages using sample `requirements.txt`_ included in RFM do
  my_robot_venv\scripts\activate
  python -m pip install --upgrade pip
  python -m pip install --upgrade -r requirements.txt
+ 
+With `deprecated Standalone JAR distribution`_ , just one java call is requried::
+
+ java -jar robotframework-4.1.2.jar  --critical DsView* --variablefile resources\params\variables_sw43_cbg.py examples
+ 
 
 History
 ^^^^^^^^^^^^
@@ -275,6 +281,7 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _External Test Libraries: http://robotframework.org/#libraries
 .. _ProcessLibrary: http://robotframework.org/robotframework/latest/libraries/Process.html
 .. _RobotFramework UserGuide Installation: http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions
+.. _deprecated Standalone JAR distribution: http://robotframework.org/robotframework/4.1.2/RobotFrameworkUserGuide.html#standalone-jar-distribution
 .. _Jython: http://jython.org/
 .. _variables_sw43_cbg.py: resources/params/variables_sw43_cbg.py
 .. _variables_sw51_cbg.py: resources/params/variables_sw51_cbg.py

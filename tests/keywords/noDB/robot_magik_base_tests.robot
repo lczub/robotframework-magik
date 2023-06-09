@@ -17,7 +17,7 @@ Documentation     Test Robot Framework high level keywords for Smallworld Magik
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
 Suite Teardown    Close All Connections
-Test Tags        KeywordTest    BaseTest
+Force Tags        KeywordTest    BaseTest
 Resource          ../../../resources/robot_magik_base.robot
 Variables         ../../../resources/params/variables_sw43_cbg.py
 

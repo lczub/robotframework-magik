@@ -6,7 +6,9 @@ Robot Framework Magik release notes v0.6.0 (under construction)
 
 - Enh #26: Support RF 6.0 and PY 3.11
 
-  - Running RFM using `RF Standalone JAR distribution  <http://robotframework.org/robotframework/4.1.2/RobotFrameworkUserGuide.html#standalone-jar-distribution>`_ is not possible anymore, cause since `RF 5.x Jython is not supported <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#python-2-is-not-supported-anymore>`_
+  - tested with RF 6.0.2 and PY 3.11.3. Other combinations like RF 5.0.1 or PY 3.10 might work
+  - Running RFM using `RF Standalone JAR distribution  <http://robotframework.org/robotframework/4.1.2/RobotFrameworkUserGuide.html#standalone-jar-distribution>`_ has become deprecated, cause since `RF 5.x Jython is not supported <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst#python-2-is-not-supported-anymore>`_
+  - Also RF 4.1 support becomes deprecated, but RFM still works with `robotframework-4.1.2.jar <https://search.maven.org/remotecontent?filepath=org/robotframework/robotframework/4.1.2/robotframework-4.1.2.jar>`_, the `last RF release supporting Jython and Java <https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-4.1.2.rst#java-integration-fixes>`_
 
 - Enh #36: Cleanup Pipfile dependencies
 

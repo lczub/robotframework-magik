@@ -33,7 +33,7 @@ Documentation     Test Robot Framework Magik keywords for Smallworld ds_views an
 ...               | limitations under the License.
 Suite Setup       Run Keywords    Open Magik Connection    Prepare Magik Image
 Suite Teardown    Run Keywords    Clean Magik Image    Close Magik Connection
-Test Tags        KeywordTest    DsViewTest
+Force Tags        KeywordTest    DsViewTest
 Resource          ../../../resources/robot_magik_dsview.robot
 
 *** Test Cases ***
