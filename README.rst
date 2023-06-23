@@ -72,7 +72,7 @@ The Python script robot_stop_magik_image.py_
 
 Installation
 ^^^^^^^^^^^^
-A Python 3.11 environment is recommended with Robot Framework Version 6.0.2 .
+A Python 3.11 environment is recommended with Robot Framework Version 6.0.2/6.1 .
 
 good practice is to use a separate virtualenv::
 

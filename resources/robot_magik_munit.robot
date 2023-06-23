@@ -63,6 +63,7 @@ ${ROBOT_MUNIT_MAX_RUN_WAIT}    30s    # Defines default max wait time for prompt
 ${ROBOT_MUNIT_LOG_OK_REGEXP}    OK.*(\\d+).*(\\d+).*\\]    # regular expression searching a OK MUnit test result in a text log
 ${ROBOT_MUNIT_LOG_KO_REGEXP}    Tests run: (\\d+).*(\\d+).*(\\d+).*(\\d+)
 
+
 *** Keywords ***
 Prepare MUnit
     [Arguments]    ${munit_load_file}=${ROBOT_MUNIT_LOADFILE}    ${munit_dir}=
@@ -112,7 +113,7 @@ Run MUnit Testsuite Logging to File
     Remove File    ${logfile_pattern}
     ${tsm_exp}=    Build Magik Object Expression    ${testsuite_name}
     ${tr_exp}=    Store Magik Object    tr    ${test_runner}.new(_unset, :output_dir, "${log_dir}", :output_format, "${log_extension}", :output_identifier, "${testsuite_name}" )
-    Set Timeout    ${ROBOT_MUNIT_MAX_RUN_WAIT}
+    Set Timeout    ${max_run_wait}
     Write Magik Command    ${tr_exp}.run_in_new_stream(${tsm_exp})
     ${out}=    Read Magik Output    ${tr_exp}.run_in_new_stream(${tsm_exp})
     ${munit_log_fname}=    Get MUnit Log File Name from Test Runner Output    ${out}    ${testsuite_name}

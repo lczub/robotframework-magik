@@ -1,6 +1,7 @@
 # -----------------
 # libraries required for robotframework-magik (RFM) tests
 # -----------------
+# https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-6.1.rst
 # https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-6.0.2.rst
 # https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-5.0.rst
 # https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-4.1.rst
