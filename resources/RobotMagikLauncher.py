@@ -68,23 +68,23 @@ class RobotMagikLauncher(object):
         | script     | Script adding remote_cli startup procedure via image command line argument -run_script. |
         |            | Unfortunately only supported in 4.2 /4.3 startup images. |
         |            | Has no effect in closed images and raise error on 5.x sessions. |
-        |            | Will be ignored, when *msf_startup* is defined. |        
-        |            | default: _robotframework-magik/resources/scripts/start_robot_remote_cli.script_ |     
-        | msf_startup | If set, environment variable ``SW_MSF_STARTUP_MAGIK`` will be defined with | 
+        |            | Will be ignored, when *msf_startup* is defined. |
+        |            | default: _robotframework-magik/resources/scripts/start_robot_remote_cli.script_ |
+        | msf_startup | If set, environment variable ``SW_MSF_STARTUP_MAGIK`` will be defined with |
         |             | script _robotframework-magik/resources/scripts/start_robot_remote_cli.magik_ |
-        |             | for starting the remote_cli. Mandatory for none 4.2/4.3 sessions / images | 
+        |             | for starting the remote_cli. Mandatory for none 4.2/4.3 sessions / images |
         |             | and useful for 4.2/4.3 closed images (missing or incomplete script engine support) |
         | wait        | Time, how long the process should wait till checking, |
         |             | if the image / session is reachable via telnet. (default: 30s) |
-        | nested_alias | If set, Magik image is started without setting the argument ``-l logfile``. | 
-        |              | Useful when working with nested ``ALIAS`` definitions. | 
-        | gis_args | additional gis args, extending args defined in ``ALIAS``. | 
-        |              | Sample ``-cli -login uname/pw`` | 
-        | test_launch  | Hook to start a test script instead the gis launcher. | 
+        | nested_alias | If set, Magik image is started without setting the argument ``-l logfile``. |
+        |              | Useful when working with nested ``ALIAS`` definitions. |
+        | gis_args | additional gis args, extending args defined in ``ALIAS``. |
+        |              | Sample ``-cli -login uname/pw`` |
+        | test_launch  | Hook to start a test script instead the gis launcher. |
 
         == Requirements ==
         Robot Framework Version >= 3.1.1 is required and Python 3.7 recommended.
-        
+
         == Licence info ==
         | Copyright 2016-2023 Luiko Czub, Smallcases Software GmbH
         |
@@ -98,7 +98,7 @@ class RobotMagikLauncher(object):
         | distributed under the License is distributed on an "AS IS" BASIS,
         | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
         | See the License for the specific language governing permissions and
-        | limitations under the License.        
+        | limitations under the License.
 
     """
 
@@ -106,7 +106,7 @@ class RobotMagikLauncher(object):
 
     def __init__(self, swproduct=None, gis_alias=None, cli_port=14001,
                  aliasfile=None, envfile=None, java_home=None, logdir=None, login=None,
-                 script=None, msf_startup=None, wait='30s', nested_alias=None, 
+                 script=None, msf_startup=None, wait='30s', nested_alias=None,
                  gis_args=None, test_launch=None):
 
         self._swproduct = swproduct
@@ -189,7 +189,7 @@ class RobotMagikLauncher(object):
             logger.info('Port {} is free to use'.format(cli_port))
 
     def start_magik_session(self, swproduct=None, gis_alias=None, cli_port=None,
-                            aliasfile=None, envfile=None, java_home=None, logdir=None, login=None, 
+                            aliasfile=None, envfile=None, java_home=None, logdir=None, login=None,
                             script=None, msf_startup=None, wait=None, nested_alias=None,
                             gis_args=None, test_launch=None):
         """starts a new Magik session / image with the given SWPRODUCT and ALIAS
@@ -229,7 +229,7 @@ class RobotMagikLauncher(object):
 
         a_session = RobotMagikSession(self._ProcessInstance(),
                                     swproduct, gis_alias, cli_port, aliasfile,
-                                    envfile, java_home, logdir, login, script, 
+                                    envfile, java_home, logdir, login, script,
                                     msf_startup, timestr_to_secs(wait),
                                     nested_alias, other_gis_args, test_launch)
         a_session.start_session()
@@ -292,7 +292,6 @@ class RobotMagikLauncher(object):
         self._unregister_session(a_session)
         return a_session.stop_session(kill)
 
-
     def stop_all_magik_sessions(self):
         ''' Stops the all Magik session '''
 
@@ -304,6 +303,7 @@ class RobotMagikLauncher(object):
             self._current_session = a_session
             self.stop_magik_session()
         self._sessions = {}
+
 
 class RobotMagikSession(MagikSession):
 

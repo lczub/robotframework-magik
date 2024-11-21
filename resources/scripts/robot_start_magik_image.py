@@ -77,7 +77,7 @@ class MagikSession(object):
         # build gis start command line and environment variables
         self.gis_args = [] # command line arguments gis start
         self.gis_envs = {} # special robot environment variables gis session
-        
+
         # base environment  see https://www.scivision.dev/python-calling-python-subprocess/
         self.gis_envs.update(os.environ)
 
@@ -142,7 +142,7 @@ class MagikSession(object):
         # check, if special jre / jdk required
         if self._java_home:
             jhome = self._java_home
-            self.gis_envs['JAVA_HOME'] = jhome 
+            self.gis_envs['JAVA_HOME'] = jhome
             self.log_info('JAVA_HOME set to {}'.format(jhome))
 
         # check if log file directory exists
@@ -152,17 +152,17 @@ class MagikSession(object):
         # log file
         alias = self._gis_alias
         if self._nested_alias is True:
-            # special case , starting without a logfile 
+            # special case , starting without a logfile
             # required,  when nested gis_aliases are used, where -l makes trouble (see issue #22)
             self.log_info('Magik session will be started with skipped -l argument ')
-        else: 
+        else:
             # default is to start with -l argument
             info = strftime("%m%d_%H%M%S")
             self._log_fname = os.path.join(self._logdir,
                                            '%s-%s-%i.log' % (alias, info, self.cli_port))
             self.gis_args.extend(['-l', self._log_fname])
 
-        # interactive mode and alias 
+        # interactive mode and alias
         # IMPORTANT argument -i must be placedafter <-l logfile>, otherwise -l is ignored
         self.gis_args.extend(['-i', alias])
 
@@ -222,7 +222,7 @@ class MagikSession(object):
 
     def _start_process(self):
         ''' start this gis launcher program '''
-        
+
         self.process_popen = Popen(self.gis_args, env=self.gis_envs)
         self.process_id    = self.process_popen.pid
 
@@ -240,7 +240,6 @@ class MagikSession(object):
             self.log_info('Image is now reachable via telnet localhost:{} with prompt {}'.format(port, prompt))
 
         return exit_code
-
 
     def _get_telnet_prompt(self, port, maxwait=30):
         ''' checks, if localhost:PORT is reachable via telnet during MAXWAIT
@@ -385,7 +384,7 @@ class CmdMagikSession(MagikSession):
             # remove quotes surrounding other gis args
             ogis_args = start_args.gis_args.strip('\"').strip("\'")
             self._other_gis_args = ogis_args
-        
+
         self._test_launch = start_args.test_launch or self._test_launch
 
         self._piddir = start_args.piddir
