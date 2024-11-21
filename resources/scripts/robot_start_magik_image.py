@@ -233,16 +233,16 @@ class MagikSession(object):
         port = self.cli_port
         prompt = self._get_telnet_prompt(port, self._wait)
         if prompt is None:
-            msg = 'Image is NOT reachable via telnet localhost:{} waiting {}s'.format(port, self._wait)
+            msg = 'Image is NOT reachable via telnet 127.0.0.1:{} waiting {}s'.format(port, self._wait)
             self.log_error(msg)
             exit_code = msg
         else:
-            self.log_info('Image is now reachable via telnet localhost:{} with prompt {}'.format(port, prompt))
+            self.log_info('Image is now reachable via telnet 127.0.0.1:{} with prompt {}'.format(port, prompt))
 
         return exit_code
 
     def _get_telnet_prompt(self, port, maxwait=30):
-        ''' checks, if localhost:PORT is reachable via telnet during MAXWAIT
+        ''' checks, if 127.0.0.1:PORT is reachable via telnet during MAXWAIT
         seconds. returns the found cli prompt.
         If no telnet connection is reachable during MAXWAIT seconds,
         return value is 'unknown' is returned '''
@@ -255,7 +255,7 @@ class MagikSession(object):
             duration += 1
             self._logger.debug('check telnet loop {}, will wait till {}'.format(duration, maxwait))
             try:
-                a_connection.open('localhost', port, 10)
+                a_connection.open('127.0.0.1', port, 10)
                 prompt = a_connection.read_until( '>'.encode() )
                 a_connection.close()
                 connected = True

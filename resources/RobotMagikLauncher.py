@@ -18,7 +18,7 @@
 # ------------------------------------------------------------------------
 
 from robot.libraries.BuiltIn import BuiltIn
-from robot.libraries.Process import Process, logger, timestr_to_secs
+from robot.libraries.Process import logger, timestr_to_secs
 import os
 from scripts.robot_start_magik_image import MagikSession
 
@@ -172,7 +172,7 @@ class RobotMagikLauncher(object):
         return a_session
 
     def _port_alias(self, cli_port=None):
-        " Build a session alias for CLI_PORT. If not defined, None is returned "
+        """ Build a session alias for CLI_PORT. If not defined, None is returned """
         alias = None
         if cli_port != None:
             alias = int(cli_port)
