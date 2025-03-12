@@ -36,7 +36,7 @@ Auto Start Magik Session
     Run Keyword And Return If    ${AUTO_START_MAGIK_SESSION} == ${False}    Log To Console    Starting Magik Session was disabled by AUTO_START_MAGIK_SESSION
     ${msession}=    Start Magik Session    @{args}    &{further_key_value_pairs}
     Session Should Be Reachable    ${msession.cli_port}
-    [Return]    ${msession}
+    RETURN    ${msession}
 
 Auto Stop Magik Session
     [Arguments]    ${cli_port}=${None}    ${kill}=${True}
@@ -47,4 +47,4 @@ Auto Stop Magik Session
     ...    Returns [http://robotframework.org/robotframework/latest/libraries/Process.html#Result%20object|Process result object]
     Run Keyword And Return If    ${AUTO_STOP_MAGIK_SESSION} == ${False}    Log To Console    Stopping Magik Session was disabled by AUTO_STOP_MAGIK_SESSION
     ${result}=    Stop Magik Session    ${cli_port}    ${kill}
-    [Return]    ${result}
+    RETURN    ${result}

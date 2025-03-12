@@ -40,7 +40,7 @@ Get DsView
     ${objkey}    Set Variable If    '${objkey}'=='default'    ${dsview_name}    ${objkey}
     ${command}    Set Variable If    '${dsview_name}' in ('ace', 'style', 'authorisation')     ${dsview_name}_view    cached_dataset(:${dsview_name})
     ${dsview_expr}=    Store Magik Object    ${objkey}    gis_program_manager.${command}
-    [Return]    ${dsview_expr}
+    RETURN    ${dsview_expr}
 
 Rollback DsView
     [Arguments]    ${dsview_name}=${CLI_DSVIEW_NAME}
@@ -65,7 +65,7 @@ Get DsCollection
     ${objkey}    Set Variable If    '${objkey}'=='default'    ${dscoll_name}    ${objkey}
     ${dsview_expr}=    Build Magik Object Expression    ${dsview_name}
     ${dscoll_expr}=    Store Magik Object    ${objkey}    ${dsview_expr}.collections[:${dscoll_name}]
-    [Return]    ${dscoll_expr}
+    RETURN    ${dscoll_expr}
 
 Get SelectCollection
     [Arguments]    ${coll_name}    ${predicate}    ${objkey}=default
@@ -81,7 +81,7 @@ Get SelectCollection
     ${objkey}    Set Variable If    '${objkey}'=='default'    ${coll_name}_s    ${objkey}
     ${coll_expr}=    Build Magik Object Expression    ${coll_name}
     ${coll_expr_s}=    Store Magik Object    ${objkey}    ${coll_expr}.select(${predicate})
-    [Return]    ${coll_expr_s}
+    RETURN    ${coll_expr_s}
 
 Get Record
     [Arguments]    ${coll_name}    ${objkey}=a_rec
@@ -98,7 +98,7 @@ Get Record
     ...    so that it is stored (known) inside the global ${CLI_OBJ_HASH}
     ${coll_expr}=    Build Magik Object Expression    ${coll_name}
     ${rec_expr}=    Store Magik Object    ${objkey}    ${coll_expr}.an_element()
-    [Return]    ${rec_expr}
+    RETURN    ${rec_expr}
 
 Get Record With Predicate
     [Arguments]    ${coll_name}    ${predicate}    ${objkey}=a_pred_rec
@@ -117,7 +117,7 @@ Get Record With Predicate
     ...    so that it is stored (known) inside the global ${CLI_OBJ_HASH}
     ${coll_expr}=    Get SelectCollection    ${coll_name}    ${predicate}
     ${rec_expr}=    Store Magik Object    ${objkey}    ${coll_expr}.an_element()
-    [Return]    ${rec_expr}
+    RETURN    ${rec_expr}
 
 Report Datamodel History
     [Arguments]    ${dsview_name}=${CLI_DSVIEW_NAME}    ${fname}=datamodel_history_${dsview_name}.txt    ${report_dir}=${OUTPUT DIR}
@@ -131,7 +131,7 @@ Report Datamodel History
     ${out1}=    Read Magik Output
     ${checkpoint_list}=    Remove String Using Regexp    ${out1}    \\S+:\\d+:(MagikSF|Magik)>
     Create File    ${report_fname_full}    ${header_info}${checkpoint_list}
-    [Return]    ${report_fname_full}
+    RETURN    ${report_fname_full}
 
 Get Datamodel History Entry
     [Arguments]    ${product}    ${model}    ${sub_model}    ${dsview_name}=${CLI_DSVIEW_NAME}
@@ -148,7 +148,7 @@ Get Datamodel History Entry
     Get DsView    ${dsview_name}
     Get DsCollection    sw_gis!datamodel_history    ${dsview_name}    ${histo_key}
     ${rec_expr}=    Get Record With Predicate    ${histo_key}    ${histo_pred}    ${histo_key}_rec
-    [Return]    ${rec_expr}
+    RETURN    ${rec_expr}
 
 Datamodel History Entry Should Exist
     [Arguments]    ${product}    ${model}    ${sub_model}    ${dsview_name}=${CLI_DSVIEW_NAME}
@@ -163,4 +163,4 @@ Datamodel History Entry Should Exist
     ${histo_rec_expr}=    Get Datamodel History Entry    ${product}     ${model}    ${sub_model}     ${dsview_name}
     ${output}=    Execute Magik Command    ${histo_rec_expr}
     Should Match    ${output}    sw_gis!datamodel_history*${model}*${sub_model})    History record not found in <${dsview_name}>: ${product} - ${model} - ${sub_model}    values=${False}
-    [Return]    ${output}
+    RETURN    ${output}

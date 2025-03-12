@@ -131,7 +131,7 @@ Open Magik Connection
     # cause the prio running "Test Magik Output" could not read the complete (expected)
     # traceback block.
     Set Prompt    \\s${out}    True
-    [Return]    ${out}
+    RETURN    ${out}
 
 Write Magik Command
     [Arguments]    ${magik_expression}
@@ -155,7 +155,7 @@ Read Magik Output
     Should Not Match Regexp    ${out_orig}    .*traceback:|.*\\(parser_error\\)
     Run Keyword If    '${error_regexp}'!=''    Should Not Match Regexp    ${out_orig}    ${error_regexp}
     ${match}    ${out}=    Should Match Regexp    ${out_orig}    ${MAGIK_PROMPT_REGEXP}
-    [Return]    ${out}
+    RETURN    ${out}
 
 Prepare Magik Image
     [Documentation]    Sends some initial Magik commands to prepare the test session.
@@ -190,7 +190,7 @@ Close Magik Connection
     ...
     ...    Returns any remaining output.
     ${out}=    Close Connection
-    [Return]    ${out}
+    RETURN    ${out}
 
 Execute Magik Command
     [Arguments]    ${magik_expression}    ${error_regexp}=
@@ -204,7 +204,7 @@ Execute Magik Command
     ${count}=    Get Length    ${out}
     ${last_line}=    Run Keyword If    ${count}!=0    Get Line    ${out}    -1
     ${result}=    Run Keyword If    ${count}!=0    Remove String Using Regexp    ${last_line}    \\s*$
-    [Return]    ${result}
+    RETURN    ${result}
 
 Build Magik Object Expression
     [Arguments]    ${obj_name}
@@ -214,7 +214,7 @@ Build Magik Object Expression
     ...
     ...    see although `Store Magik Object` and `Get Magik Object`
     ${obj_expression}=    Convert To String    ${CLI_OBJ_HASH}\[:${obj_name}]
-    [Return]    ${obj_expression}
+    RETURN    ${obj_expression}
 
 Store Magik Object
     [Arguments]    ${obj_name}    ${magik_expression}
@@ -225,7 +225,7 @@ Store Magik Object
     ...    see although `Build Magik Object Expression`, \ `Get Magik Object` and `Prepare Magik Image`
     ${obj_expression}=    Build Magik Object Expression    ${obj_name}
     Execute Magik Command    ${obj_expression} << ${magik_expression}
-    [Return]    ${obj_expression}
+    RETURN    ${obj_expression}
 
 Get Magik Object
     [Arguments]    ${obj_name}
@@ -237,7 +237,7 @@ Get Magik Object
     ...    see although `Store Magik Object` and \ `Prepare Magik Image`
     ${obj_expression}=    Build Magik Object Expression    ${obj_name}
     ${out}=    Execute Magik Command    ${obj_expression}
-    [Return]    ${out}
+    RETURN    ${out}
 
 Get Magik Environment Variable
     [Arguments]    ${env_name}
@@ -245,7 +245,7 @@ Get Magik Environment Variable
     ...
     ...    It's the value, as it is known inside the Magik Image
     ${out}=    Execute Magik Command    system.getenv("${env_name}")
-    [Return]    ${out}
+    RETURN    ${out}
 
 Load Magik File
     [Arguments]    ${magik_file}    ${max_load_wait}=${MAGIK_MAX_LOAD_WAIT}    ${error_regexp}=${MAGIK_LOAD_ERROR_REGEXP}
@@ -263,7 +263,7 @@ Load Magik File
     Write Magik Command    load_file("${magik_file}")
     ${out}=    Read Magik Output    ${error_regexp}
     [Teardown]    Set Timeout    ${CLI_TIMEOUT}
-    [Return]    ${out}
+    RETURN    ${out}
 
 Load Magik Module
     [Arguments]    ${module_name}    ${module_version}=_unset    ${max_load_wait}=${MAGIK_MAX_LOAD_WAIT}    ${error_regexp}=${MAGIK_LOAD_ERROR_REGEXP}
@@ -300,7 +300,7 @@ Load Magik Module
     Write Magik Command    sw_module_manager.load_module( :${module_name}, ${module_version}, ${opt_magikc}, ${opt_reload}, ${opt_update} )
     ${out}=    Read Magik Output    ${error_regexp}
     [Teardown]    Set Timeout    ${CLI_TIMEOUT}
-    [Return]    ${out}
+    RETURN    ${out}
 
 Get Smallworld Version
     [Documentation]    Returns Magik Image Smallworld Version as string
@@ -308,4 +308,4 @@ Get Smallworld Version
     ...    - sw41 returns xxx
     ${out}=    Execute Magik Command    write(smallworld_product.sw!version.write_string)
     ${swv}=    Remove String    ${out}    .
-    [Return]    ${swv}
+    RETURN    ${swv}

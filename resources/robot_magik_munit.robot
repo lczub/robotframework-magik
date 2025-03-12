@@ -72,7 +72,7 @@ Prepare MUnit
     ...    if ${munit_dir} is defined, environment variable ``ROBOT_MUNIT_DIR`` is set, before loading ${munit_load_file}
     Run Keyword If    '${munit_dir}' != ''    Execute Magik Command    system.putenv("ROBOT_MUNIT_DIR", "${munit_dir}")
     ${out}=    Load Magik File    ${munit_load_file}    max_load_wait=${ROBOT_MUNIT_MAX_LOAD_WAIT}
-    [Return]    ${out}
+    RETURN    ${out}
 
 Load Module with MUnit Tests and Start Test Runner
     [Arguments]    ${module_with_tests}    ${log_extension}=log    ${log_dir}=${ROBOT_MUNIT_LOG_DIR}
@@ -86,7 +86,7 @@ Load Module with MUnit Tests and Start Test Runner
     ${testsuite_name}=    Set Variable    ${module_with_tests}_${swv}
     Store Magik Object    ${testsuite_name}    test_suite.new_from_module(:${module_with_tests} )
     ${munit_log_content}=    Run MUnit Testsuite Logging to File    ${testsuite_name}    ${log_extension}    ${log_dir}
-    [Return]    ${munit_log_content}
+    RETURN    ${munit_log_content}
 
 Run MUnit Testsuite Logging to File
     [Arguments]    ${testsuite_name}    ${log_extension}=log    ${log_dir}=${ROBOT_MUNIT_LOG_DIR}    ${max_run_wait}=${ROBOT_MUNIT_MAX_RUN_WAIT}
@@ -119,7 +119,7 @@ Run MUnit Testsuite Logging to File
     ${munit_log_fname}=    Get MUnit Log File Name from Test Runner Output    ${out}    ${testsuite_name}
     ${munit_log_content}=    Get File    ${munit_log_fname}
     [Teardown]    Set Timeout    ${CLI_TIMEOUT}
-    [Return]    ${munit_log_content}
+    RETURN    ${munit_log_content}
 
 Get MUnit Log File Name from Test Runner Output
     [Arguments]    ${trunner_output}    ${testsuite_name}
@@ -151,7 +151,7 @@ Get MUnit Log File Name from Test Runner Output
     ${log_fname_parts}=    Split Extension    ${log_path_parts}[1]
     ${log_ex_name}=    Set Variable If    'xml' in '${log_fname_parts}[1]'    MUnit xml log    MUnit text log
     Set Test Variable    ${CURRENT_MUNIT_LOG_LINK}    <a href="./${log_path_parts}[1]">${log_ex_name}</a>
-    [Return]    ${munit_log_fname}
+    RETURN    ${munit_log_fname}
 
 Evaluate MUnit Text Log
     [Arguments]    ${munit_text_log}    ${expected_failures}=0    ${expected_errors}=0    ${testsuite_name}=
