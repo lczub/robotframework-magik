@@ -17,7 +17,7 @@ Documentation     test start stop gis sesson using dummy gis
 ...               | limitations under the License.
 Force Tags        dummyLaunch
 Library           Process
-Library           ../../resources/RobotMagikLauncher.py    cli_port=${DUMMY_CLI_PORT}    wait=0.1s
+Library           ../../resources/RobotMagikLauncher.py    cli_port=${DUMMY_CLI_PORT}    wait=10s
 Library           OperatingSystem
 
 *** Variables ***

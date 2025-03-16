@@ -25,7 +25,7 @@ ${DUMMY_LAUNCHER}    ${CURDIR}${/}..${/}scripts${/}dummy_gis_launcher.py
 ${DUMMY_CLI_PORT}    ${14012}
 ${DUMMY_ENVFILE}    ${CURDIR}${/}dummy_envfile.bat
 ${DUMMY_JRE}      ${CURDIR}${/}jre_dummy
-${DUMMY_WAIT}     0.1s
+${DUMMY_WAIT}     2s
 
 *** Test Cases ***
 auto start magik session - no swproduct

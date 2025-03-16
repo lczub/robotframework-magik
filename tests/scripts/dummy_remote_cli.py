@@ -78,6 +78,7 @@ Missing end of statement''',
         self.host = ''          # Symbolic name meaning all available interfaces
         self.coding = coding
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind((self.host, self.port))
         self.connection = None
         self.max_connect_count = int(max_count)
@@ -88,7 +89,7 @@ Missing end of statement''',
         self.logger = logging.getLogger('dummy_cli')
 
     def set_prompt(self, prompt):
-        lastpart = prompt
+        lastpart = os.getenv("DUMMY_PROMPT", prompt)
         if lastpart[-1] != '>':
             # last sign must be '>'
             lastpart = '{}>'.format(lastpart)
@@ -104,7 +105,7 @@ Missing end of statement''',
 
     def listen_socket(self):
         quit = False
-        self.logger.info( 'dummy remote_cli listen on port %i' % self.port)
+        self.logger.info( f'dummy remote_cli listen on port {self.port} with prompt {self.prompt}')
         while (not quit) and (self.connect_count < self.max_connect_count):
             self.connect_count += 1
             quit = self.listen_connection()

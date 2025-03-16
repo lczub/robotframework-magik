@@ -20,13 +20,15 @@ Documentation     Test Parsing different Magik Prompt Variations.
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Test Tags        PromptTest
+Test Tags         PromptTest
 Library           Process
+Library           ../../resources/RobotMagikLauncher.py    cli_port=${DUMMY_CLI_PORT}    wait=10s
+Library           OperatingSystem
 Resource          ../../resources/robot_magik_base.robot
 
 *** Variables ***
-${DUMMY_CLI_PORT}    14011
-${DUMMY_CLI_SCRIPT}    ${CURDIR}${/}dummy_remote_cli.py
+${DUMMY_LAUNCHER}    ${CURDIR}${/}dummy_gis_launcher.py
+${DUMMY_CLI_PORT}    14012
 ${CLI_PORT}       ${DUMMY_CLI_PORT}
 
 *** Test Cases ***
@@ -34,13 +36,15 @@ Test Open Magik Connection - MagikSF>
     ${prompt}=    Set Variable    MagikSF
     ${out}=    Open Magik Connection with special prompt    ${prompt}
     Should Match Regexp    ${out}    \\S+:\\d+:${prompt}>
-    [Teardown]    Stop Dummy Remote Cli
+    [Teardown]    Stop All Magik Sessions
+
 
 Test Open Magik Connection - Magik>
     ${prompt}=    Set Variable    Magik
     ${out}=    Open Magik Connection with special prompt    ${prompt}
     Should Match Regexp    ${out}    \\S+:\\d+:${prompt}>
-    [Teardown]    Stop Dummy Remote Cli
+    [Teardown]    Stop All Magik Sessions
+
 
 Test Read Magik Output - MagikSF>
     Open Magik Connection with special prompt    MagikSF
@@ -51,7 +55,8 @@ Test Read Magik Output - MagikSF>
     ${out}=    Read Magik Output
     Write Bare    1.as_error()\n$\n
     Run Keyword And Expect Error    *traceback*    Read Magik Output
-    [Teardown]    Stop Dummy Remote Cli
+    [Teardown]    Stop All Magik Sessions
+
 
 Test Read Magik Output - Magik>
     Open Magik Connection with special prompt    Magik
@@ -62,29 +67,16 @@ Test Read Magik Output - Magik>
     ${out}=    Read Magik Output
     Write Bare    1.as_error()\n$\n
     Run Keyword And Expect Error    *traceback*    Read Magik Output
-    [Teardown]    Stop Dummy Remote Cli
+    [Teardown]    Stop All Magik Sessions
+
 
 *** Keywords ***
-Start Dummy Remote Cli
-    [Arguments]    ${prompt}=MagikSF    ${cli_port}=${DUMMY_CLI_PORT}    ${max_connections}=1
-    [Documentation]    Starts a telnet server process, simulating a SW GIS remote_cli with a special prompt.
-    ...
-    ...    Telnet server process will be started using process libary keyword _Start Process_ , running in the background.
-    ${handle_cli}=    Process.Start Process    python    ${DUMMY_CLI_SCRIPT}    ${cli_port}    ${max_connections}    ${prompt}
-    ...    alias=dummy_cli
-    RETURN    ${handle_cli}
-
-Stop Dummy Remote Cli
-    [Arguments]    ${prompt}=MagikSF
-    [Documentation]    Stops the running telnet server process, which simulating a SW GIS remote_cli with a special prompt.
-    Close Connection
-    ${result_cli}=    Wait For Process    handle=dummy_cli    timeout=1 s    on_timeout=terminate
-    Log    ${result_cli.stdout}
-    Log    ${result_cli.stderr}
-    Should Be Equal As Integers    ${result_cli.rc}    0
-
 Open Magik Connection with special prompt
     [Arguments]    ${prompt}    ${port}=${DUMMY_CLI_PORT}    ${host}=localhost
-    Start Dummy Remote Cli    prompt=${prompt}
+    [Documentation]    Starts a telnet server process, simulating a SW GIS remote_cli with a special prompt.
+    ...                waits till telnet session is reachable and opens Magik connection
+    Set Environment Variable    DUMMY_PROMPT    ${prompt}
+    ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_prompt_start_telnet    cli_port=${DUMMY_CLI_PORT}    gis_args=-cli    test_launch=${DUMMY_LAUNCHER}
+    Session Should Be Reachable
     ${out}=    Open Magik Connection    host=${host}    port=${port}
     RETURN    ${out}
