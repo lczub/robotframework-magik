@@ -19,7 +19,7 @@ Documentation     Test Python Scripts for starting and stopping Smallworld Magik
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Force Tags        ScriptTest
+Test Tags        ScriptTest
 Library           OperatingSystem
 Library           Process
 Library           String
@@ -272,7 +272,7 @@ Start Dummy Gis Launcher
     ${handle_start}=    Process.Start Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait_telnet}    --cli_port    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     ${result_start}=    Wait For Process    handle=${handle_start}    timeout=${wait_process}    on_timeout=terminate
     Log Result    ${result_start}
-    [Return]    ${result_start}
+    RETURN    ${result_start}
 
 Log Result
     [Arguments]    ${result}
@@ -284,7 +284,7 @@ Check PID File
     File Should Exist    ${pid_file}
     ${pid_info}=    Get File    ${pid_file}
     ${pid}=    Get Line    ${pid_info}    0
-    [Return]    ${pid}
+    RETURN    ${pid}
 
 Create Empty Test Directory
     [Arguments]    ${dname}=t1    ${dpath}=${TEMPDIR}
@@ -292,4 +292,4 @@ Create Empty Test Directory
     Remove Directory    ${test_dir}    recursive=True
     Create Directory    ${test_dir}
     Directory Should Be Empty    ${test_dir}
-    [Return]    ${test_dir}
+    RETURN    ${test_dir}

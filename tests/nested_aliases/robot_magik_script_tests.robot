@@ -129,4 +129,4 @@ Create Empty Test Directory
     Remove Directory    ${test_dir}    recursive=True
     Create Directory    ${test_dir}
     Directory Should Be Empty    ${test_dir}
-    [Return]    ${test_dir}
+    RETURN    ${test_dir}

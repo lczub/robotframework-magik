@@ -20,7 +20,7 @@ Documentation     Test Parsing different Magik Prompt Variations.
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Force Tags        PromptTest
+Test Tags        PromptTest
 Library           Process
 Resource          ../../resources/robot_magik_base.robot
 
@@ -72,7 +72,7 @@ Start Dummy Remote Cli
     ...    Telnet server process will be started using process libary keyword _Start Process_ , running in the background.
     ${handle_cli}=    Process.Start Process    python    ${DUMMY_CLI_SCRIPT}    ${cli_port}    ${max_connections}    ${prompt}
     ...    alias=dummy_cli
-    [Return]    ${handle_cli}
+    RETURN    ${handle_cli}
 
 Stop Dummy Remote Cli
     [Arguments]    ${prompt}=MagikSF
@@ -87,4 +87,4 @@ Open Magik Connection with special prompt
     [Arguments]    ${prompt}    ${port}=${DUMMY_CLI_PORT}    ${host}=localhost
     Start Dummy Remote Cli    prompt=${prompt}
     ${out}=    Open Magik Connection    host=${host}    port=${port}
-    [Return]    ${out}
+    RETURN    ${out}
