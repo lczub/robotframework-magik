@@ -69,6 +69,39 @@ Test Read Magik Output - Magik>
     Run Keyword And Expect Error    *traceback*    Read Magik Output
     [Teardown]    Stop All Magik Sessions
 
+Test Open Magik Connection - special prompt>
+    ${prompt}=    Set Variable    special prompt
+    Set Test Variable    $CLI_PROMPT_REGEXP    \\S+:\\d+:(MagikSF|Magik|${prompt})>
+    ${out}=    Open Magik Connection with special prompt    ${prompt}
+    Should Match Regexp    ${out}    \\S+:\\d+:${prompt}>
+    [Teardown]    Stop All Magik Sessions
+
+Test Read Magik Output - special prompt>
+    ${prompt}=    Set Variable    special prompt
+    Set Test Variable    $CLI_PROMPT_REGEXP    \\S+:\\d+:(MagikSF|Magik|${prompt})>
+    ${out}=    Open Magik Connection with special prompt    ${prompt}
+    Write Bare    write("1 ernie", %newline, "2 bert", %newline, "3 bibo")\n$\n
+    ${out}=    Read Magik Output
+    Should Match Regexp    ${out}    ^1 ernie\\s2 bert\\s3 bibo$
+    Write Bare    \n$\n
+    ${out}=    Read Magik Output
+    Write Bare    1.as_error()\n$\n
+    Run Keyword And Expect Error    *traceback*    Read Magik Output
+    [Teardown]    Stop All Magik Sessions
+
+debug prompt regexp
+    ${out_orig1}=    Set Variable     1 ernie\n2 bert\n3 bibo\ndummy:14012:Magik>
+    ${output_regexp1}=    Set Variable    (?s)\\s(.*)\\s\\S+:\\d+:(MagikSF|Magik)>
+    ${match}    ${out}    ${other}=    Should Match Regexp    ${out_orig1}    ${output_regexp1}
+    Log    match<${match}> out<${out}> other<${other}>
+    ${out_orig2}=    Set Variable     1 ernie\n2 bert\n3 bibo\ndummy:14012:special prompt>
+    ${output_regexp2}=    Set Variable    (?s)\\s(.*)\\s\\S+:\\d+:(MagikSF|Magik|special.prompt)>
+    ${match}    ${out}    ${other}=    Should Match Regexp    ${out_orig2}    ${output_regexp2}
+    Log    match<${match}> out<${out}> other<${other}>
+    ${out_orig3}=    Set Variable     1 ernie\n2 bert\n3 bibo\ndummy:14012:special prompt>
+    ${output_regexp3}=    Set Variable    (?s)\\s(.*)\\s\\S+:\\d+:(MagikSF|Magik|special prompt)>
+    ${match}    ${out}    ${other}=    Should Match Regexp    ${out_orig3}    ${output_regexp3}
+    Log    match<${match}> out<${out}> other<${other}>
 
 *** Keywords ***
 Open Magik Connection with special prompt

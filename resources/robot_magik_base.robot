@@ -105,13 +105,14 @@ ${CLI_TIMEOUT}    3.0    # Defines default wait time for prompt, when executing 
 ${CLI_NEWLINE}    \n
 ${CLI_OBJ_HASH}    robot_objhash
 ${CLI_ENCODING}    ISO-8859-1
+${CLI_PROMPT_REGEXP}    \\S+:\\d+:(MagikSF|Magik)>    # Defines default regular expression to search for telnet CLI prompt \ like ``MagikSF>`` or `Magik>``
 ${MAGIK_LOAD_ERROR_REGEXP}    \\*\\*\\*\\*.(Error|Fehler):    # Defines default regular expression to search for load errors like ``**** Fehler:`` or ``**** Error:``
-${MAGIK_PROMPT_REGEXP}    (?s)\\s(.*)\\s\\S+:\\d+:(?:MagikSF|Magik)>    # Defines default regular expression to search for Magik prompt \ like ``MagikSF>`` or `Magik>``
+${MAGIK_OUTPUT_REGEXP}    (?s)\\s(.*)\\s    # Defines default regular expression used to read CLI output - will be combined with ``CLI_PROMPT_REGEXP``
 ${MAGIK_MAX_LOAD_WAIT}    10.0    # Defines default max wait time for prompt, when loading magik code (file or module)
 
 *** Keywords ***
 Open Magik Connection
-    [Arguments]    ${host}=${CLI_HOST}    ${alias}=swimage    ${port}=${CLI_PORT}    ${timeout}=${CLI_TIMEOUT}    ${newline}=${CLI_NEWLINE}    ${encoding}=${CLI_ENCODING}
+    [Arguments]    ${host}=${CLI_HOST}    ${alias}=swimage    ${port}=${CLI_PORT}    ${timeout}=${CLI_TIMEOUT}    ${newline}=${CLI_NEWLINE}    ${encoding}=${CLI_ENCODING}    ${prompt}=${CLI_PROMPT_REGEXP}
     [Documentation]    Opens a telnet connection to remote_cli of a Smallworld Magik image
     ...
     ...    The connection parameters could be set with following variables
@@ -121,7 +122,7 @@ Open Magik Connection
     ...    | ${CLI_PORT} | 14001 | port, the Magik image remote_cli listens |
     ...    | ${CLI_TIMEOUT} | 3.0 | max. secs, tests should wait for a response from the Magik image |
     ...    | ${CLI_ENCODING} | ISO-8859-1 | used text encoding for communication with remote_cli |
-    ${prompt}=    Set Variable    \\S+:\\d+:(MagikSF|Magik)>
+    ...    | ${CLI_PROMPT_REGEXP} | \\S+:\\d+:(MagikSF|Magik)> | regular expression to search for telnet CLI prompt \ like ``MagikSF>`` or `Magik>`` |
     Open Connection    host=${host}    alias=${alias}    port=${port}    timeout=${timeout}    newline=${newline}    prompt=${prompt}    prompt_is_regexp=True    encoding=${encoding}
     ${out}=    Read until prompt
     # LC 04.07.12: the prompt must be extended with a leading newline, otherwise tracebacks
@@ -150,11 +151,12 @@ Read Magik Output
     ...
     ...    === Hint - how to customize prompt search ===
     ...
-    ...    adjust variable ``${MAGIK_PROMPT_REGEXP}``
+    ...    adjust variables ``${MAGIK_OUTPUT_REGEXP}`` + ``${CLI_PROMPT_REGEXP}``
+    ${output_regexp}=    Set Variable    ${MAGIK_OUTPUT_REGEXP}${CLI_PROMPT_REGEXP}
     ${out_orig}=    Read until prompt
     Should Not Match Regexp    ${out_orig}    .*traceback:|.*\\(parser_error\\)
     Run Keyword If    '${error_regexp}'!=''    Should Not Match Regexp    ${out_orig}    ${error_regexp}
-    ${match}    ${out}=    Should Match Regexp    ${out_orig}    ${MAGIK_PROMPT_REGEXP}
+    ${match}    ${out}    ${prompt}=    Should Match Regexp    ${out_orig}    ${output_regexp}
     RETURN    ${out}
 
 Prepare Magik Image
