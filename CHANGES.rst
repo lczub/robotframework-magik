@@ -1,6 +1,16 @@
 Changes in Robot Framework Magik (RFM)
 ======================================
 
+Robot Framework Magik release notes v0.6.1 (under construction)
+---------------------------------------------------------------
+
+- PR #41 (`StevenLooman <https://github.com/StevenLooman>`_) : Support RF 7.2 and PY 3.12
+
+  - no further support of `outdated RF standalone JAR distribution <http://robotframework.org/robotframework/4.1.2/RobotFrameworkUserGuide.html#standalone-jar-distribution>`_
+
+- Enh #39: custom Magik prompt can be defined via robot variable ``$CLI_PROMPT_REGEXP``
+
+
 Robot Framework Magik release notes v0.6.0 (Jun. 2023)
 ------------------------------------------------------
 
@@ -22,7 +32,6 @@ Robot Framework Magik release notes v0.6.0 (Jun. 2023)
 
 Robot Framework Magik release notes v0.5.2 (Jun. 2020)
 ------------------------------------------------------
-
 
 - Enh #29: Support additional gis args
   

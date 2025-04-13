@@ -1,7 +1,7 @@
 Robot Framework Magik (RFM)
 ===========================
 
-Copyright 2012-2023 Luiko Czub, `Smallcases Software GmbH`_
+Copyright 2012-2025 Luiko Czub, `Smallcases Software GmbH`_
 License `Apache License 2.0`_
 
 Introduction
@@ -21,7 +21,6 @@ Some feature
 - supports Smallworld 4.1/4.3 images and Smallworld 5.1/5.2/5.3 sessions
 - supports loading, running and evaluating `OpenSmallworld MUnit`_ tests
 - it is possible to handle several images / sessions during one test run, for example to test their interaction
-- in combination with `deprecated Standalone JAR distribution`_ tests can run in a pure Java environment without a separate python installation. (DEPRECATED)
 - in combination with Robot Framework `Standard Test Libraries`_  like *XML /  OperatingSystem* or `External Test Libraries`_ like *Selenium2Library / Database Library / HTTP library* allows to test the interaction with external systems 
 - the communication via telnet allows to test images / sessions running in a different network
 
@@ -72,13 +71,13 @@ The Python script robot_stop_magik_image.py_
 
 Installation
 ^^^^^^^^^^^^
-A Python 3.11 environment is recommended with Robot Framework Version 6.0.2/6.1 .
+A Python 3.12 environment is recommended with Robot Framework Version 7.2 .
 
 good practice is to use a separate virtualenv::
 
- py -3.11 -m venv D:\pyenv\robot
+ py -3.12 -m venv D:\pyenv\robot
  D:\pyenv\robot\scripts\activate
- pip install --no-cache-dir robotframework~=6.0
+ pip install --no-cache-dir robotframework~=7.2
  
 download current `master as zip`_ or latest `releases`_ and extract it (for example
 to *D:\\robotframework-magik*). Now you are able to start the example test via::
@@ -90,7 +89,7 @@ to *D:\\robotframework-magik*). Now you are able to start the example test via::
 Alternative installations see `RobotFramework UserGuide Installation`_ .
 Or install required packages using sample `requirements.txt`_ included in RFM download:: 
 
- py -3.11 -m venv my_robot_venv
+ py -3.12 -m venv my_robot_venv
  my_robot_venv\scripts\activate
  python -m pip install --upgrade pip
  python -m pip install --upgrade -r requirements.txt
@@ -255,15 +254,6 @@ stop the startup image
 The image is closed and the pid-file *14003.pid* is deleted.
 
 
-Example D - start gis and run example using RD standalone JAR
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-With `last RF 4.1.2 Standalone JAR distribution`_ no robot installation is required, just one java call and `robotframework-4.1.2.jar <https://search.maven.org/remotecontent?filepath=org/robotframework/robotframework/4.1.2/robotframework-4.1.2.jar>`_::
-
- java -jar robotframework-4.1.2.jar  --critical DsView* --variablefile resources\params\variables_sw43_cbg.py examples
-
-
-
 .. _Smallcases Software GmbH: http://www.smallcases.de
 .. _Apache License 2.0: http://www.apache.org/licenses/LICENSE-2.0
 .. _Robot Framework: http://robotframework.org
@@ -287,9 +277,6 @@ With `last RF 4.1.2 Standalone JAR distribution`_ no robot installation is requi
 .. _External Test Libraries: http://robotframework.org/#libraries
 .. _ProcessLibrary: http://robotframework.org/robotframework/latest/libraries/Process.html
 .. _RobotFramework UserGuide Installation: http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions
-.. _deprecated Standalone JAR distribution: http://robotframework.org/robotframework/4.1.2/RobotFrameworkUserGuide.html#standalone-jar-distribution
-.. _last RF 4.1.2 Standalone JAR distribution: https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-4.1.2.rst#java-integration-fixes
-.. _robotframework-4.1.2.jar: https://search.maven.org/remotecontent?filepath=org/robotframework/robotframework/4.1.2/robotframework-4.1.2.jar
 .. _variables_sw43_cbg.py: resources/params/variables_sw43_cbg.py
 .. _variables_sw51_cbg.py: resources/params/variables_sw51_cbg.py
 .. _variables_sw52_cbg.py: resources/params/variables_sw52_cbg.py
