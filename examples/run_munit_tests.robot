@@ -89,6 +89,8 @@ Load and Run Multiple Module Tests
 
 *** Keywords ***
 Setup MUnit Session
+    ${test_launch}=    Get Variable Value    $DUMMY_LAUNCHER    ${None}
+    Skip If    '${test_launch}' != '${None}'    MUnit samples does not work with dummy ${test_launch}.
     Open Magik Connection
     Prepare Magik Image
     Prepare MUnit    ${ROBOT_MUNIT_LOAD_FILE}    ${ROBOT_MUNIT_DIR}

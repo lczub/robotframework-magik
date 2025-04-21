@@ -17,7 +17,7 @@
 #
 # ------------------------------------------------------------------------
 
-import os, sys
+import os, sys, re
 import socket
 import logging
 #import codecs
@@ -71,7 +71,11 @@ Missing end of statement''',
         # Test special characters
         u'write("äöüßÄÖÜ")' : u'äöüßÄÖÜ',
         'message_handler(:gis_program_manager).text_for_message(:save_environment)' : u'Änderung',
-        }
+        'coordinate.new(0.0, 0.0).distance_to(coordinate.new(3.0, 4.0))' : '5.0 ',
+        'coordinate.new(2.0, 4.0).distance_to(coordinate.new(4.0, 4.0))' : '2.0 ',
+        'coordinate.new(-2.0, 4.0).distance_to(coordinate.new(4.0, 4.0))' : '6.0 ',
+        'coordinate.new(-2.0, 4.0).distance_to(coordinate.new(4.0, -4.0))' : '10.0 '
+    }
 
     def __init__(self, port, max_count=1, prompt='MagikSF>', coding='iso-8859-1'):
         self.port = int(port)   # Arbitrary non-privileged port
@@ -87,6 +91,7 @@ Missing end of statement''',
         self.socket.listen(1)
         self.config_logger()
         self.logger = logging.getLogger('dummy_cli')
+        self.magik_objhash = {}
 
     def set_prompt(self, prompt):
         lastpart = os.getenv("DUMMY_PROMPT", prompt)
@@ -164,6 +169,14 @@ Missing end of statement''',
             # required for Test keyword 'Prepare Magik Image'
             # and Test keyword 'Clean Magik Image'
             magik_expression = self.store_objhash(magik_expression)
+        elif magik_expression.find('] <<') >= 0:
+            # special case store magik object required for further dummy communcations
+            magik_expression = self.store_magik_object(magik_expression)
+        elif magik_expression.find('distance_to') >= 0:
+            # special case calc C1.distance_to(C2)
+            c1 = self.magik_objhash['c1']
+            c2 = self.magik_objhash['c2']
+            magik_expression = f'{c1}.distance_to({c2})'
 
         a_template = self.response_templates.get(magik_expression,
                                                  magik_expression)
@@ -208,6 +221,17 @@ Missing end of statement''',
         self.response_templates['robot_objhash'] = state
 
         return state
+
+    def store_magik_object(self, magik_expression):
+        ''' stores (some) magik object required for later dummy communications '''
+
+        # 'robot_objhash[:c2] << coordinate.new(3.0, 4.0)'
+        m = re.search(r'\[.(.*)\] << (.*)', magik_expression)
+        key = m.group(1)
+        value = m.group(2)
+        self.magik_objhash[key] = value
+
+        return value
 
 
     def send_response(self, data, first=False):

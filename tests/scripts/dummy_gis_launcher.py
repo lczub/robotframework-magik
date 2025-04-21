@@ -30,7 +30,8 @@ class dummy_gis_launcher(object):
         self.alias = self.get_arg_after('-i').lower()
         self.port = int(os.getenv('ROBOT_CLI_PORT', '14011'))
         self.max_connections = self.get_max_connections()
-
+        prompt = self.get_arg_after('--dummyPrompt')
+        self.prompt = (prompt or 'MagikSF').replace('_', ' ')
 
     def get_arg_after(self, arg_name):
         arg_after = None
@@ -60,7 +61,7 @@ class dummy_gis_launcher(object):
     def start_dummy_cli(self):
         if 'start_telnet' in self.alias:
             self.logger.info('Start dummy remote_cli for ALIAS %s' % self.alias)
-            a_cli = dummy_remote_cli(self.port, self.max_connections)
+            a_cli = dummy_remote_cli(self.port, self.max_connections, self.prompt)
             a_cli.listen_socket()
 
 

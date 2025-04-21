@@ -227,6 +227,11 @@ class RobotMagikLauncher(object):
 
         self._check_cli_port_in_use(cli_port)
 
+        if test_launch:
+            prompt = BuiltIn().get_variable_value("$DUMMY_PROMPT", "MagikSF")
+            prompt = prompt.replace(' ', '_')
+            other_gis_args =  f'{other_gis_args or ''} --dummyPrompt {prompt}'
+            
         a_session = RobotMagikSession(self._ProcessInstance(),
                                     swproduct, gis_alias, cli_port, aliasfile,
                                     envfile, java_home, logdir, login, script, 

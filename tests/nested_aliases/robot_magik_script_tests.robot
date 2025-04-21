@@ -64,7 +64,7 @@ Start and stop - cambridge with nested alias
     ${logdir}=    Create Empty Test Directory    cbg_nested_log
     ${piddir}=    Create Empty Test Directory    cbg_nested_pid
     ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --nested_alias    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login
-    ...    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ...    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
     Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
@@ -85,7 +85,7 @@ Start and stop - cambridge none nested alias but start arg --nested_alias
     ${logdir}=    Create Empty Test Directory    cbg_nested_log
     ${piddir}=    Create Empty Test Directory    cbg_nested_pid
     ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --nested_alias    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login
-    ...    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ...    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
     Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
@@ -106,7 +106,7 @@ Start and stop - cambridge default
     ${logdir}=    Create Empty Test Directory    cbg_nested_log
     ${piddir}=    Create Empty Test Directory    cbg_nested_pid
     ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}
-    ...    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR
+    ...    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
     Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
     ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}

@@ -108,7 +108,7 @@ Open Magik Connection with special prompt
     [Arguments]    ${prompt}    ${port}=${DUMMY_CLI_PORT}    ${host}=localhost
     [Documentation]    Starts a telnet server process, simulating a SW GIS remote_cli with a special prompt.
     ...                waits till telnet session is reachable and opens Magik connection
-    Set Environment Variable    DUMMY_PROMPT    ${prompt}
+    Set Test Variable    $DUMMY_PROMPT    ${prompt}
     ${msession}=    Start Magik Session    A_SWPRODUCT_PATH    ALIAS_prompt_start_telnet    cli_port=${DUMMY_CLI_PORT}    gis_args=-cli    test_launch=${DUMMY_LAUNCHER}
     Session Should Be Reachable
     ${out}=    Open Magik Connection    host=${host}    port=${port}

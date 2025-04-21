@@ -9,14 +9,20 @@
             "type": "robotcode",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "target": "${file}"
+            "target": "${file}",
+            "env"      : {},
+            "args"     : ["-d", "${workspaceFolder}${pathSeparator}results${pathSeparator}${input:swVersion}",
+                          "-V", "${workspaceFolder}${pathSeparator}resources${pathSeparator}params${pathSeparator}variables_${input:swVersion}.py"]
         },
         {
             "name": "RobotCode: Run All",
             "type": "robotcode",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "target": "."
+            "target": ".",
+            "env"      : {},
+            "args"     : ["-d", "${workspaceFolder}${pathSeparator}results${pathSeparator}${input:swVersion}",
+                          "-V", "${workspaceFolder}${pathSeparator}resources${pathSeparator}params${pathSeparator}variables_${input:swVersion}.py"]
         },
         {
             "name": "RobotCode: Default",
@@ -26,7 +32,10 @@
             "presentation": {
                 "hidden": true
             },
-            "pythonConfiguration": "RobotCode: Python"
+            "pythonConfiguration": "RobotCode: Python",
+            "env"      : {},
+            "args"     : ["-d", "${workspaceFolder}${pathSeparator}results${pathSeparator}${input:swVersion}",
+                          "-V", "${workspaceFolder}${pathSeparator}resources${pathSeparator}params${pathSeparator}variables_${input:swVersion}.py"]
         },
         {
             "name": "RobotCode: Python",
@@ -35,6 +44,23 @@
             "presentation": {
                 "hidden": true
             }
+        }
+    ],
+    "inputs": [
+        {
+          "type": "pickString",
+          "id": "swVersion",
+          "description": "Which SW version / variation to test?",
+          "options": [
+            "sw41_cbg",
+            "sw43_cbg",
+            "sw51_cbg",
+            "sw51_swaf",
+            "sw52_cbg",
+            "sw43_cbg_dummy",
+            "sw53_cbg_dummy",
+          ],
+          "default": "sw43_cbg_dummy"
         }
     ]
 }

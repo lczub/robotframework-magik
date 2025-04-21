@@ -22,5 +22,6 @@ Library           ../../../resources/RobotMagikLauncher.py    swproduct=${SWPROD
 
 *** Keywords ***
 Start And Wait For Magik Session
-    Start Magik Session     aliasfile=${ALIASFILE}    gis_alias=${ALIASNAME}    msf_startup=${MSFSTARTUP}    login=${LOGIN}
+    ${test_launch}=    Get Variable Value    $DUMMY_LAUNCHER    ${None}
+    Start Magik Session     aliasfile=${ALIASFILE}    gis_alias=${ALIASNAME}    msf_startup=${MSFSTARTUP}    login=${LOGIN}    test_launch=${test_launch}
     Session Should Be Reachable

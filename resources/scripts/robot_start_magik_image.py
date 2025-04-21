@@ -204,7 +204,7 @@ class MagikSession(object):
 
         self.gis_args[0] = test_script
         self.gis_args[:0] = ['python']
-        self.log_info('GIS start will be simulated with {}'.format(test_script))
+        self.log_info(f'GIS start will be simulated with {test_script}.')
 
     def start_session(self):
         ''' Starts a Magik session or image via windows launcher gis.exe and
