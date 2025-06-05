@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 # ------------------------------------------------------------------------
-#  Copyright 2019-2023 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2019-2025 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ __devenv_dir    = os.getenv("DEVENV_DIR", os.path.join( __rfm_root_dir, "..", "d
 # communication should be available
 START_WAIT = "60s"
 # path to smallworld core product
-SWPRODUCT = r"S:\nrm52103\core"
+SWPRODUCT = r"S:\gis52106\core"
 # file with gis alias definitions
 ALIASFILE = os.path.join( SWPRODUCT, "..", "cambridge_db", "config", "gis_aliases")
 
@@ -57,7 +57,7 @@ MSFSTARTUP = True
 # Starting Smallworld 5.x sessions must define jre / jdk to be used
 # - 5.2.10 works with open jdk17, 5.1 requires 1.8 
 # Starting Smallworld 4.3 images doesn't requires this, except images works with java acp
-JAVA_HOME = os.path.join( __devenv_dir, "jre-17.0.6-x64")
+JAVA_HOME = os.path.join( __devenv_dir, "jre-17.0.14-x64")
 
 # Hook for debugging  / analysing
 # Set AUTO_START_MAGIK SESSION to False, when test run should use a manual 

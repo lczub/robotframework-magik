@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2016-2023 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2016-2025 Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -230,7 +230,7 @@ class RobotMagikLauncher(object):
         if test_launch:
             prompt = BuiltIn().get_variable_value("$DUMMY_PROMPT", "MagikSF")
             prompt = prompt.replace(' ', '_')
-            other_gis_args =  f'{other_gis_args or ''} --dummyPrompt {prompt}'
+            other_gis_args =  f"{other_gis_args or ''} --dummyPrompt {prompt}"
             
         a_session = RobotMagikSession(self._ProcessInstance(),
                                     swproduct, gis_alias, cli_port, aliasfile,
