@@ -34,7 +34,7 @@ Load and Run Single Module Test - Text Logging
     ...
     ...    Expected results - MUnit will report errors and failures. Test should pass with SW43.
     ...
-    ...    === Known Issue ===
+    ...    === not stable ===
     ...
     ...    Test fails with SW41 and SW52, reporting unexpected numbers of errors / failures.
     ...
@@ -42,7 +42,7 @@ Load and Run Single Module Test - Text Logging
     ...    | 52x 53x | 0 | 18 |
     ...    | 43 | 4 | 16 |
     ...    | 41 | 0 | 199 |
-    [Tags]    knownIssue
+    [Tags]    notStable
     ${munit_log_content}=    Load Module with MUnit Tests and Start Test Runner    munit_base_tests
     File Should Exist    ${ROBOT_MUNIT_LOG_DIR}${/}*munit_base_tests*.log
     Evaluate MUnit Text Log    ${munit_log_content}    expected_failures=4    expected_errors=16    testsuite_name=munit_base_tests
@@ -53,7 +53,7 @@ Load and Run Single Module Test - XML Logging
     ...
     ...    Expected results - MUnit will report errors and failures. Test should pass with SW43.
     ...
-    ...    === Known Issue ===
+    ...    === not stable ===
     ...
     ...    Test fails with SW41 and SW52, reporting unexpected numbers of errors / failures.
     ...
@@ -61,7 +61,7 @@ Load and Run Single Module Test - XML Logging
     ...    | 52x 53x| 0 | 18 |
     ...    | 43 | 4 | 16 |
     ...    | 41 | 0 | 199 |
-    [Tags]    knownIssue
+    [Tags]    notStable
     ${munit_log_content}=    Load Module with MUnit Tests and Start Test Runner    munit_base_tests    log_extension=xml
     File Should Exist    ${ROBOT_MUNIT_LOG_DIR}${/}*munit_base_tests*.xml
     Evaluate MUnit XML Log    ${munit_log_content}    4    16    munit_base_tests
@@ -74,13 +74,13 @@ Load and Run Multiple Module Tests
     ...    Expected behaviour running in SW523 and SW43
     ...    - all module tests passed - munit log files should be deleted
     ...
-    ...    === Known Issue ===
+    ...    === not stable ===
     ...
     ...    Expected behaviour running in SW41 - it failed
     ...    - magik_mock_test reports 0 failures and 56 errors
     ...    - simple_dataset_test reports 9 failures and 2 errors
     ...    - munit logs should not be deleted
-    [Tags]    knownIssue
+    [Tags]    notStable
     [Template]    Run Modul Tests and Evaluate Log
     magik_mock_test
     magik_mock_test    log_type=xml

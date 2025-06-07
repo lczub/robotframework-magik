@@ -10,6 +10,10 @@ Robot Framework Magik release notes v0.6.1 (under construction)
 
 - Enh #39: custom Magik prompt can be defined via robot variable ``$CLI_PROMPT_REGEXP``
 
+- Fix #42: nested alias support becomes deprecated
+
+  - gis launcher behaves now differently when running under Win11 + RF7x and started without ``-l logfile`` arg
+
 
 Robot Framework Magik release notes v0.6.0 (Jun. 2023)
 ------------------------------------------------------

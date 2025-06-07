@@ -12,7 +12,8 @@
             "target": "${file}",
             "env"      : {},
             "args"     : ["-d", "${workspaceFolder}${pathSeparator}results${pathSeparator}${input:swVersion}",
-                          "-V", "${workspaceFolder}${pathSeparator}resources${pathSeparator}params${pathSeparator}variables_${input:swVersion}.py"]
+                          "-V", "${workspaceFolder}${pathSeparator}resources${pathSeparator}params${pathSeparator}variables_${input:swVersion}.py",
+                          "--exclude", "${input:tagExclude}", "--skiponfailure", "notReadyORnotStable", "--loglevel", "DEBUG"]
         },
         {
             "name": "RobotCode: Run All",
@@ -22,7 +23,8 @@
             "target": ".",
             "env"      : {},
             "args"     : ["-d", "${workspaceFolder}${pathSeparator}results${pathSeparator}${input:swVersion}",
-                          "-V", "${workspaceFolder}${pathSeparator}resources${pathSeparator}params${pathSeparator}variables_${input:swVersion}.py"]
+                          "-V", "${workspaceFolder}${pathSeparator}resources${pathSeparator}params${pathSeparator}variables_${input:swVersion}.py",
+                          "--exclude", "${input:tagExclude}", "--skiponfailure", "notReadyORnotStable", "--loglevel", "DEBUG"]
         },
         {
             "name": "RobotCode: Default",
@@ -35,7 +37,8 @@
             "pythonConfiguration": "RobotCode: Python",
             "env"      : {},
             "args"     : ["-d", "${workspaceFolder}${pathSeparator}results${pathSeparator}${input:swVersion}",
-                          "-V", "${workspaceFolder}${pathSeparator}resources${pathSeparator}params${pathSeparator}variables_${input:swVersion}.py"]
+                          "-V", "${workspaceFolder}${pathSeparator}resources${pathSeparator}params${pathSeparator}variables_${input:swVersion}.py",
+                          "--exclude", "${input:tagExclude}", "--skiponfailure", "notReadyORnotStable", "--loglevel", "DEBUG"]
         },
         {
             "name": "RobotCode: Python",
@@ -58,9 +61,21 @@
             "sw51_swaf",
             "sw52_cbg",
             "sw43_cbg_dummy",
-            "sw53_cbg_dummy",
+            "sw53_cbg_dummy"
           ],
           "default": "sw43_cbg_dummy"
+        },
+        {
+          "type": "pickString",
+          "id": "tagExclude",
+          "description": "Which tagged test to exlcuded?",
+          "options": [
+            "knownIssue",
+            "notReadyORknownIssue",
+            "gisLaunchORknownIssue",
+            "none"
+          ],
+          "default": "knownIssue"
         }
     ]
 }

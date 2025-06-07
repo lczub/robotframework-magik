@@ -7,14 +7,15 @@ Documentation     Test Python Scripts , delivered with robotframework magik, for
 ...
 ...               == Known Issue ==
 ...
-...               The process id detecting for images started with nested alias does not work currently.
-...               Effect is, that the image can be started with *robot_start_magik_image.py*, but not stopped with *robot_stop_magik_image.py*
+...               Script *robot_start_magik_image* must start gis launcher without option _-l log_file_ when nested aliases are used.
+...               Site effect is, gis launcher immediatly stops after starting gis session and PID cached by *robot_start_magik_image*
+...               can not be used by *robot_stop_magik_image.py* to stop session, cause its _sw_magik_win32_ process has a different PID. 
 ...
 ...               == Background information ==
 ...
 ...               see issue discussion [https://github.com/lczub/robotframework-magik/issues/22| robotframework-magik #22: Support Starting Magik Images with Nested Aliases]
 ...               == Licence info ==
-...               | Copyright 2019-2023 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2019-2025 Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.
@@ -27,7 +28,7 @@ Documentation     Test Python Scripts , delivered with robotframework magik, for
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Force Tags        ScriptTest    notReady    nestedAlias
+Force Tags        gisLaunch
 Library           OperatingSystem
 Library           Process
 Library           String
@@ -51,70 +52,22 @@ ${ALIASFILE_CBG}    ${CURDIR}${/}gis_aliases_sw${GIS_VERSION}
 Start and stop - cambridge with nested alias
     [Documentation]    == known issue ==
     ...
-    ...    Script *robot_start_magik_image* can onl ydetect the PID of the first gis process, started by nested alias.
-    ...    The PID of the final gis process, which starts the image / session, is not detected.
-    ...
-    ...    Effect is, that the PID file caches a wrong process id and the image / session can not be stopped with the script *robot_stop_magik_image*
-    [Tags]    withTelnet    knownIssue
-    ${alias}=    Set Variable    ${ALIAS_CBG_NESTED}
-    ${aliasfile}=    Set Variable    ${ALIASFILE_CBG}
-    ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
-    ${wait}=    Convert Time    ${START_WAIT}
-    ${swproduct}    Set Variable    ${SWPRODUCT}
-    ${logdir}=    Create Empty Test Directory    cbg_nested_log
-    ${piddir}=    Create Empty Test Directory    cbg_nested_pid
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --nested_alias    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login
-    ...    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
-    Log Result    ${result_start}
-    Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
-    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
-    Log Result    ${result_stop}
-    Should Be Equal As Integers    ${result_start.rc}    0
-    Should Be Equal As Integers    ${result_stop.rc}    0
-    Directory Should Be Empty    ${logdir}
-    Directory Should Be Empty    ${piddir}
+    ...    PID file caches a wrong process id and the image / session can not be stopped with the script *robot_stop_magik_image*
+    [Tags]    withTelnet    knownIssue    nestedAlias
+    ${result_stop}=    Start and Stop    ${ALIAS_CBG_NESTED}    ${ALIASFILE_CBG}    ${DEFAULT_CLI_PORT+102}    nested=${True}
     Should Not Contain    ${result_stop.stdout}    WinError
 
 Start and stop - cambridge none nested alias but start arg --nested_alias
-    [Tags]    withTelnet
-    ${alias}=    Set Variable    ${ALIAS_CBG}
-    ${aliasfile}=    Set Variable    ${ALIASFILE_CBG}
-    ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
-    ${wait}=    Convert Time    ${START_WAIT}
-    ${swproduct}    Set Variable    ${SWPRODUCT}
-    ${logdir}=    Create Empty Test Directory    cbg_nested_log
-    ${piddir}=    Create Empty Test Directory    cbg_nested_pid
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --nested_alias    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login
-    ...    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
-    Log Result    ${result_start}
-    Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
-    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
-    Log Result    ${result_stop}
-    Should Be Equal As Integers    ${result_start.rc}    0
-    Should Be Equal As Integers    ${result_stop.rc}    0
-    Directory Should Be Empty    ${logdir}
-    Directory Should Be Empty    ${piddir}
+    [Documentation]    == known issue ==
+    ...
+    ...    PID file caches a wrong process id and the image / session can not be stopped with the script *robot_stop_magik_image*
+    [Tags]    withTelnet    knownIssue    nestedAlias
+    ${result_stop}=    Start and Stop    ${ALIAS_CBG}    ${ALIASFILE_CBG}    ${DEFAULT_CLI_PORT+103}    nested=${True}
     Should Not Contain    ${result_stop.stdout}    WinError
 
 Start and stop - cambridge default
     [Tags]    withTelnet
-    ${alias}=    Set Variable    ${ALIAS_CBG}
-    ${aliasfile}=    Set Variable    ${ALIASFILE_CBG}
-    ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
-    ${wait}=    Convert Time    ${START_WAIT}
-    ${swproduct}    Set Variable    ${SWPRODUCT}
-    ${logdir}=    Create Empty Test Directory    cbg_nested_log
-    ${piddir}=    Create Empty Test Directory    cbg_nested_pid
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}
-    ...    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
-    Log Result    ${result_start}
-    Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
-    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
-    Log Result    ${result_stop}
-    Should Be Equal As Integers    ${result_start.rc}    0
-    Should Be Equal As Integers    ${result_stop.rc}    0
-    Directory Should Not Be Empty    ${logdir}
-    Directory Should Be Empty    ${piddir}
+    ${result_stop}=    Start and Stop    ${ALIAS_CBG}    ${ALIASFILE_CBG}    ${DEFAULT_CLI_PORT+104}    nested=${False}
     Should Not Contain    ${result_stop.stdout}    WinError
 
 *** Keywords ***
@@ -130,3 +83,29 @@ Create Empty Test Directory
     Create Directory    ${test_dir}
     Directory Should Be Empty    ${test_dir}
     RETURN    ${test_dir}
+
+Start and Stop
+    [Arguments]    ${alias}    ${aliasfile}    ${cli_port}    ${nested}=${True}
+    ${wait}=    Convert Time    ${START_WAIT}
+    ${swproduct}    Set Variable    ${SWPRODUCT}
+    ${logdir}=    Create Empty Test Directory    cbg_nested_log
+    ${piddir}=    Create Empty Test Directory    cbg_nested_pid
+    IF    ${nested}
+        ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --nested_alias    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+    ELSE
+        ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+    END
+    Log Result    ${result_start}
+    Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
+    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
+    Log Result    ${result_stop}
+    Should Be Equal As Integers    ${result_start.rc}    0
+    Should Be Equal As Integers    ${result_stop.rc}    0
+    IF    ${nested}
+        Directory Should Be Empty    ${logdir}
+    ELSE
+        Directory Should Not Be Empty    ${logdir}
+    END  
+    Directory Should Be Empty    ${piddir}
+    RETURN    ${result_stop}
+

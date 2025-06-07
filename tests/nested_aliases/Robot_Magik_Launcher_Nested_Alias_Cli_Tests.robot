@@ -2,8 +2,13 @@
 Documentation     minimal test workflow - start session, calculate something , close the session
 ...
 ...               gis session is started using a nested alias and additional gis arg *-cli* and *-login USER/PW* are added
+...
+...               == not stable ==
+...
+...               session will stay cause cached PID does not reflect _sw_magik_win32_ process when starting nested alias
+...
 ...               == Licence info ==
-...               | Copyright 2021-2023 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2021-2025 Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.
@@ -16,10 +21,10 @@ Documentation     minimal test workflow - start session, calculate something , c
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Force Tags        gisLaunch
+Force Tags        gisLaunch    nestedAlias    notStable
 Library           Process
 Variables         ../../resources/params/variables_sw41_cbg.py
-Library           ../../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT}    wait=${START_WAIT}
+Library           ../../resources/RobotMagikLauncher.py    swproduct=${SWPRODUCT}    cli_port=${CLI_PORT+100}    wait=${START_WAIT}
 Resource          ../../resources/robot_magik_base.robot
 
 *** Variables ***
@@ -39,7 +44,7 @@ start magik session
 calc with magik session
     [Documentation]    calculate something with the magik session with a telent connection, check if the telent connection works and stop the session
     [Tags]    withTelnet
-    ${out}=    Open Magik Connection
+    ${out}=    Open Magik Connection    port=${CLI_PORT+100}
     ${out}=    Execute Magik Command    3 - 2
     Should Be Equal As Integers    ${out}    1
     ${out}=    Close Magik Connection

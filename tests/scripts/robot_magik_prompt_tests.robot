@@ -90,6 +90,7 @@ Test Read Magik Output - special prompt>
     [Teardown]    Stop All Magik Sessions
 
 debug prompt regexp
+    [Tags]    notReady
     ${out_orig1}=    Set Variable     1 ernie\n2 bert\n3 bibo\ndummy:14012:Magik>
     ${output_regexp1}=    Set Variable    (?s)\\s(.*)\\s\\S+:\\d+:(MagikSF|Magik)>
     ${match}    ${out}    ${other}=    Should Match Regexp    ${out_orig1}    ${output_regexp1}

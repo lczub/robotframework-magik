@@ -76,17 +76,18 @@ class RobotMagikLauncher(object):
         |             | and useful for 4.2/4.3 closed images (missing or incomplete script engine support) |
         | wait        | Time, how long the process should wait till checking, |
         |             | if the image / session is reachable via telnet. (default: 30s) |
-        | nested_alias | If set, Magik image is started without setting the argument ``-l logfile``. | 
+        | nested_alias | If set, gis launcher started without setting argument ``-l logfile``. | 
         |              | Useful when working with nested ``ALIAS`` definitions. | 
+        |              | DEPRECATED with Win11 RF7x: starting gis launcher without ``-l logfile`` does not work stable anymore | 
         | gis_args | additional gis args, extending args defined in ``ALIAS``. | 
         |              | Sample ``-cli -login uname/pw`` | 
         | test_launch  | Hook to start a test script instead the gis launcher. | 
 
         == Requirements ==
-        Robot Framework Version >= 3.1.1 is required and Python 3.7 recommended.
+        Robot Framework Version >= 7.2 is required and Python 3.11 recommended.
         
         == Licence info ==
-        | Copyright 2016-2023 Luiko Czub, Smallcases Software GmbH
+        | Copyright 2016-2025 Luiko Czub, Smallcases Software GmbH
         |
         | Licensed under the Apache License, Version 2.0 (the "License");
         | you may not use this file except in compliance with the License.

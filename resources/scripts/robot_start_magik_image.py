@@ -350,6 +350,7 @@ class CmdMagikSession(MagikSession):
         help_info += 'Useful when working with nested gis_alias definitions. '
         help_info += '\nLimitation: It is not possible to detect the PID of the final started gis process. '
         help_info += 'Script robot_stop_magik_image can not stop such images.'
+        help_info += '\nDEPRECATED with Win11: starting gis launcher without <-l logfile> does not work stable anymore. '
         a_parser.add_argument('--nested_alias', action='store_true', help=help_info)
 
         help_info = 'additional gis args, extending args defined in alias. '

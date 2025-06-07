@@ -207,12 +207,12 @@
 			<param name="tr_tests" value="tests/keywords/Robot_Magik_Launcher_Dummy_Tests.robot"/>
 		</antcall>
 
-        <antcall target="rfm.robot_run">
+		<echo message="Test deprecated Nested Aliases Support disabled"/>
+        <!-- antcall target="rfm.robot_run">
 			<param name="tr_full_name" value="Test_Nested_Aliases_Content"/>
 			<param name="tr_lname" value="nested_aliases"/>
-			<param name="tr_includes" value="--skip notReady"/>
 			<param name="tr_tests" value="tests/nested_aliases"/>
-		</antcall>
+		</antcall -->
 
 		<echo message="done."/>
         <echo message="=============================================="/>
