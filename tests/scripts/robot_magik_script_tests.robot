@@ -210,7 +210,7 @@ Start and stop with default settings
     Should Not Contain    ${result_stop.stdout}    WinError
 
 Start and stop - swaf
-    [Tags]    withTelnet
+    [Tags]    withTelnet    gisLaunch
     ${alias}=    Set Variable    ${ALIAS_SWAF}
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
     ${wait}=    Convert Time    ${START_WAIT}
@@ -229,7 +229,7 @@ Start and stop - swaf
     Should Not Contain    ${result_stop.stdout}    WinError
 
 Start and stop - cambridge with -run_script
-    [Tags]    withTelnet
+    [Tags]    withTelnet    gisLaunch
     Skip If    '${GIS_VERSION}'!='43'    gis launcher command line argumemt -run_script works only with 43 well
     ${alias}=    Set Variable    ${ALIAS_CBG}
     ${aliasfile}=    Set Variable    ${ALIASFILE_CBG}
@@ -245,7 +245,7 @@ Start and stop - cambridge with -run_script
     Should Not Contain    ${result_stop.stdout}    WinError
 
 Start and stop - cambridge with SW_MSF_STARTUP_MAGIK
-    [Tags]    withTelnet
+    [Tags]    withTelnet    gisLaunch
     ${alias}=    Set Variable    ${ALIAS_CBG}
     ${aliasfile}=    Set Variable    ${ALIASFILE_CBG}
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}

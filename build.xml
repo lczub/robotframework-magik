@@ -2,7 +2,7 @@
 <!-- ======================================================================
       ANT Build Script for robotframework-magik (RFM)
 	  
-     Copyright 2020-2023 Luiko Czub, Smallcases Software GmbH
+     Copyright 2020-2025 Luiko Czub, Smallcases Software GmbH
      
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -265,6 +265,7 @@
         <echo message="============================================="/>
         <echo message="${rfm.robot.version}"/>
         <echo message="Run RFM examples against several SW versions ..."/>
+		<echo message="- only as dryrun - ant exec task and RobotMagikLauncher does not work under Win11 and RF7x."/>
  
         <delete failonerror="false">
             <fileset dir="${DIR.TEST.LOGS}" includes="output-examples*.xml"/>	
@@ -274,30 +275,35 @@
 			<param name="tr_full_name" value="Examples_SW41"/>
 			<param name="tr_lname" value="examples_sw41"/>
 			<param name="tr_variablefile" value="--variablefile ${VARIABLEFILE.TEST.SW41}"></param>
+			<param name="tr_includes" value="--dryrun"/>
 			<param name="tr_tests" value="examples"/>
 		</antcall>
         <antcall target="rfm.robot_run">
 			<param name="tr_full_name" value="Examples_SW43"/>
 			<param name="tr_lname" value="examples_sw43"/>
 			<param name="tr_variablefile" value="--variablefile ${VARIABLEFILE.TEST.SW43}"></param>
+			<param name="tr_includes" value="--dryrun"/>
 			<param name="tr_tests" value="examples"/>
 		</antcall>
         <antcall target="rfm.robot_run">
 			<param name="tr_full_name" value="Examples_SW51"/>
 			<param name="tr_lname" value="examples_sw51"/>
 			<param name="tr_variablefile" value="--variablefile ${VARIABLEFILE.TEST.SW51}"></param>
+			<param name="tr_includes" value="--dryrun"/>
 			<param name="tr_tests" value="examples"/>
 		</antcall>
         <antcall target="rfm.robot_run">
 			<param name="tr_full_name" value="Examples_SW52"/>
 			<param name="tr_lname" value="examples_sw52"/>
 			<param name="tr_variablefile" value="--variablefile ${VARIABLEFILE.TEST.SW52}"></param>
+			<param name="tr_includes" value="--dryrun"/>
 			<param name="tr_tests" value="examples"/>
 		</antcall>
         <antcall target="rfm.robot_run">
 			<param name="tr_full_name" value="Examples_SW53"/>
 			<param name="tr_lname" value="examples_sw53"/>
 			<param name="tr_variablefile" value="--variablefile ${VARIABLEFILE.TEST.SW53}"></param>
+			<param name="tr_includes" value="--dryrun"/>
 			<param name="tr_tests" value="examples"/>
 		</antcall>
 
