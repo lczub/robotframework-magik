@@ -71,6 +71,17 @@ Missing end of statement''',
         # Test special characters
         u'write("äöüßÄÖÜ")' : u'äöüßÄÖÜ',
         'message_handler(:gis_program_manager).text_for_message(:save_environment)' : u'Änderung',
+        # Test keyword 'Load Magik File'
+        'load_file - hello_world_does_not_exist.magik' : '''**** Error: file_does_not_exist''',
+        'load_file - hello_world_ok.magik' : '''Hello World - all fine and very well''',
+        'load_file - hello_world_tb.magik' : '''**** Fehler: Hello World - so sad we must raise an expected tb''',
+        'load_file - hello_world_failure.magik' : '''**** Error: Hello World - so sad we have wrong content''',
+        # Test keyword 'Load Magik Module'
+        'load_module - :my_not_existing_module' : '''**** Error: sw_module_no_such_module''',
+        'load_module - :tree_examples' : 'tree_examples.DUMMY loaded',
+        # Test keyword 'Get Smallworld Version'
+        'write(smallworld_product.sw!version.write_string)' : '000',
+        # sample coordinate distance calc
         'coordinate.new(0.0, 0.0).distance_to(coordinate.new(3.0, 4.0))' : '5.0 ',
         'coordinate.new(2.0, 4.0).distance_to(coordinate.new(4.0, 4.0))' : '2.0 ',
         'coordinate.new(-2.0, 4.0).distance_to(coordinate.new(4.0, 4.0))' : '6.0 ',
@@ -92,6 +103,7 @@ Missing end of statement''',
         self.config_logger()
         self.logger = logging.getLogger('dummy_cli')
         self.magik_objhash = {}
+        self.magik_packagehash = {}
 
     def set_prompt(self, prompt):
         lastpart = os.getenv("DUMMY_PROMPT", prompt)
@@ -177,6 +189,23 @@ Missing end of statement''',
             c1 = self.magik_objhash['c1']
             c2 = self.magik_objhash['c2']
             magik_expression = f'{c1}.distance_to({c2})'
+        elif magik_expression.find('sw:package[:robot') >= 0:
+            # step in load file test
+            pname = re.search('\\[(.*)\\]', magik_expression).group(1)
+            magik_expression = self.magik_packagehash.get(pname, 'unset')
+        elif magik_expression.find('load_file') >= 0:
+            full_path = re.search('"(.*)"', magik_expression).group(1)
+            magik_fname = os.path.basename(full_path)
+            magik_expression = f'load_file - {magik_fname}'
+            if magik_fname == 'hello_world_ok.magik':
+                self.magik_packagehash[':robot_hello_world'] = '"Hello World - all fine"'
+            elif magik_fname == 'hello_world_tb.magik':
+                self.magik_packagehash[':robot_hello_world_tb'] = '"Hello World - so sad"'
+            elif magik_fname == 'hello_world_failure.magik':
+                self.magik_packagehash[':robot_hello_world_failure'] = '"Hello World - so sad"'
+        elif magik_expression.find('load_module') >= 0:
+            magik_mname = re.search('(:[a-zA-Z_?]*)', magik_expression).group(1)
+            magik_expression = f'load_module - {magik_mname}'
 
         a_template = self.response_templates.get(magik_expression,
                                                  magik_expression)
