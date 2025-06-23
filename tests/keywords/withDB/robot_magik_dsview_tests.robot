@@ -71,11 +71,11 @@ Test keyword 'Get DsCollection' for sw_gis!ace collection
     Should Contain    ${ctype}    ds_collection
 
 Test keyword 'Get DsCollection' with non default objkey
-    ${objhash_expression}=    Get DsCollection    sw_gis!ace    ace    BigBird
-    Should Contain    ${objhash_expression}    BigBird
+    ${objhash_expression}=    Get DsCollection    sw_gis!ace    ace    BigBirdAce
+    Should Contain    ${objhash_expression}    BigBirdAce
     ${cname}=    Execute Magik Command    ${objhash_expression}.name
     Should Be Equal    ${cname}    :sw_gis!ace
-    ${ctype}=    Get Magik Object    BigBird
+    ${ctype}=    Get Magik Object    BigBirdAce
     Should Contain    ${ctype}    ds_collection
 
 Test keyword 'Get SelectCollection' for sw_gis!ace collection
@@ -87,11 +87,11 @@ Test keyword 'Get SelectCollection' for sw_gis!ace collection
     Should Contain    ${ctype}    select_collection
 
 Test keyword 'Get SelectCollection' with non default objkey
-    ${objhash_expression}=    Get SelectCollection    sw_gis!ace    predicate.eq(:name, 'default')    BigBird
-    Should Contain    ${objhash_expression}    BigBird
+    ${objhash_expression}=    Get SelectCollection    sw_gis!ace    predicate.eq(:name, 'default')    BigBirdAce
+    Should Contain    ${objhash_expression}    BigBirdAce
     ${cname}=    Execute Magik Command    ${objhash_expression}.name
     Should Be Equal    ${cname}    :sw_gis!ace
-    ${ctype}=    Get Magik Object    BigBird
+    ${ctype}=    Get Magik Object    BigBirdAce
     Should Contain    ${ctype}    select_collection
 
 Test keyword 'Get Record' for sw_gis!ace collection

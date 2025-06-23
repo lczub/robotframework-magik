@@ -63,9 +63,7 @@ Missing end of statement''',
         # Test keyword 'Execute Magik Command' - should remove trailing spaces
         'write("1 BigBird ")' : '1 BigBird ',
         # Test keyword 'Store Magik Object'
-        'robot_objhash[:ernie]' : '22',
-        # Test keyword 'Get Magik Object'
-        'robot_objhash[:monster]' : ':no_bird',
+        '2 * 11' : '22',
         # bug-009 Execute Magik Command - should handle strings with \n \t \f
         'write("12\\t23\\\\45\\n78\\f90")' : '12\\t23\\\\45\\n78\\f90',
         # Test special characters
@@ -85,7 +83,29 @@ Missing end of statement''',
         'coordinate.new(0.0, 0.0).distance_to(coordinate.new(3.0, 4.0))' : '5.0 ',
         'coordinate.new(2.0, 4.0).distance_to(coordinate.new(4.0, 4.0))' : '2.0 ',
         'coordinate.new(-2.0, 4.0).distance_to(coordinate.new(4.0, 4.0))' : '6.0 ',
-        'coordinate.new(-2.0, 4.0).distance_to(coordinate.new(4.0, -4.0))' : '10.0 '
+        'coordinate.new(-2.0, 4.0).distance_to(coordinate.new(4.0, -4.0))' : '10.0 ',
+        # sample cs rec
+        'gis_program_manager.cached_dataset(:gis).collections[:sw_gis!coordinate_system].select(predicate.wild(:name, "*longlat_wgs84*")).an_element().name' : 'world_longlat_wgs84_degree',
+        'gis_program_manager.cached_dataset(:gis).collections[:sw_gis!coordinate_system].select(predicate.wild(:name, "*longlat_wgs84*")).an_element().abbrev' : 'EPSG:4326',
+        # Test robot_magik_dsview
+        'gis_program_manager.ace_view.name'             : ':|ACE|',
+        'gis_program_manager.style_view.name'           : ':|Style|',
+        'gis_program_manager.cached_dataset(:gis).name' : ':gis',
+        'gis_program_manager.ace_view.collections[:sw_gis!ace]' : 'ds_collection',
+        'gis_program_manager.ace_view.collections[:sw_gis!ace].name' : ':sw_gis!ace',
+        "gis_program_manager.ace_view.collections[:sw_gis!ace].select(predicate.eq(:name, 'Default')).an_element().name)" : 'Default',
+        "gis_program_manager.ace_view.collections[:sw_gis!ace].select(predicate.eq(:name, 'default'))" : 'select_collection',
+        "gis_program_manager.ace_view.collections[:sw_gis!ace].select(predicate.eq(:name, 'default')).name" : ':sw_gis!ace',
+        "gis_program_manager.ace_view.collections[:sw_gis!ace].select(predicate.eq(:name, 'default')).an_element().name)" : 'Default',
+        "gis_program_manager.ace_view.collections[:sw_gis!ace].select(predicate.eq(:name, 'default')).size" : '1',
+        "gis_program_manager.ace_view.collections[:sw_gis!ace].select(predicate.eq(:name, 'Default')).size" : '1',
+        'datamodel_history_ace' : '''productA  moduleA dm_nameA v1 Install''',
+        'datamodel_history_gis' : '''productC  moduleC dm_nameC v1 Install\nproductB  moduleB dm_nameB v2 Install''',
+        'gis_program_manager.authorisation_view.name' : ':|Auth|',
+        'gis_program_manager.cached_dataset(:gis).collections[:sw_gis!datamodel_history].select(predicate.eq(:product_name, "sw_kernel") _and predicate.eq(:datamodel_name, "datamodel_history" ) _and predicate.eq(:sub_datamodel_name, "Install")).an_element().mod_name)' : 'ds_src',
+        'gis_program_manager.cached_dataset(:gis).collections[:sw_gis!datamodel_history].select(predicate.eq(:product_name, "sw_kernel") _and predicate.eq(:datamodel_name, "datamodel_history" ) _and predicate.eq(:sub_datamodel_name, "Install")).an_element()' : 'sw_gis!datamodel_history(datamodel_history,v3,Install)',
+        'gis_program_manager.cached_dataset(:gis).collections[:sw_gis!datamodel_history].select(predicate.eq(:product_name, "sw_KEMAL") _and predicate.eq(:datamodel_name, "datamodel_history" ) _and predicate.eq(:sub_datamodel_name, "Install")).an_element()' : 'unset'
+
     }
 
     def __init__(self, port, max_count=1, prompt='MagikSF>', coding='iso-8859-1'):
@@ -206,6 +226,14 @@ Missing end of statement''',
         elif magik_expression.find('load_module') >= 0:
             magik_mname = re.search('(:[a-zA-Z_?]*)', magik_expression).group(1)
             magik_expression = f'load_module - {magik_mname}'
+        elif magik_expression.find('dh.datamodel_name') >= 0:
+            if magik_expression.find('histo_ace') >= 0:
+                magik_expression = 'datamodel_history_ace'
+            else:
+                magik_expression = 'datamodel_history_gis'
+        else:
+            # replace robot_objhash, when defined
+            magik_expression = self.replace_robot_objhash( magik_expression )
 
         a_template = self.response_templates.get(magik_expression,
                                                  magik_expression)
@@ -251,16 +279,31 @@ Missing end of statement''',
 
         return state
 
+    def replace_robot_objhash(self, magik_expression):
+        ''' replace robot_objhash in MAGIK_EXPRESSION ( when included) '''
+
+        mexpr = magik_expression
+        if magik_expression.find('robot_objhash[:') >= 0:
+            # replace robot_objhash 
+            mresult = re.search(r'objhash\[:(.*?)\](.*)', magik_expression)
+            objkey = mresult.group(1)
+            objval = self.magik_objhash.get( objkey, objkey)
+            mexpr  = f'{objval}{mresult.group(2)}'
+    
+        return mexpr
+
     def store_magik_object(self, magik_expression):
         ''' stores (some) magik object required for later dummy communications '''
 
         # 'robot_objhash[:c2] << coordinate.new(3.0, 4.0)'
-        m = re.search(r'\[.(.*)\] << (.*)', magik_expression)
-        key = m.group(1)
-        value = m.group(2)
-        self.magik_objhash[key] = value
+        mresult = re.search(r'\[.(.*?)\] << (.*)', magik_expression)
+        objkey = mresult.group(1)
+        objval_orig = mresult.group(2)
+        # replace robot_objhash referencein objval before storing expression
+        objval_replaced = self.replace_robot_objhash( objval_orig)
+        self.magik_objhash[objkey] = objval_replaced
 
-        return value
+        return objval_orig
 
 
     def send_response(self, data, first=False):
