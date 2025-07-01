@@ -143,7 +143,7 @@ class MagikSession(object):
         if self._java_home:
             jhome = self._java_home
             self.gis_envs['JAVA_HOME'] = jhome 
-            self.log_info('JAVA_HOME set to {}'.format(jhome))
+            self.log_info(f'JAVA_HOME set to {jhome}')
 
         # check if log file directory exists
         if not os.path.exists(self._logdir):
@@ -178,7 +178,7 @@ class MagikSession(object):
             # environment variable SW_MSF_STARTUP_MAGIK
             mfile = self._defaults['magikfile']
             self.gis_envs['SW_MSF_STARTUP_MAGIK'] = mfile
-            self.log_info('SW_MSF_STARTUP_MAGIK set to {}'.format(mfile))
+            self.log_info(f'SW_MSF_STARTUP_MAGIK set to {mfile}')
         else:
             # remote cli will be started via an startup action via run_script
             self.gis_args.extend(['-run_script', self._script])
@@ -211,13 +211,13 @@ class MagikSession(object):
         checks, if it is reachable via telnet '''
 
         # start the gis (or test) launcher
-        self.log_info('Start gis session with: {}'.format(' '.join(self.gis_args)))
+        self.log_info(f'Start gis session with: {self.gis_args}')
 
         self._start_process()
         if self._nested_alias is True:
             self.log_info('session started without a logfile')
         else:
-            self.log_info('Logfile see {}'.format(self._log_fname))
+            self.log_info(f'Logfile see {self._log_fname}')
 
 
     def _start_process(self):
@@ -233,11 +233,11 @@ class MagikSession(object):
         port = self.cli_port
         prompt = self._get_telnet_prompt(port, self._wait)
         if prompt is None:
-            msg = 'Image is NOT reachable via telnet localhost:{} waiting {}s'.format(port, self._wait)
+            msg = f'Image is NOT reachable via telnet localhost:{port} waiting {self._wait}s'
             self.log_error(msg)
             exit_code = msg
         else:
-            self.log_info('Image is now reachable via telnet localhost:{} with prompt {}'.format(port, prompt))
+            self.log_info(f'Image is now reachable via telnet localhost:{port} with prompt {prompt}')
 
         return exit_code
 
@@ -254,7 +254,7 @@ class MagikSession(object):
         connected = False
         while (duration < maxwait) and not connected:
             duration += 1
-            self._logger.debug('check telnet loop {}, will wait till {}'.format(duration, maxwait))
+            self._logger.debug(f'check telnet loop {duration}, will wait till {maxwait}')
             try:
                 a_connection.open('localhost', port, 10)
                 prompt = a_connection.read_until( '>'.encode() )
@@ -294,7 +294,7 @@ class CmdMagikSession(MagikSession):
 
         defaults = super(CmdMagikSession, self)._defaults_for_start()
         defaults['piddir'] = defaults['logdir']
-        print("defaults['piddir'] {}".format(defaults['piddir']))
+        print(f"defaults['piddir'] {defaults['piddir']}")
 
         return defaults
 
@@ -392,7 +392,7 @@ class CmdMagikSession(MagikSession):
         self._piddir = start_args.piddir
         self._pid_fname = os.path.join(self._piddir, '%i.pid' % self.cli_port)
 
-        print('self._piddir 1 {}'.format(self._piddir))
+        print(f'self._piddir 1 {self._piddir}')
 
         super(CmdMagikSession, self)._prepare_gis_args_and_envs()
 
@@ -414,7 +414,7 @@ class CmdMagikSession(MagikSession):
         pid_file = open(self._pid_fname, 'w')
         pid_file.write('%i\n%s\n' % (self.process_id, self._log_fname))
         pid_file.close()
-        self.log_info('pidfile see {}'.format(self._pid_fname))
+        self.log_info(f'pidfile see {self._pid_fname}')
 
 if __name__ == '__main__':
     a_starter = CmdMagikSession()

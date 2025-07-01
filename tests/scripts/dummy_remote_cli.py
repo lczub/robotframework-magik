@@ -129,8 +129,8 @@ Missing end of statement''',
         lastpart = os.getenv("DUMMY_PROMPT", prompt)
         if lastpart[-1] != '>':
             # last sign must be '>'
-            lastpart = '{}>'.format(lastpart)
-        self.prompt = 'dummy:{}:{}'.format(self.port,lastpart)
+            lastpart = f'{lastpart}>'
+        self.prompt = f'dummy:{self.port}:{lastpart}'
 
     def config_logger(self, level=logging.INFO):
         ' set up logging INFO messages or higher to the sys.stdout '
@@ -155,7 +155,7 @@ Missing end of statement''',
 
     def listen_connection(self):
         self.connection, addr = self.socket.accept()
-        self.logger.info( 'dummy remote_cli accepts connection to {}'.format(addr))
+        self.logger.info( f'dummy remote_cli accepts connection to {addr}')
         # first response must be the pure Magik prompt
         data = 'first data will be the prompt'
         first = True
@@ -165,11 +165,11 @@ Missing end of statement''',
                 first = False
 
                 data = self.connection.recv(1024).decode(self.coding)
-                self.logger.info( "{} wrote:".format(addr) )
+                self.logger.info( f'{addr} wrote:' )
                 self.logger.info( data )
 
         except socket.error as msg:
-            self.logger.info('other site has closed the connection: {}'.format(msg))
+            self.logger.info(f'other site has closed the connection: {msg}')
         finally:
             self.connection.close()
             self.logger.info( 'dummy remote_cli closes connection' )
@@ -186,7 +186,7 @@ Missing end of statement''',
         # Default response is the expression itself
         a_response = self.get_prepared_response(a_magik_expression)
 
-        return ' {}\n{}'.format(a_response,self.prompt)
+        return f' {a_response}\n{self.prompt}'
 
     def get_prepared_response(self, magik_expression):
         ''' get a matching template for MAGIK_EXPRESSION from .response_template
@@ -251,8 +251,8 @@ Missing end of statement''',
         env_value = splitter[3]
         # getenv expression to store
         # 'system.getenv("ROBOT_MAGIK_KWTEST")' : "huhu")
-        getenv_expression = 'system.getenv("{}")'.format(env_name)
-        getenv_value = '"{}"'.format(env_value)
+        getenv_expression = f'system.getenv("{env_name}")'
+        getenv_value = f'"{env_value}"'
         if env_value == '':
             # special case env variable not defined
             getenv_value = 'unset'
@@ -318,7 +318,7 @@ Missing end of statement''',
             # the default case - special data plus prompt
             response = self.calc_response(data)
         self.connection.sendall( response.encode(self.coding) )
-        self.logger.info( "send data: {}".format(response) )
+        self.logger.info( f'send data: {response}' )
 
     def check_close_socket(self, data):
         ' When quit() is required , the hole simulated cli session is closed '

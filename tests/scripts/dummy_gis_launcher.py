@@ -50,7 +50,7 @@ class dummy_gis_launcher(object):
 
     def run_dummy_gis(self):
         self.logger.info('Hello GIS World!')
-        self.logger.info('start args= {}'.format(' '.join(self.args)))
+        self.logger.info(f'start args= {' '.join(self.args)}')
         env_list = ['ROBOT_MAGIK_DIR', 'ROBOT_CLI_PORT', 'SW_MSF_STARTUP_MAGIK',
                     'SW_GIS_ENVIRONMENT_FILE', 'JAVA_HOME']
         for env_name in env_list:

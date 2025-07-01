@@ -165,7 +165,7 @@ class RobotMagikLauncher(object):
     def _unregister_session(self, a_magik_session):
         """ unregister the magik session with its cli_port as key """
         session_alias = self._port_alias(a_magik_session.cli_port)
-        logger.debug('_unregister_session {}'.format(session_alias))
+        logger.debug(f'_unregister_session {session_alias}')
         a_session = self._sessions.pop(session_alias )
 
         if self._current_session is a_session:
@@ -184,10 +184,10 @@ class RobotMagikLauncher(object):
 
         alias = self._port_alias(cli_port)
         if alias in self._sessions:
-            error_msg = 'Port {} is already in use by another session!'.format(cli_port)
+            error_msg = f'Port {cli_port} is already in use by another session!'
             raise AssertionError(error_msg)
         else:
-            logger.info('Port {} is free to use'.format(cli_port))
+            logger.info(f'Port {cli_port} is free to use')
 
     def start_magik_session(self, swproduct=None, gis_alias=None, cli_port=None,
                             aliasfile=None, envfile=None, java_home=None, logdir=None, login=None, 
@@ -252,11 +252,11 @@ class RobotMagikLauncher(object):
         if session_alias is None:
             a_session = self._current_session
             if a_session is None:
-                raise AssertionError("No active session!")
+                raise AssertionError('No active session!')
         else:
             a_session = self._sessions.get(session_alias)
             if a_session is None:
-                raise AssertionError("No registered {} session!".format(cli_port))
+                raise AssertionError(f'No registered {cli_port} session!')
 
         return a_session
 
@@ -294,7 +294,7 @@ class RobotMagikLauncher(object):
 
         """
         a_session = self.get_session_object(cli_port)
-        logger.debug('stop_magik_session {}'.format(a_session))
+        logger.debug(f'stop_magik_session {a_session}')
         self._unregister_session(a_session)
         return a_session.stop_session(kill)
 
@@ -329,8 +329,8 @@ class RobotMagikSession(MagikSession):
 
         temp_dir = BuiltIn().replace_variables('${TEMPDIR}')
 
-        temp_stdout = '{}/magik_session_{}-STDOUT.log'.format(temp_dir, self.cli_port)
-        temp_stderr = '{}/magik_session_{}-STDERR.log'.format(temp_dir, self.cli_port)
+        temp_stdout = f'{temp_dir}/magik_session_{self.cli_port}-STDOUT.log'
+        temp_stderr = f'{temp_dir}/magik_session_{self.cli_port}-STDERR.log'
         configurations = {'stdout' : temp_stdout, 'stderr' : temp_stderr,
                           'env' : self.gis_envs}
 

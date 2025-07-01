@@ -70,7 +70,7 @@ def stop_image(args):
     pid_fname  = os.path.join(pid_dir, '%i.pid' % args.cli_port)
     
     if not os.path.exists(pid_fname):
-        msg = 'required PID file does not exist: {}'.format(pid_fname)
+        msg = f'required PID file does not exist: {pid_fname}'
         logger.error(msg)
         sys.exit(msg)
 
@@ -88,14 +88,14 @@ def stop_image(args):
     # TODO: try exception block 
     try:
         os.kill(process_id, 2)
-        logger.info( 'Image process {} is killed.'.format(process_id) )
+        logger.info( f'Image process {process_id} is killed.' )
     except WindowsError as msg:
-        logger.info( 'Process {} doesn\'t run anymore, kill response an error: {}'.format(process_id, msg) )
+        logger.info( f'Process {process_id} doesn\'t run anymore, kill response an error: {msg}')
     
     # delete the pid file
     os.remove(pid_fname)
-    logger.info( 'pidfile {} is removed.'.format( pid_fname ) )
-    logger.info( 'Logfile see {}'.format( log_fname) )
+    logger.info( f'pidfile {pid_fname} is removed.' )
+    logger.info( f'Logfile see {log_fname}' )
     
     
         
