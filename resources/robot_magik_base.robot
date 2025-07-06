@@ -82,7 +82,7 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...               - sample see `Load Magik File` or `Load Magik Module`
 ...
 ...               == Licence info ==
-...               | Copyright 2012-2023 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2012-2025 Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

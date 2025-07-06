@@ -3,7 +3,7 @@ Documentation     Test Robot Framework high level keywords for Smallworld Magik
 ...
 ...               Tests base connection to a smallworld swaf image with remote_cli via telnet
 ...               == Licence info ==
-...               | Copyright 2012-2023 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2012-2025 Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

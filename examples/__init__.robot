@@ -2,7 +2,7 @@
 Documentation     Example - Initialization file starting a Magik Session as Suite Setup and closing this Magik Session as Teardown
 ...
 ...               == Licence info ==
-...               | Copyright 2012-2023 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2012-2025 Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

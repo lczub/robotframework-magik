@@ -6,7 +6,7 @@ Documentation     === Robot Framework Magik keywords wrapping RobotMagikLauncher
 ...               Helpful for \ debugging / testing when robot tests should run against an already manuall started Magik session or not to close the Magik session after test runs for further analysis.
 ...
 ...               == Licence info ==
-...               | Copyright 2021-2023 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2021-2025 Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

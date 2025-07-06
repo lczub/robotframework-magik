@@ -4,7 +4,7 @@ Documentation     Example - Test Smallworld coordinate system collection with Ro
 ...               Uses dataset, defined in ${CLI_DSVIEW_NAME}
 ...
 ...               == Licence info ==
-...               | Copyright 2012-2023 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2012-2025 Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

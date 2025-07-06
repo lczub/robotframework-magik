@@ -6,7 +6,7 @@ Documentation     Robot Framework Magik keywords for testing Smallworld ds_views
 ...               These keywords are an extension of [./robot_magik_base.html|robot_magik_base]
 ...
 ...               == Licence info ==
-...               | Copyright 2012-2023 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2012-2025 Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.
