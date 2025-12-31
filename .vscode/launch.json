@@ -68,7 +68,7 @@
         {
           "type": "pickString",
           "id": "tagExclude",
-          "description": "Which tagged test to exlcuded?",
+          "description": "Which tagged test to exclude?",
           "options": [
             "knownIssue",
             "notReadyORknownIssue",

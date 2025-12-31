@@ -3,6 +3,7 @@ Changes in Robot Framework Magik (RFM)
 
 Robot Framework Magik release notes v0.6.1 (under construction)
 ---------------------------------------------------------------
+- Known Issue #44: RF 73 supported but not RF 74 and not PY 3.13 or PY 3.14
 
 - PR #41 (`StevenLooman <https://github.com/StevenLooman>`_) : Support RF 7.2 and PY 3.12
 
