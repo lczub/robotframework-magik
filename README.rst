@@ -71,28 +71,23 @@ The Python script robot_stop_magik_image.py_
 
 Installation
 ^^^^^^^^^^^^
-A Python 3.12 environment is recommended with Robot Framework Version 7.2 .
+A Python 3.12 environment is recommended with Robot Framework Version 7.3 .
 
-good practice is to use a separate virtualenv::
+download current `master as zip`_ or latest `releases`_, extract it (for example
+to *D:\\robotframework-magik*) and create separate virtualenv::
 
  py -3.12 -m venv D:\pyenv\robot
  D:\pyenv\robot\scripts\activate
- pip install --no-cache-dir robotframework~=7.2
+ python -m pip install --upgrade pip
+ python -m pip install --upgrade -r D:\robotframework-magik\requirements.txt
  
-download current `master as zip`_ or latest `releases`_ and extract it (for example
-to *D:\\robotframework-magik*). Now you are able to start the example test via::
+Now you are able to start the example test via::
 
  D:\pyenv\robot\scripts\activate
  cd D:\robotframework-magik
  robot --variablefile resources\params\variables_sw43_cbg.py examples
  
 Alternative installations see `RobotFramework UserGuide Installation`_ .
-Or install required packages using sample `requirements.txt`_ included in RFM download:: 
-
- py -3.12 -m venv my_robot_venv
- my_robot_venv\scripts\activate
- python -m pip install --upgrade pip
- python -m pip install --upgrade -r requirements.txt
  
 History
 ^^^^^^^^^^^^

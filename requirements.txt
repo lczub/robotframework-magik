@@ -8,4 +8,5 @@
 # https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-6.1.rst
 # https://github.com/robotframework/robotframework/blob/master/doc/releasenotes/rf-6.0.2.rst
 # -----------------
-robotframework>=7.2,<7.4; python_version < '3.13'
+robotframework>=7.2,<7.4
+telnetlib-313-and-up; python_version >= "3.13"
