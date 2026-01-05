@@ -35,7 +35,7 @@ __devenv_dir    = os.getenv("DEVENV_DIR", os.path.join( __rfm_root_dir, "..", "d
 # communication should be available
 START_WAIT = "60s"
 # path to smallworld core product
-SWPRODUCT = r"S:\gis535\core"
+SWPRODUCT = r"S:\gis536\core"
 # file with gis alias definitions
 ALIASFILE = os.path.join( SWPRODUCT, "..", "cambridge_db", "config", "gis_aliases")
 
@@ -57,7 +57,7 @@ MSFSTARTUP = True
 # Starting Smallworld 5.x sessions must define jre / jdk to be used
 # - 5.3.1 works with open jdk17, 5.1 requires 1.8 
 # Starting Smallworld 4.3 images doesn't requires this, except images works with java acp
-JAVA_HOME = os.path.join( __devenv_dir, "jre-17.0.14-x64")
+JAVA_HOME = os.path.join( __devenv_dir, "jre-17.0.17-x64")
 
 # Hook for debugging  / analysing
 # Set AUTO_START_MAGIK SESSION to False, when test run should use a manual 

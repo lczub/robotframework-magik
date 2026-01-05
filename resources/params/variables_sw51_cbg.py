@@ -56,7 +56,7 @@ MSFSTARTUP = True
 # Starting Smallworld 5.x sessions must define jre / jdk to be used
 # - 5.2.10 works with open jdk17, 5.1 requires 1.8 
 # Starting Smallworld 4.3 images doesn't requires this, except images works with java acp
-JAVA_HOME = os.path.join( __devenv_dir, "jre-8u442-x64")
+JAVA_HOME = os.path.join( __devenv_dir, "jre-8u472-x64")
 
 # Hook for debugging  / analysing
 # Set AUTO_START_MAGIK SESSION to False, when test run should use a manual 
