@@ -28,7 +28,8 @@ Documentation     Test Python Scripts , delivered with robotframework magik, for
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Force Tags        gisLaunch
+Suite Setup       Detect RFM Python Executable
+Test Tags         gisLaunch    ScriptTest
 Library           OperatingSystem
 Library           Process
 Library           String
@@ -71,6 +72,11 @@ Start and stop - cambridge default
     Should Not Contain    ${result_stop.stdout}    WinError
 
 *** Keywords ***
+
+Detect RFM Python Executable
+    ${RFM_PYTHON}=    Evaluate    sys.executable    modules=sys
+    Set Suite Variable    $RFM_PYTHON
+
 Log Result
     [Arguments]    ${result}
     Log    ${result.stdout}
@@ -91,13 +97,13 @@ Start and Stop
     ${logdir}=    Create Empty Test Directory    cbg_nested_log
     ${piddir}=    Create Empty Test Directory    cbg_nested_pid
     IF    ${nested}
-        ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --nested_alias    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+        ${result_start}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --nested_alias    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     ELSE
-        ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+        ${result_start}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --logdir    ${logdir}    --piddir    ${piddir}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     END
     Log Result    ${result_start}
     Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
-    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
+    ${result_stop}=    Run Process    ${RFM_PYTHON}    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
     Log Result    ${result_stop}
     Should Be Equal As Integers    ${result_start.rc}    0
     Should Be Equal As Integers    ${result_stop.rc}    0

@@ -19,7 +19,8 @@ Documentation     Test Python Scripts for starting and stopping Smallworld Magik
 ...               | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 ...               | See the License for the specific language governing permissions and
 ...               | limitations under the License.
-Test Tags        ScriptTest
+Suite Setup       Detect RFM Python Executable
+Test Tags         ScriptTest
 Library           OperatingSystem
 Library           Process
 Library           String
@@ -45,14 +46,14 @@ ${DUMMY_WAIT}    5    # sec to wait till telnet session should be reachable
 *** Test Cases ***
 Start Image Script without args
     [Tags]    noTelnet
-    ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}
+    ${result}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}
     Log Result    ${result}
     Should Contain    ${result.stderr}    the following arguments are required: swproduct, alias
     Should Be Equal As Integers    ${result.rc}    2
 
 Start Image Script with -h
     [Tags]    noTelnet
-    ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    -h
+    ${result}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    -h
     Log Result    ${result}
     Should Contain    ${result.stdout}    starts a Magik 4.x image or 5.x session and activates the remote cli.
     Should Contain    ${result.stdout}    swproduct alias
@@ -73,7 +74,7 @@ Start Image Script with -h
 
 Stop Image Script with -h
     [Tags]    noTelnet
-    ${result}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    -h
+    ${result}=    Run Process    ${RFM_PYTHON}    ${STOP_IMAGE_SCRIPT}    -h
     Log Result    ${result}
     Should Contain    ${result.stdout}    stops a Magik image and his remote cli
     Should Contain    ${result.stdout}    -h, --help
@@ -83,14 +84,14 @@ Stop Image Script with -h
 
 Start Image Script - not reachable via telnet
     [Tags]    dummyLaunch    noTelnet
-    ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    ${DUMMY_WAIT}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    A_ALIAS
+    ${result}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --wait    ${DUMMY_WAIT}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    A_ALIAS
     Log Result    ${result}
     Should Contain    ${result.stderr}    Image is NOT reachable via telnet localhost:${DEFAULT_CLI_PORT}
     Should Be Equal As Integers    ${result.rc}    1
 
 Stop Image Script - pid file does not exist
     [Tags]    noTelnet
-    ${result}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    14111
+    ${result}=    Run Process    ${RFM_PYTHON}    ${STOP_IMAGE_SCRIPT}    --cli_port    14111
     Log Result    ${result}
     Should Contain    ${result.stderr}    required PID file does not exist
     Should Contain    ${result.stdout}    14111.pid
@@ -99,7 +100,7 @@ Stop Image Script - pid file does not exist
 Start Image Script with default settings
     [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
-    ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    ${DUMMY_WAIT}   --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}
+    ${result}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --wait    ${DUMMY_WAIT}   --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}
     Log Result    ${result}
     ${robot_magik_dir}=    Normalize Path    ${CURDIR}${/}..${/}..
     Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
@@ -121,7 +122,7 @@ Start Image Script with default settings
 Start Image Script with -msf_startup
     [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
-    ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${DUMMY_WAIT}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}
+    ${result}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${DUMMY_WAIT}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}
     Log Result    ${result}
     ${robot_magik_dir}=    Normalize Path    ${CURDIR}${/}..${/}..
     Should Contain    ${result.stdout}    ROBOT_MAGIK_DIR=${robot_magik_dir}
@@ -140,7 +141,7 @@ Start Image Script with -msf_startup
 Start Image Script with additional gis args -cli
     [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
-    ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${DUMMY_WAIT}    --test_launch    ${DUMMY_LAUNCHER}    --gis_args    '-cli'    A_SWPRODUCT    ${alias}
+    ${result}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${DUMMY_WAIT}    --test_launch    ${DUMMY_LAUNCHER}    --gis_args    '-cli'    A_SWPRODUCT    ${alias}
     Log Result    ${result}
     Should Match    ${result.stdout}    *start_gis : Start gis session with: * -cli*
     Should Match    ${result.stdout}    *dummy_gis : start args= * -cli*
@@ -161,7 +162,7 @@ Start Image Script with additional gis args -cli
 Start Image Script with additional gis args multiple
     [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
-    ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${DUMMY_WAIT}    --test_launch    ${DUMMY_LAUNCHER}    --gis_args    "-cli -login root/huhu"    A_SWPRODUCT    ${alias}
+    ${result}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${DUMMY_WAIT}    --test_launch    ${DUMMY_LAUNCHER}    --gis_args    "-cli -login root/huhu"    A_SWPRODUCT    ${alias}
     Log Result    ${result}
     Should Match    ${result.stdout}    *start_gis : Start gis session with: * -cli -login root/huhu*
     Should Match    ${result.stdout}    *dummy_gis : start args= * -cli -login root/huhu*
@@ -193,7 +194,7 @@ stop with default settings
     [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
     ${cli_port}=    Set Variable    ${DUMMY_CLI_PORT+1}
-    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
+    ${result_stop}=    Run Process    ${RFM_PYTHON}    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}
     Should Be Equal As Integers    ${result_stop.rc}    0
 
@@ -201,9 +202,9 @@ Start and stop with default settings
     [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
     ${cli_port}=    Set Variable    ${DUMMY_CLI_PORT+1}
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    ${DUMMY_WAIT}    --cli_port    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+    ${result_start}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --wait    ${DUMMY_WAIT}    --cli_port    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
-    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
+    ${result_stop}=    Run Process    ${RFM_PYTHON}    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}
     Should Be Equal As Integers    ${result_start.rc}    0
     Should Be Equal As Integers    ${result_stop.rc}    0
@@ -217,10 +218,10 @@ Start and stop - swaf
     ${swproduct}=    Set Variable    ${SWPRODUCT}
     ${logdir}=    Create Empty Test Directory    swaf_with_log
     ${piddir}=    Create Empty Test Directory    swaf_pid
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --logdir    ${logdir}    --piddir    ${piddir}    --wait    ${wait}    --cli_port    ${cli_port}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+    ${result_start}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --msf_startup    --logdir    ${logdir}    --piddir    ${piddir}    --wait    ${wait}    --cli_port    ${cli_port}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
     Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
-    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
+    ${result_stop}=    Run Process    ${RFM_PYTHON}    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
     Log Result    ${result_stop}
     Should Be Equal As Integers    ${result_start.rc}    0
     Should Be Equal As Integers    ${result_stop.rc}    0
@@ -236,9 +237,9 @@ Start and stop - cambridge with -run_script
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
     ${wait}=    Convert Time    ${START_WAIT}
     ${swproduct}    Set Variable    ${SWPRODUCT}
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+    ${result_start}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
-    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
+    ${result_stop}=    Run Process    ${RFM_PYTHON}    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}
     Should Be Equal As Integers    ${result_start.rc}    0
     Should Be Equal As Integers    ${result_stop.rc}    0
@@ -251,9 +252,9 @@ Start and stop - cambridge with SW_MSF_STARTUP_MAGIK
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
     ${wait}=    Convert Time    ${START_WAIT}
     ${swproduct}    Set Variable    ${SWPRODUCT}
-    ${result_start}=    Run Process    python    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+    ${result_start}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
-    ${result_stop}=    Run Process    python    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
+    ${result_stop}=    Run Process    ${RFM_PYTHON}    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}
     Should Be Equal As Integers    ${result_start.rc}    0
     Should Be Equal As Integers    ${result_stop.rc}    0
@@ -262,7 +263,7 @@ Start and stop - cambridge with SW_MSF_STARTUP_MAGIK
 Start Image Script with special environment
     [Tags]    dummyLaunch    withTelnet
     ${alias}=    Set Variable    ALIAS_start_telnet
-    ${result}=    Run Process    python    ${START_IMAGE_SCRIPT}    --envfile    ${DUMMY_ENVFILE}    --wait    ${DUMMY_WAIT}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}
+    ${result}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --envfile    ${DUMMY_ENVFILE}    --wait    ${DUMMY_WAIT}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}
     Log Result    ${result}
     Should Contain    ${result.stdout}    SW_GIS_ENVIRONMENT_FILE=${DUMMY_ENVFILE}
     Should Contain    ${result.stdout}    -e ${DUMMY_ENVFILE}
@@ -270,11 +271,16 @@ Start Image Script with special environment
     Should Be Equal As Integers    ${result.rc}    0
 
 *** Keywords ***
+
+Detect RFM Python Executable
+     ${RFM_PYTHON}=    Evaluate    sys.executable    modules=sys
+     Set Suite Variable    $RFM_PYTHON
+
 Start Dummy Gis Launcher
     [Arguments]    ${alias}=ALIAS_start_telnet    ${cli_port}=14001    ${wait_telnet}=${DUMMY_WAIT}
     ${wait_process}=    Convert To Number    ${wait_telnet}
     ${wait_process}=    Set Variable    ${wait_process + 2.0}
-    ${handle_start}=    Process.Start Process    python    ${START_IMAGE_SCRIPT}    --wait    ${wait_telnet}    --cli_port    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+    ${handle_start}=    Process.Start Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --wait    ${wait_telnet}    --cli_port    ${cli_port}    --test_launch    ${DUMMY_LAUNCHER}    A_SWPRODUCT    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     ${result_start}=    Wait For Process    handle=${handle_start}    timeout=${wait_process}    on_timeout=terminate
     Log Result    ${result_start}
     RETURN    ${result_start}
