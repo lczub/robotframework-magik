@@ -84,7 +84,7 @@ class RobotMagikLauncher(object):
         | test_launch  | Hook to start a test script instead the gis launcher. | 
 
         == Requirements ==
-        Robot Framework Version >= 7.2 is required and Python 3.11 recommended.
+        Robot Framework Version 7.3 is required and Python 3.12 or 3.14 recommended.
         
         == Licence info ==
         | Copyright 2016-2025 Luiko Czub, Smallcases Software GmbH

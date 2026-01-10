@@ -35,7 +35,7 @@ Auto Start Magik Session
     ...    Returns launcher session object handling the started session process
     Run Keyword And Return If    ${AUTO_START_MAGIK_SESSION} == ${False}    Log To Console    Starting Magik Session was disabled by AUTO_START_MAGIK_SESSION
     ${test_launch}=    Get Variable Value    $DUMMY_LAUNCHER    ${None}
-    IF    '${test_launch}' != '${None}'
+    IF    r'${test_launch}' != '${None}'
         ${further_key_value_pairs.test_launch}    Set Variable    ${test_launch}
     END
     

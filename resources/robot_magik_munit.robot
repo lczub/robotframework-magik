@@ -70,7 +70,7 @@ Prepare MUnit
     [Documentation]    Setup for MUnit tests. Loads file ${munit_load_file} to import required MUnit functions and additional required magik functions
     ...
     ...    if ${munit_dir} is defined, environment variable ``ROBOT_MUNIT_DIR`` is set, before loading ${munit_load_file}
-    Run Keyword If    '${munit_dir}' != ''    Execute Magik Command    system.putenv("ROBOT_MUNIT_DIR", "${munit_dir}")
+    Run Keyword If    r'${munit_dir}' != ''    Execute Magik Command    system.putenv("ROBOT_MUNIT_DIR", "${munit_dir}")
     ${out}=    Load Magik File    ${munit_load_file}    max_load_wait=${ROBOT_MUNIT_MAX_LOAD_WAIT}
     RETURN    ${out}
 

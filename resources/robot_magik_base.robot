@@ -57,7 +57,7 @@ Documentation     [http://robotframework.org|Robot Framework] high level keyword
 ...               - keywords testing Smallworld ds_views, ds_collections and rwo records see [./robot_magik_dsview.html|robot_magik_dsview]
 ...
 ...               == Requirements ==
-...               Robot Framework Version >= 4.1.2 is required, RF 6.0.2/6.1 recommended.
+...               Robot Framework Version 7.3 is required and Python 3.12 or 3.14 recommended.
 ...
 ...               == Customisations ==
 ...
@@ -155,7 +155,7 @@ Read Magik Output
     ${output_regexp}=    Set Variable    ${MAGIK_OUTPUT_REGEXP}${CLI_PROMPT_REGEXP}
     ${out_orig}=    Read until prompt
     Should Not Match Regexp    ${out_orig}    .*traceback:|.*\\(parser_error\\)
-    Run Keyword If    '${error_regexp}'!=''    Should Not Match Regexp    ${out_orig}    ${error_regexp}
+    Run Keyword If    r'${error_regexp}'!=''    Should Not Match Regexp    ${out_orig}    ${error_regexp}
     ${match}    ${out}    ${prompt}=    Should Match Regexp    ${out_orig}    ${output_regexp}
     RETURN    ${out}
 
