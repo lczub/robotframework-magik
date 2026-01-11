@@ -37,6 +37,7 @@ ${ALIASFILE_NESTED}    ${CURDIR}${/}gis_aliases_sw${GIS_VERSION}
 start magik session
     [Documentation]    start magik session, prepare telnet connection and check that the telnet connection
     [Tags]    withTelnet
+    Skip If    ${GIS_VERSION} >= 50    Nested Aliases not supported with ${GIS_VERSION}
     ${msession}=    Start Magik Session    aliasfile=${ALIASFILE_NESTED}    gis_alias=${ALIAS_NESTED}    nested_alias=${True}    msf_startup=${MSFSTARTUP}    login=${LOGIN}
     Session Should Be Reachable
     #    Stop Magik Session
@@ -44,6 +45,7 @@ start magik session
 calc with magik session
     [Documentation]    calculate something with the magik session with a telent connection, check if the telent connection works and stop the session
     [Tags]    withTelnet
+    Skip If    ${GIS_VERSION} >= 50    Nested Aliases not supported with ${GIS_VERSION}
     ${out}=    Open Magik Connection    port=${CLI_PORT+101}
     ${out}=    Execute Magik Command    3 - 2
     Should Be Equal As Integers    ${out}    1
@@ -52,4 +54,5 @@ calc with magik session
 stop magik session
     [Documentation]    stop the magik session
     [Tags]    withTelnet
+    Skip If    ${GIS_VERSION} >= 50    Nested Aliases not supported with ${GIS_VERSION}
     Stop Magik Session

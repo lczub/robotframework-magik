@@ -55,6 +55,7 @@ Start and stop - cambridge with nested alias
     ...
     ...    PID file caches a wrong process id and the image / session can not be stopped with the script *robot_stop_magik_image*
     [Tags]    withTelnet    knownIssue    nestedAlias
+    Skip If    ${GIS_VERSION} >= 50    Nested Aliases not supported with ${GIS_VERSION}
     ${result_stop}=    Start and Stop    ${ALIAS_CBG_NESTED}    ${ALIASFILE_CBG}    ${DEFAULT_CLI_PORT+102}    nested=${True}
     Should Not Contain    ${result_stop.stdout}    WinError
 
@@ -63,11 +64,13 @@ Start and stop - cambridge none nested alias but start arg --nested_alias
     ...
     ...    PID file caches a wrong process id and the image / session can not be stopped with the script *robot_stop_magik_image*
     [Tags]    withTelnet    knownIssue    nestedAlias
+    Skip If    ${GIS_VERSION} >= 50    Nested Aliases not supported with ${GIS_VERSION}
     ${result_stop}=    Start and Stop    ${ALIAS_CBG}    ${ALIASFILE_CBG}    ${DEFAULT_CLI_PORT+103}    nested=${True}
     Should Not Contain    ${result_stop.stdout}    WinError
 
 Start and stop - cambridge default
     [Tags]    withTelnet
+    Skip If    ${GIS_VERSION} >= 50    Nested Aliases not supported with ${GIS_VERSION}
     ${result_stop}=    Start and Stop    ${ALIAS_CBG}    ${ALIASFILE_CBG}    ${DEFAULT_CLI_PORT+104}    nested=${False}
     Should Not Contain    ${result_stop.stdout}    WinError
 
