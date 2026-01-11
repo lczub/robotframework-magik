@@ -69,6 +69,7 @@ Start Image Script with -h
     Should Contain    ${result.stdout}    --wait WAIT
     Should Contain    ${result.stdout}    --nested_alias
     Should Contain    ${result.stdout}    --gis_args
+    Should Contain    ${result.stdout}    --java_home JAVA_HOME
     Should Contain    ${result.stdout}    --test_launch TEST_LAUNCH
     Should Be Equal As Integers    ${result.rc}    0
 
@@ -218,7 +219,7 @@ Start and stop - swaf
     ${swproduct}=    Set Variable    ${SWPRODUCT}
     ${logdir}=    Create Empty Test Directory    swaf_with_log
     ${piddir}=    Create Empty Test Directory    swaf_pid
-    ${result_start}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --msf_startup    --logdir    ${logdir}    --piddir    ${piddir}    --wait    ${wait}    --cli_port    ${cli_port}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+    ${result_start}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --msf_startup    --logdir    ${logdir}    --piddir    ${piddir}    --wait    ${wait}    --cli_port    ${cli_port}    --java_home    ${JAVA_HOME}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
     Run Keyword And Continue On Failure    Directory Should Not Be Empty    ${piddir}
     ${result_stop}=    Run Process    ${RFM_PYTHON}    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}    --piddir    ${piddir}
@@ -252,7 +253,7 @@ Start and stop - cambridge with SW_MSF_STARTUP_MAGIK
     ${cli_port}=    Set Variable    ${DEFAULT_CLI_PORT+1}
     ${wait}=    Convert Time    ${START_WAIT}
     ${swproduct}    Set Variable    ${SWPRODUCT}
-    ${result_start}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
+    ${result_start}=    Run Process    ${RFM_PYTHON}    ${START_IMAGE_SCRIPT}    --msf_startup    --wait    ${wait}    --cli_port    ${cli_port}    --java_home    ${JAVA_HOME}    --aliasfile    ${aliasfile}    --login    ${LOGIN_CBG}    ${swproduct}    ${alias}    stdout=${RF_LOG_STDOUT}    stderr=${RF_LOG_STDERR}
     Log Result    ${result_start}
     ${result_stop}=    Run Process    ${RFM_PYTHON}    ${STOP_IMAGE_SCRIPT}    --cli_port    ${cli_port}
     Log Result    ${result_stop}

@@ -141,6 +141,8 @@ Test keyword 'Report Datamodel History'
 
 Test keyword 'Get DsView' for auth view
     ${a_view}=    Get DsView    authorisation
+    ${result}=    Execute Magik Command    ${a_view}
+    Skip If    '${result}'=='unset'    Session run without authorisation
     ${vname}=    Execute Magik Command    ${a_view}.name
     Should Be Equal    ${vname}    :|Auth|
 

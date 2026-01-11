@@ -173,7 +173,7 @@ Test keyword 'Load Magik Module' - Module does not exist
 Test keyword 'Load Magik Module' - Module exist
     ${existing_mname}=    Set Variable    tree_examples
     ${out}=    Load Magik Module    ${existing_mname}
-    Should Match    ${out}    *${existing_mname}.*loaded*
+    Should Match Regexp    ${out}    .*tree_examples\\..*(loaded|geladen).*
 
 Test keyword 'Get Smallworld Version'
     ${swv}=    Get Smallworld Version

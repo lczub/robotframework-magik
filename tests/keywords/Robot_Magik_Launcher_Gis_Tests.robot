@@ -27,7 +27,7 @@ Resource          ../../resources/robot_magik_base.robot
 start magik session
     [Documentation]    start magik session, prepare telnet connection and check that the telnet connection
     [Tags]    withTelnet
-    ${msession}=    Start Magik Session    aliasfile=${ALIASFILE}    gis_alias=${ALIASNAME}    msf_startup=${MSFSTARTUP}    login=${LOGIN}
+    ${msession}=    Start Magik Session    aliasfile=${ALIASFILE}    gis_alias=${ALIASNAME}    msf_startup=${MSFSTARTUP}    login=${LOGIN}    java_home=${JAVA_HOME}
     Session Should Be Reachable
     #    Stop Magik Session
 
