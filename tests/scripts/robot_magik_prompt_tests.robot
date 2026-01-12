@@ -7,7 +7,7 @@ Documentation     Test Parsing different Magik Prompt Variations.
 ...
 ...               This test suite uses the script _dummy_remte_cli.py_ to simulate a remote_cli with different prompt variations and prepared return values.
 ...               == Licence info ==
-...               | Copyright 2019-2025 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2019-     Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

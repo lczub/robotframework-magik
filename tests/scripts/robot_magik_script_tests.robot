@@ -6,7 +6,7 @@ Documentation     Test Python Scripts for starting and stopping Smallworld Magik
 ...               - issue discussion [https://github.com/robotframework/robotframework/issues/2085| robotframework #2085: Process library Wait For Process keyword does not return when used with some adb commands] \ and
 ...               - examples [https://gist.github.com/lczub/22b0f2a12a27c30d0a14#file-wait_process_tests-txt|Gist - robot framework samples - Wait For Process]
 ...               == Licence info ==
-...               | Copyright 2016-2025 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2016-     Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

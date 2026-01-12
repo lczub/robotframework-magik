@@ -2,7 +2,7 @@
 Documentation     Example - Test Smallworld Magik coordinates with RobotFramework
 ...
 ...               == Licence info ==
-...               | Copyright 2012-2025 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2012-     Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

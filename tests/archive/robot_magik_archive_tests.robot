@@ -2,7 +2,7 @@
 Documentation     Test content of extracted Robot Framework Magik archive
 ...
 ...               == Licence info ==
-...               | Copyright 2012-2025 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2012-     Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ Library           String
 
 *** Variables ***
 ${ROBOT_MAGIK_DIR}    ${CURDIR}${/}..${/}..
-${ROBOT_MAGIK_COPYRIGHT}    Copyright*2025*Luiko Czub*Smallcases Software GmbH
+${ROBOT_MAGIK_COPYRIGHT}    Copyright*20??-*Luiko Czub*Smallcases Software GmbH
 ${ROBOT_MAGIK_LICENSE}    Apache License*2.0
 
 

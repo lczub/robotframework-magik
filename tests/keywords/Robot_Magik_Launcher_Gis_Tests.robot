@@ -2,7 +2,7 @@
 Documentation     minimal test workflow - start session, calculate something , close the session
 ...
 ...               == Licence info ==
-...               | Copyright 2016-2025 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2016-     Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

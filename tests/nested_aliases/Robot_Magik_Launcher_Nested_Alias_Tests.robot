@@ -8,7 +8,7 @@ Documentation     minimal test workflow - start session, calculate something , c
 ...               session will stay cause cached PID does not reflect _sw_magik_win32_ process when starting nested alias
 ...
 ...               == Licence info ==
-...               | Copyright 2019-2025 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2019-     Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

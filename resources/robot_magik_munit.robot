@@ -38,7 +38,7 @@ Documentation     === Robot Framework Magik keywords running and evaluating MUni
 ...               - if just one test affected, assign specific ``${max_run_wait}`` argument, when test calls the keyword
 ...
 ...               == Licence info ==
-...               | Copyright 2020-2025 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2020-     Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

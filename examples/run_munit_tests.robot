@@ -6,7 +6,7 @@ Documentation     Sample loading , running and evaluating MUnit tests
 ...               - ${ROBOT_MUNIT_LOADFILE} - Default [../resources/magik/load_opensmallworld_munit_43.magik]
 ...
 ...               == Licence info ==
-...               | Copyright 2020-2025 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2020-     Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.

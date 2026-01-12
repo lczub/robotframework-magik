@@ -1,7 +1,7 @@
 #! /usr/bin/python
 # -*- coding: UTF-8 -*-
 
-#  Copyright 2016-2025 Luiko Czub, Smallcases Software GmbH
+#  Copyright 2016-     Luiko Czub, Smallcases Software GmbH
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ class RobotMagikLauncher(object):
         Robot Framework Version 7.3 is required and Python 3.12 or 3.14 recommended.
         
         == Licence info ==
-        | Copyright 2016-2025 Luiko Czub, Smallcases Software GmbH
+        | Copyright 2016-     Luiko Czub, Smallcases Software GmbH
         |
         | Licensed under the Apache License, Version 2.0 (the "License");
         | you may not use this file except in compliance with the License.

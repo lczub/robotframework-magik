@@ -1,7 +1,7 @@
 Robot Framework Magik (RFM)
 ===========================
 
-Copyright 2012-2025 Luiko Czub, `Smallcases Software GmbH`_
+Copyright 2012-     Luiko Czub, `Smallcases Software GmbH`_
 License `Apache License 2.0`_
 
 Introduction

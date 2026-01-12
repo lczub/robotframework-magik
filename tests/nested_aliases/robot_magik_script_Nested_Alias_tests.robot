@@ -15,7 +15,7 @@ Documentation     Test Python Scripts , delivered with robotframework magik, for
 ...
 ...               see issue discussion [https://github.com/lczub/robotframework-magik/issues/22| robotframework-magik #22: Support Starting Magik Images with Nested Aliases]
 ...               == Licence info ==
-...               | Copyright 2019-2025 Luiko Czub, Smallcases Software GmbH
+...               | Copyright 2019-     Luiko Czub, Smallcases Software GmbH
 ...               |
 ...               | Licensed under the Apache License, Version 2.0 (the "License");
 ...               | you may not use this file except in compliance with the License.
