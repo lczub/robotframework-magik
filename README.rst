@@ -142,7 +142,7 @@ Example A - start gis and run example test completly inside robot
 Precondition
 
 - Adjust variable file variables_sw43_cbg.py_ for your SW4.x image to test
-- Adjust variable file variables_sw5x_cbg.py_ for your SW5.x session to test
+- Adjust variable file variables_sw53_cbg.py_ for your SW5.x session to test
 
 Expectation:
 
@@ -273,8 +273,7 @@ The image is closed and the pid-file *14003.pid* is deleted.
 .. _ProcessLibrary: http://robotframework.org/robotframework/latest/libraries/Process.html
 .. _RobotFramework UserGuide Installation: http://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html#installation-instructions
 .. _variables_sw43_cbg.py: resources/params/variables_sw43_cbg.py
-.. _variables_sw51_cbg.py: resources/params/variables_sw51_cbg.py
-.. _variables_sw52_cbg.py: resources/params/variables_sw52_cbg.py
+.. _variables_sw53_cbg.py: resources/params/variables_sw53_cbg.py
 .. _venv: https://docs.python.org/3/library/venv.html
 .. _requirements.txt: https://pip.pypa.io/en/stable/reference/requirements-file-format/
 .. _OpenSmallworld MUnit: https://github.com/OpenSmallworld/munit

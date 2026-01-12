@@ -1,12 +1,12 @@
 Changes in Robot Framework Magik (RFM)
 ======================================
 
-Robot Framework Magik release notes v0.6.1 (under construction)
----------------------------------------------------------------
+Robot Framework Magik release notes v0.6.1 (Jan. 2026)
+------------------------------------------------------
 
 - Enh #45: Support RF 7.3 and PY 3.14
 
-  - pip installation should use provided *requirements.txt* to ensure, that PY >= 3.13 context required additional package *telnetlib-313-and-up* is installed
+  - pip installation should use provided *requirements.txt* to ensure, that additional package *telnetlib-313-and-up* is installed in PY >= 3.13 context
   - background see `robotframework issue #5590 <https://github.com/robotframework/robotframework/issues/5590>`_  
 
 - PR #41 (`StevenLooman <https://github.com/StevenLooman>`_) : Support RF 7.2 and PY 3.12
@@ -20,6 +20,8 @@ Robot Framework Magik release notes v0.6.1 (under construction)
   - gis launcher behaves now differently when running under Win11 + RF7x and started without ``-l logfile`` arg
 
 - Known Limitation #44: RF 7.4 not supported
+
+- tested against SW releases 411 TSB120, 4308, 5195, 52106, 5361
 
 Robot Framework Magik release notes v0.6.0 (Jun. 2023)
 ------------------------------------------------------
