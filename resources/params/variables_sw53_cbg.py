@@ -35,7 +35,7 @@ __devenv_dir    = os.getenv("DEVENV_DIR", os.path.join( __rfm_root_dir, "..", "d
 # communication should be available
 START_WAIT = "60s"
 # path to smallworld core product
-SWPRODUCT = r"S:\gis536\core"
+SWPRODUCT = r"S:\gis5361\core"
 # file with gis alias definitions
 ALIASFILE = os.path.join( SWPRODUCT, "..", "cambridge_db", "config", "gis_aliases")
 
